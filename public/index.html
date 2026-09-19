@@ -504,9 +504,11 @@
   const ownBase = (t) => (t === 'atk' ? 'def' : t);
 
   function groundRect() {
-    const team = mode === 'team', y0 = team ? -4 : 4, y1 = team ? arena.h + 4 : 104;
-    if (W / H < 1.25) return { x0: -ax / k - 9, x1: (W - ax) / k + 9, y0, y1 }; // màn dọc: nền phủ kín chiều ngang
-    return team ? { x0: -8, y0, x1: 108, y1 } : { x0: -8, y0, x1: 108, y1 };
+    const team = mode === 'team';
+    // màn dọc (live điện thoại): nền phủ kín toàn bộ màn hình luôn, không chỉ vùng sàn đấu, để không lộ ra khoảng trong suốt
+    if (W / H < 1.25) return { x0: -ax / k - 9, x1: (W - ax) / k + 9, y0: -ay / k - 9, y1: (H - ay) / k + 9 };
+    const y0 = team ? -4 : 4, y1 = team ? arena.h + 4 : 104;
+    return { x0: -8, y0, x1: 108, y1 };
   }
 
   function buildDecor() { // cây, đá, cỏ, hoa: đặt cố định theo hạt giống để mỗi ván có bố cục quen thuộc
