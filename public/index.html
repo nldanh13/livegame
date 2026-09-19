@@ -27,50 +27,50 @@
   .rim { box-shadow: inset 0 2px 0 rgba(255,255,255,.16), 0 0 0 3px var(--rim), 0 0 0 5px var(--deep), 0 6px 0 5px rgba(0,0,0,.35); }
 
   /* ---------- HUD solo ---------- */
-  #hud { position: fixed; top: 1.8vh; left: 50%; transform: translateX(-50%); width: min(88vw, 720px); }
-  .meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: .8vh; }
-  #lvl { font-weight: 800; font-size: clamp(16px, 2.6vh, 28px); padding: .05em .9em; border-radius: 10px; background: linear-gradient(#6a3fa0, #43276e); border: 3px solid var(--rim); box-shadow: inset 0 2px 0 rgba(255,255,255,.25), 0 0 0 2px var(--deep), 0 3px 0 rgba(0,0,0,.4); text-shadow: var(--out); }
+  #hud { position: fixed; top: 1.2vh; left: 50%; transform: translateX(-50%); width: min(92vw, 680px); }
+  .meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: .4vh; }
+  #lvl { font-weight: 800; font-size: clamp(13px, 1.8vh, 22px); padding: .02em .7em; border-radius: 8px; background: linear-gradient(#6a3fa0, #43276e); border: 2px solid var(--rim); box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 0 0 2px var(--deep), 0 2px 0 rgba(0,0,0,.4); text-shadow: var(--out); }
   #hud.boss #lvl { background: linear-gradient(#c23a4a, #7c1826); }
-  #timer, #tTimer { font-weight: 800; font-size: clamp(18px, 3vh, 32px); font-variant-numeric: tabular-nums; padding: .0em .8em; border-radius: 999px; background: linear-gradient(#2b1a42, #170c28); border: 3px solid var(--rim); box-shadow: 0 0 0 3px var(--deep), 0 4px 0 3px rgba(0,0,0,.35); text-shadow: var(--out); }
+  #timer, #tTimer { font-weight: 800; font-size: clamp(14px, 2.2vh, 24px); font-variant-numeric: tabular-nums; padding: .0em .7em; border-radius: 999px; background: linear-gradient(#2b1a42, #170c28); border: 2px solid var(--rim); box-shadow: 0 0 0 2px var(--deep), 0 3px 0 2px rgba(0,0,0,.35); text-shadow: var(--out); }
   #timer.low, #tTimer.low { color: #ff6b5e; animation: throb .5s infinite alternate; }
-  #tTimer.gold { color: var(--gold); box-shadow: 0 0 0 3px var(--deep), 0 0 18px 4px rgba(255, 200, 60, .75); }
+  #tTimer.gold { color: var(--gold); box-shadow: 0 0 0 2px var(--deep), 0 0 14px 3px rgba(255, 200, 60, .75); }
   @keyframes throb { to { transform: scale(1.08); } }
 
-  .bar { position: relative; height: clamp(26px, 4.2vh, 44px); background: linear-gradient(#150a22, #2a1740); border: 3px solid var(--deep); border-radius: 999px; overflow: hidden;
-    box-shadow: 0 0 0 3px var(--rim), 0 0 0 5px var(--deep), 0 6px 0 5px rgba(0,0,0,.35); }
-  #hud.boss .bar { box-shadow: 0 0 0 3px #ff6b7a, 0 0 0 5px var(--deep), 0 0 22px 4px rgba(255, 60, 90, .6); }
+  .bar { position: relative; height: clamp(18px, 2.6vh, 28px); background: linear-gradient(#150a22, #2a1740); border: 2px solid var(--deep); border-radius: 999px; overflow: hidden;
+    box-shadow: 0 0 0 2px var(--rim), 0 0 0 3px var(--deep), 0 4px 0 3px rgba(0,0,0,.35); }
+  #hud.boss .bar { box-shadow: 0 0 0 2px #ff6b7a, 0 0 0 4px var(--deep), 0 0 18px 3px rgba(255, 60, 90, .6); }
   #pGhost { position: absolute; inset: 0 auto 0 0; background: #f6e7b0; width: 0; opacity: .55; }
   .fill { position: absolute; top: 0; bottom: 0; width: 0; overflow: hidden; }
   .fill::before { content: ''; position: absolute; inset: 0; background: linear-gradient(rgba(255,255,255,.45), rgba(255,255,255,0) 55%); }
   .fill::after { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(115deg, rgba(255,255,255,.16) 0 10px, transparent 10px 24px); animation: stripes 1.1s linear infinite; }
   @keyframes stripes { to { background-position: 24px 0; } }
   #pFill { left: 0; background: linear-gradient(90deg, #ff7a3d, #ffcf4a); }
-  #pMark { position: absolute; top: 0; bottom: 0; left: 50%; width: 3px; background: rgba(18, 8, 28, .75); z-index: 2; }
-  #pText, .barText { position: absolute; inset: 0; display: grid; place-items: center; font-weight: 800; font-size: clamp(13px, 2.2vh, 24px); text-shadow: var(--out); font-variant-numeric: tabular-nums; z-index: 3; }
+  #pMark { position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; background: rgba(18, 8, 28, .75); z-index: 2; }
+  #pText, .barText { position: absolute; inset: 0; display: grid; place-items: center; font-weight: 800; font-size: clamp(11px, 1.6vh, 17px); text-shadow: var(--out); font-variant-numeric: tabular-nums; z-index: 3; }
 
-  #stars { display: flex; justify-content: center; gap: 2.4vh; margin-top: 1.2vh; }
+  #stars { display: flex; justify-content: center; gap: 1.4vh; margin-top: .5vh; }
   .st { display: flex; flex-direction: column; align-items: center; line-height: 1; }
-  .st svg { width: clamp(30px, 5vh, 54px); height: auto; overflow: visible; filter: drop-shadow(0 3px 0 rgba(0,0,0,.45)); }
-  .st svg path { fill: url(#gStarOff); stroke: #12081c; stroke-width: 1.6; stroke-linejoin: round; }
-  .st span { font-size: clamp(10px, 1.6vh, 16px); opacity: .85; margin-top: .3em; text-shadow: var(--out); }
-  .st.on svg { animation: pop .5s cubic-bezier(.2, 1.6, .4, 1); filter: drop-shadow(0 0 10px rgba(255, 190, 60, .9)) drop-shadow(0 3px 0 rgba(0,0,0,.4)); }
+  .st svg { width: clamp(20px, 3vh, 36px); height: auto; overflow: visible; filter: drop-shadow(0 2px 0 rgba(0,0,0,.45)); }
+  .st svg path { fill: url(#gStarOff); stroke: #12081c; stroke-width: 1.4; stroke-linejoin: round; }
+  .st span { font-size: clamp(9px, 1.2vh, 13px); opacity: .85; margin-top: .15em; text-shadow: var(--outs); }
+  .st.on svg { animation: pop .5s cubic-bezier(.2, 1.6, .4, 1); filter: drop-shadow(0 0 8px rgba(255, 190, 60, .9)) drop-shadow(0 2px 0 rgba(0,0,0,.4)); }
   .st.on svg path { fill: url(#gStar); }
   .st.on span { opacity: 1; color: var(--gold); }
   @keyframes pop { 0% { transform: scale(.3) rotate(-30deg); } 100% { transform: scale(1) rotate(0); } }
 
-  #top { display: flex; justify-content: center; gap: .8vh; margin-top: 1vh; flex-wrap: wrap; }
-  .chip { display: flex; align-items: center; gap: .45em; font-size: clamp(12px, 1.9vh, 20px); max-width: 30vw; padding: .1em .8em .1em .3em; border-radius: 999px; background: linear-gradient(#3d2a55, #241537); border: 2px solid var(--deep); box-shadow: inset 0 1px 0 rgba(255,255,255,.18), 0 3px 0 rgba(0,0,0,.35); }
-  .chip img, .chip i, .ev img, .ev i { border-radius: 50%; object-fit: cover; background: var(--dim); flex: none; border: 2px solid var(--c, #fff4e0); }
-  .chip img, .chip i { width: 1.9em; height: 1.9em; }
+  #top { display: flex; justify-content: center; gap: .5vh; margin-top: .5vh; flex-wrap: wrap; }
+  .chip { display: flex; align-items: center; gap: .35em; font-size: clamp(10px, 1.4vh, 15px); max-width: 28vw; padding: .06em .6em .06em .25em; border-radius: 999px; background: linear-gradient(#3d2a55, #241537); border: 2px solid var(--deep); box-shadow: inset 0 1px 0 rgba(255,255,255,.18), 0 2px 0 rgba(0,0,0,.35); }
+  .chip img, .chip i, .ev img, .ev i { border-radius: 50%; object-fit: cover; background: var(--dim); flex: none; border: 1.5px solid var(--c, #fff4e0); }
+  .chip img, .chip i { width: 1.5em; height: 1.5em; }
   .chip span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .chip b { color: var(--ember); font-weight: 800; }
-  .chip.bounty { border-color: #ff4a5e; box-shadow: 0 0 12px rgba(255, 60, 80, .75), 0 3px 0 rgba(0,0,0,.35); }
-  .chip.lead { border-color: var(--gold); box-shadow: 0 0 14px rgba(255, 207, 74, .85), 0 3px 0 rgba(0,0,0,.35); }
+  .chip.bounty { border-color: #ff4a5e; box-shadow: 0 0 8px rgba(255, 60, 80, .75), 0 2px 0 rgba(0,0,0,.35); }
+  .chip.lead { border-color: var(--gold); box-shadow: 0 0 10px rgba(255, 207, 74, .85), 0 2px 0 rgba(0,0,0,.35); }
   .chip.lead b { color: var(--gold); }
 
-  #badges { display: flex; justify-content: center; gap: .8vh; margin-top: 1vh; flex-wrap: wrap; }
-  .badge { position: relative; overflow: hidden; border-radius: 12px; padding: .05em .8em; font-weight: 800; font-size: clamp(12px, 1.9vh, 21px); background: linear-gradient(#2e1d45, #1a0e2b); border: 2px solid var(--c); box-shadow: 0 3px 0 rgba(0,0,0,.4); text-shadow: var(--out); }
-  .badge i { position: absolute; left: 0; bottom: 0; height: 4px; background: var(--c); transition: width .2s linear; }
+  #badges { display: flex; justify-content: center; gap: .5vh; margin-top: .4vh; flex-wrap: wrap; }
+  .badge { position: relative; overflow: hidden; border-radius: 8px; padding: .03em .6em; font-weight: 800; font-size: clamp(10px, 1.4vh, 15px); background: linear-gradient(#2e1d45, #1a0e2b); border: 2px solid var(--c); box-shadow: 0 2px 0 rgba(0,0,0,.4); text-shadow: var(--outs); }
+  .badge i { position: absolute; left: 0; bottom: 0; height: 3px; background: var(--c); transition: width .2s linear; }
   #combo { --c: var(--ember); } #rage { --c: #b56cff; color: #e6ceff; } #freeze { --c: #a8e6ff; color: #d8f4ff; } #enrage { --c: #ff4a5e; color: #ffb0b8; } #rush { --c: #ff8a3d; color: #ffd9b0; } #mod { --c: #ffcf4a; font-weight: 600; }
 
   /* ---------- Feed ---------- */
@@ -153,43 +153,43 @@
   .tcolr .mv { font-size: clamp(11px, 1.7vh, 18px); opacity: .9; margin-top: .4vh; }
 
   /* ---------- HUD chế độ đội ---------- */
-  #hudT { position: fixed; top: 1.8vh; left: 50%; transform: translateX(-50%); width: min(94vw, 780px); }
-  #tScore { font-weight: 800; font-size: clamp(13px, 2.1vh, 22px); padding: .05em .8em; border-radius: 10px; background: linear-gradient(#3d2a55, #241537); border: 3px solid var(--deep); text-shadow: var(--out); box-shadow: 0 3px 0 rgba(0,0,0,.4); }
-  #tPhase { font-weight: 800; font-size: clamp(12px, 1.9vh, 20px); padding: .05em .7em; border-radius: 10px; background: linear-gradient(#3d2a55, #241537); border: 2px solid var(--deep); text-shadow: var(--out); min-height: 1.4em; box-shadow: 0 3px 0 rgba(0,0,0,.4); }
-  #tPhase.golden { border-color: var(--gold); color: var(--gold); box-shadow: 0 0 14px rgba(255,200,60,.7), 0 3px 0 rgba(0,0,0,.4); }
+  #hudT { position: fixed; top: 1.2vh; left: 50%; transform: translateX(-50%); width: min(94vw, 720px); }
+  #tScore { font-weight: 800; font-size: clamp(11px, 1.6vh, 18px); padding: .03em .6em; border-radius: 8px; background: linear-gradient(#3d2a55, #241537); border: 2px solid var(--deep); text-shadow: var(--outs); box-shadow: 0 2px 0 rgba(0,0,0,.4); }
+  #tPhase { font-weight: 800; font-size: clamp(10px, 1.4vh, 16px); padding: .03em .6em; border-radius: 8px; background: linear-gradient(#3d2a55, #241537); border: 2px solid var(--deep); text-shadow: var(--outs); min-height: 1.3em; box-shadow: 0 2px 0 rgba(0,0,0,.4); }
+  #tPhase.golden { border-color: var(--gold); color: var(--gold); box-shadow: 0 0 10px rgba(255,200,60,.7), 0 2px 0 rgba(0,0,0,.4); }
   #tPhase.ot { border-color: #ff4a5e; color: #ff8a96; animation: throb .5s infinite alternate; }
-  .tbars { display: flex; gap: 1.2vh; }
-  .tb { position: relative; flex: 1; height: clamp(26px, 4vh, 42px); background: linear-gradient(#150a22, #2a1740); border: 3px solid var(--deep); border-radius: 999px; overflow: hidden; box-shadow: 0 0 0 3px var(--tc), 0 0 0 5px var(--deep), 0 5px 0 5px rgba(0,0,0,.35); }
+  .tbars { display: flex; gap: .8vh; }
+  .tb { position: relative; flex: 1; height: clamp(20px, 2.8vh, 32px); background: linear-gradient(#150a22, #2a1740); border: 2px solid var(--deep); border-radius: 999px; overflow: hidden; box-shadow: 0 0 0 2px var(--tc), 0 0 0 4px var(--deep), 0 3px 0 4px rgba(0,0,0,.35); }
   .tb.blue { --tc: #4aa6ff; } .tb.red { --tc: #ff6060; }
   .tb .fill { width: 0; }
   .tb.blue .fill { left: 0; background: linear-gradient(90deg, #2a6fe0, #63b6ff); }
   .tb.red .fill { right: 0; background: linear-gradient(270deg, #e03a3a, #ff8a70); }
-  .tb span { position: absolute; inset: 0; display: grid; place-items: center; font-weight: 800; font-size: clamp(13px, 2.1vh, 23px); text-shadow: var(--out); font-variant-numeric: tabular-nums; z-index: 3; }
-  #tug { position: relative; height: clamp(10px, 1.5vh, 16px); margin: 1.4vh 0 .2vh; border-radius: 999px; border: 2px solid var(--deep); background: linear-gradient(90deg, #2a6fe0, #63b6ff 42%, #ddd 50%, #ff8a70 58%, #e03a3a); box-shadow: 0 3px 0 rgba(0,0,0,.35); }
-  #tugMark { position: absolute; top: -70%; bottom: -70%; width: 10px; margin-left: -5px; border-radius: 4px; background: linear-gradient(#fff, #ffd76a); border: 2px solid var(--deep); left: 50%; transition: left .35s ease-out; }
-  #tugTxt { text-align: center; font-weight: 800; font-size: clamp(11px, 1.7vh, 18px); margin-top: .5vh; text-shadow: var(--out); min-height: 1.2em; }
-  .trow { display: flex; gap: 1.2vh; margin-top: .7vh; }
-  .trow > div { flex: 1; display: flex; flex-wrap: wrap; gap: .6vh; align-items: center; min-width: 0; }
+  .tb span { position: absolute; inset: 0; display: grid; place-items: center; font-weight: 800; font-size: clamp(11px, 1.6vh, 18px); text-shadow: var(--out); font-variant-numeric: tabular-nums; z-index: 3; }
+  #tug { position: relative; height: clamp(8px, 1.1vh, 12px); margin: .7vh 0 .1vh; border-radius: 999px; border: 1.5px solid var(--deep); background: linear-gradient(90deg, #2a6fe0, #63b6ff 42%, #ddd 50%, #ff8a70 58%, #e03a3a); box-shadow: 0 2px 0 rgba(0,0,0,.35); }
+  #tugMark { position: absolute; top: -50%; bottom: -50%; width: 8px; margin-left: -4px; border-radius: 3px; background: linear-gradient(#fff, #ffd76a); border: 1.5px solid var(--deep); left: 50%; transition: left .35s ease-out; }
+  #tugTxt { text-align: center; font-weight: 800; font-size: clamp(9px, 1.2vh, 14px); margin-top: .2vh; text-shadow: var(--outs); min-height: 1.1em; }
+  .trow { display: flex; gap: .8vh; margin-top: .4vh; }
+  .trow > div { flex: 1; display: flex; flex-wrap: wrap; gap: .4vh; align-items: center; min-width: 0; }
   .trow > div.r { justify-content: flex-end; }
-  .tstars .st svg { width: clamp(22px, 3.6vh, 38px); }
+  .tstars .st svg { width: clamp(18px, 2.6vh, 30px); }
   .tstars .st span { display: none; }
-  .tpanel { display: flex !important; flex-direction: column; align-items: stretch !important; gap: .4vh !important; flex-wrap: nowrap !important; padding: .4vh .8vh; border-radius: 12px; background: linear-gradient(rgba(64, 41, 90, .92), rgba(36, 21, 58, .92)); border: 2px solid var(--deep); border-top: 4px solid var(--tc); box-shadow: 0 3px 0 rgba(0,0,0,.35); }
+  .tpanel { display: flex !important; flex-direction: column; align-items: stretch !important; gap: .2vh !important; flex-wrap: nowrap !important; padding: .2vh .6vh; border-radius: 8px; background: linear-gradient(rgba(64, 41, 90, .92), rgba(36, 21, 58, .92)); border: 1.5px solid var(--deep); border-top: 3px solid var(--tc); box-shadow: 0 2px 0 rgba(0,0,0,.35); }
   .tpanel.blue { --tc: #4aa6ff; } .tpanel.red { --tc: #ff6060; }
-  .tcount { font-size: clamp(12px, 1.8vh, 19px); font-weight: 800; text-shadow: var(--out); }
-  .mini { position: relative; height: clamp(14px, 2.2vh, 24px); border-radius: 999px; overflow: hidden; background: #150a22; border: 2px solid var(--deep); }
+  .tcount { font-size: clamp(10px, 1.4vh, 15px); font-weight: 800; text-shadow: var(--outs); }
+  .mini { position: relative; height: clamp(12px, 1.8vh, 18px); border-radius: 999px; overflow: hidden; background: #150a22; border: 1.5px solid var(--deep); }
   .mini .fill { left: 0; }
   .mini.fund .fill { background: linear-gradient(90deg, #d8961a, #ffe27a); }
   .mini.mor .fill { background: linear-gradient(90deg, #d0428a, #ff9ad0); }
   .mini.mor.on .fill { background: linear-gradient(90deg, #ffb020, #fff08a); }
-  .mini span { position: absolute; inset: 0; display: grid; place-items: center; font-size: clamp(9px, 1.4vh, 14px); font-weight: 800; text-shadow: var(--out); z-index: 3; white-space: nowrap; }
-  #tHint { text-align: center; margin-top: .8vh; font-size: clamp(11px, 1.7vh, 18px); opacity: .92; text-shadow: var(--out); }
+  .mini span { position: absolute; inset: 0; display: grid; place-items: center; font-size: clamp(8px, 1.1vh, 12px); font-weight: 800; text-shadow: var(--outs); z-index: 3; white-space: nowrap; }
+  #tHint { text-align: center; margin-top: .4vh; font-size: clamp(9px, 1.2vh, 14px); opacity: .9; text-shadow: var(--outs); }
 
-  #guide { position: fixed; right: 2.5vw; bottom: 20vh; width: min(30vw, 320px); padding: .45em .8em; border-radius: 14px; font-size: clamp(11px, 1.8vh, 18px); line-height: 1.25; opacity: 0; transition: opacity .5s; pointer-events: none;
-    background: linear-gradient(rgba(64, 41, 90, .92), rgba(36, 21, 58, .92)); border: 2px solid var(--rim); box-shadow: 0 3px 0 rgba(0,0,0,.4); text-shadow: var(--out); }
+  #guide { position: fixed; right: 2vw; bottom: 18vh; width: min(26vw, 280px); padding: .35em .7em; border-radius: 10px; font-size: clamp(10px, 1.4vh, 15px); line-height: 1.2; opacity: 0; transition: opacity .5s; pointer-events: none;
+    background: linear-gradient(rgba(64, 41, 90, .92), rgba(36, 21, 58, .92)); border: 1.5px solid var(--rim); box-shadow: 0 2px 0 rgba(0,0,0,.4); text-shadow: var(--outs); }
   #guide.show { opacity: 1; }
   #guide b { color: var(--gold); }
-  #demoTag { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(var(--safeBottom, 16vh) + 21vh); padding: .25em 1em; border-radius: 999px; font-size: clamp(11px, 1.8vh, 18px); font-weight: 800; white-space: nowrap; pointer-events: none;
-    background: linear-gradient(rgba(64, 41, 90, .88), rgba(36, 21, 58, .88)); border: 2px solid var(--gold); color: var(--gold); text-shadow: var(--out); }
+  #demoTag { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(var(--safeBottom, 16vh) + 21vh); padding: .2em .8em; border-radius: 999px; font-size: clamp(10px, 1.4vh, 15px); font-weight: 800; white-space: nowrap; pointer-events: none;
+    background: linear-gradient(rgba(64, 41, 90, .88), rgba(36, 21, 58, .88)); border: 1.5px solid var(--gold); color: var(--gold); text-shadow: var(--outs); }
   .calm .fill::after, .calm .ev, .calm .st.on svg, .calm #tPhase.ot, .calm #tTimer.low, .calm #timer.low { animation: none !important; }
   .calm #banner.show { animation: bannerCalm 2.4s ease-out; }
   @keyframes bannerCalm { 0% { opacity: 0; } 10% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; } }
@@ -197,17 +197,13 @@
   @keyframes epicPopCalm { 0% { opacity: 0; transform: translate(-50%, -50%) scale(.85); } 10% { opacity: 1; transform: translate(-50%, -50%) scale(1); } 84% { opacity: 1; } 100% { opacity: 0; } }
   /* chữ nhỏ dùng viền mảnh để không bị dính và khó đọc */
   .tcount, .mini span, #tHint, #tugTxt, .st span, .badge, .ev .t div + div, #guide, #demoTag { text-shadow: var(--outs); }
-  #tugTxt { margin-top: 1.1vh; }
-  .mini { height: clamp(16px, 2.6vh, 26px); }
-  .mini span { font-size: clamp(10px, 1.6vh, 15px); }
-  .tcount { font-size: clamp(12px, 1.9vh, 20px); }
   #conn { position: fixed; left: 8px; bottom: 8px; padding: .2em .8em; border-radius: 8px; background: rgba(120, 20, 30, .9); font-size: 13px; }
 
   /* ---------- Cột số lượng lính theo loại (chế độ Đội): tổng lính mỗi loại đã tặng trong trận ---------- */
-  .tty { display: none; position: fixed; top: 20%; flex-direction: column; gap: .6vh; z-index: 5; pointer-events: none; max-height: 38vh; overflow: hidden; }
-  .tty .row { display: flex; align-items: center; gap: .4em; padding: .15em .7em .15em .3em; border-radius: 999px; font-weight: 800; font-size: clamp(10px, 1.6vh, 15px);
-    background: linear-gradient(#3d2a55, #241537); border: 2px solid var(--deep); box-shadow: inset 0 1px 0 rgba(255,255,255,.14), 0 2px 0 rgba(0,0,0,.35); text-shadow: var(--outs); white-space: nowrap; }
-  .tty .dot { width: 1.3em; height: 1.3em; border-radius: 50%; background: var(--c); border: 2px solid rgba(255,255,255,.5); flex: none; }
+  .tty { display: none; position: fixed; top: 20%; flex-direction: column; gap: .4vh; z-index: 5; pointer-events: none; max-height: 32vh; overflow: hidden; }
+  .tty .row { display: flex; align-items: center; gap: .3em; padding: .1em .5em .1em .25em; border-radius: 999px; font-weight: 800; font-size: clamp(9px, 1.3vh, 13px);
+    background: linear-gradient(#3d2a55, #241537); border: 1.5px solid var(--deep); box-shadow: inset 0 1px 0 rgba(255,255,255,.14), 0 2px 0 rgba(0,0,0,.35); text-shadow: var(--outs); white-space: nowrap; }
+  .tty .dot { width: 1.1em; height: 1.1em; border-radius: 50%; background: var(--c); border: 1.5px solid rgba(255,255,255,.5); flex: none; }
   .tty b { color: var(--gold); }
   #ttyBlue { left: 1.5vw; }
   #ttyRed { right: var(--safeRight, 13vw); }
@@ -216,35 +212,47 @@
   /* ---------- Khung dọc 9:16 (live điện thoại): chữ theo vw, tránh vùng giao diện TikTok ---------- */
   @media (max-aspect-ratio: 124/100) {
     /* TikTok đặt cột nút tim/bình luận/chia sẻ/quà dọc theo mép phải -> HUD lệch trái, chừa mép phải trống thay vì căn giữa sát 2 mép */
-    #hud, #hudT { top: var(--safeTop, 9vh); left: 2.5vw; right: var(--safeRight, 13vw); width: auto; transform: none; }
+    #hud, #hudT { top: var(--safeTop, 8vh); left: 2vw; right: var(--safeRight, 12vw); width: auto; transform: none; }
     .tty.show { display: flex; }
-    .tty .row { font-size: 3vw; } .tty .dot { width: 4vw; height: 4vw; }
-    .meta { line-height: 1.15; }
-    #lvl { font-size: 4.2vw; } #timer { font-size: 5.2vw; } #tScore { font-size: 3.4vw; } #tPhase { font-size: 3vw; }
-    .bar { height: 7vw; } #pText { font-size: 3.8vw; }
-    .st svg { width: 8vw; } .st span { font-size: 2.5vw; }
-    .tb { height: 6.6vw; } .tb span { font-size: 3.4vw; }
-    .tstars .st svg { width: 5.2vw; }
-    .tcount { font-size: 3vw; } .mini { height: 3.2vw; } .mini span { font-size: 2.3vw; } #tHint { font-size: 2.6vw; } #tugTxt { font-size: 2.8vw; } #tug { height: 2.4vw; }
-    .chip { font-size: 3.2vw; max-width: 44vw; } .badge { font-size: 3vw; }
-    #feed { left: 2.5vw; width: 58vw; bottom: calc(var(--safeBottom, 16vh) + 1vh); }
-    #demoTag { font-size: 2.8vw; }
+    .tty .row { font-size: 2.5vw; } .tty .dot { width: 3.2vw; height: 3.2vw; }
+    .meta { line-height: 1.1; margin-bottom: .3vh; }
+    #lvl { font-size: 3.4vw; } #timer { font-size: 4.2vw; } #tScore { font-size: 2.8vw; } #tPhase { font-size: 2.5vw; }
+    .bar { height: 5.2vw; } #pText { font-size: 3vw; }
+    .st svg { width: 5.6vw; } .st span { font-size: 2.2vw; }
+    .tb { height: 4.8vw; } .tb span { font-size: 2.8vw; }
+    .tstars .st svg { width: 4.2vw; }
+    .tcount { font-size: 2.5vw; } .mini { height: 2.6vw; } .mini span { font-size: 2vw; } #tHint { font-size: 2.2vw; } #tugTxt { font-size: 2.3vw; } #tug { height: 1.8vw; }
+    .chip { font-size: 2.6vw; max-width: 40vw; } .badge { font-size: 2.4vw; }
+    #feed { left: 2vw; width: 54vw; bottom: calc(var(--safeBottom, 16vh) + 1vh); }
+    #demoTag { font-size: 2.4vw; }
     /* Giữa màn hình, tránh cả bình luận (trái) lẫn cột nút TikTok (phải) */
-    #guide { left: 50%; right: auto; transform: translateX(-50%); width: 72vw; bottom: calc(var(--safeBottom, 16vh) + 1vh); font-size: 2.6vw; text-align: center; }
-    .ev { font-size: 3.3vw; }
-    #banner { font-size: 11vw; top: 38vh; } #banner.small { font-size: 7vw; }
-    #result h1 { font-size: 9vw; } #result h2 { font-size: 4vw; } #result .sub { font-size: 3.6vw; } #result p { font-size: 3.4vw; }
-    #result ol { font-size: 3.6vw; width: 88vw; }
-    #result .rs .st svg { width: 12vw; }
-    .tcolr h3 { font-size: 4vw; } .tpct { font-size: 7vw; } .tcolr ol { font-size: 3vw !important; } .tcolr .rs .st svg { width: 8vw; } .tcolr .mv { font-size: 2.7vw; }
-    #conn { font-size: 3vw; }
+    #guide { left: 50%; right: auto; transform: translateX(-50%); width: 68vw; bottom: calc(var(--safeBottom, 16vh) + 1vh); font-size: 2.3vw; text-align: center; }
+    .ev { font-size: 2.8vw; }
+    #banner { font-size: 9.5vw; top: 36vh; } #banner.small { font-size: 6vw; }
+    #result h1 { font-size: 8.5vw; } #result h2 { font-size: 3.8vw; } #result .sub { font-size: 3.4vw; } #result p { font-size: 3vw; }
+    #result ol { font-size: 3.2vw; width: 88vw; }
+    #result .rs .st svg { width: 10vw; }
+    .tcolr h3 { font-size: 3.6vw; } .tpct { font-size: 6vw; } .tcolr ol { font-size: 2.8vw !important; } .tcolr .rs .st svg { width: 7vw; } .tcolr .mv { font-size: 2.4vw; }
+    #conn { font-size: 2.8vw; }
   }
   @media (min-aspect-ratio: 5/4) {
-    #hud, #hudT { left: 2vw; transform: none; width: min(32vw, 560px); top: 2vh; }
-    #feed { left: auto; right: 1.5vw; bottom: 5vh; width: min(21vw, 400px); }
-    #demoTag { left: 2vw; transform: none; bottom: 10vh; }
-    #guide { right: auto; left: 2vw; bottom: 3vh; width: min(30vw, 420px); }
+    #hud, #hudT { left: 1.5vw; transform: none; width: min(25vw, 360px); top: 1.2vh; }
+    #hud .meta { margin-bottom: .3vh; }
+    #hud #lvl { font-size: clamp(12px, 1.8vh, 18px); padding: .02em .6em; }
+    #hud #timer { font-size: clamp(13px, 2.1vh, 22px); padding: 0 .6em; }
+    #hud .bar { height: clamp(18px, 2.6vh, 28px); }
+    #hud #pText { font-size: clamp(11px, 1.6vh, 17px); }
+    #hud #stars { margin-top: .4vh; gap: 1vh; }
+    #hud .st svg { width: clamp(18px, 2.8vh, 30px); }
+    #hud #top { margin-top: .4vh; }
+    #feed { left: auto; right: 1.5vw; bottom: 3vh; width: min(19vw, 320px); }
+    #demoTag { left: 1.5vw; transform: none; bottom: 6vh; }
+    #guide { right: auto; left: 1.5vw; bottom: 1.5vh; width: min(25vw, 340px); }
   }
+  #modeBtn { position: fixed; top: 1.5vh; right: 1.5vw; z-index: 50; padding: .35em .9em; border-radius: 999px; font-weight: 800; font-size: clamp(12px, 1.8vh, 16px);
+    background: linear-gradient(#4a2b6e, #26133f); border: 2px solid var(--rim); color: var(--gold); box-shadow: 0 3px 0 rgba(0,0,0,.4); cursor: pointer; text-shadow: var(--outs); transition: transform .15s; }
+  #modeBtn:hover { transform: scale(1.05); }
+  #modeBtn:active { transform: scale(.95); }
   @media (prefers-reduced-motion: reduce) { .ev, .st.on svg, #result, #banner.show, #epicCard.show, .fill::after, #tTimer.low, #timer.low, #tPhase.ot { animation: none; } }
 </style>
 <link rel="stylesheet" href="/assets/theme.css">
@@ -255,6 +263,7 @@
   <linearGradient id="gStarOff" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a3560"/><stop offset="1" stop-color="#2a1a3c"/></linearGradient>
 </defs></svg>
 <canvas id="cv"></canvas>
+<button id="modeBtn" title="Phím tắt: P">Chế độ: Đơn (Solo)</button>
 
 <div id="hud">
   <div class="meta"><span id="lvl">Cấp 1</span><span id="timer">3:00</span></div>
@@ -450,20 +459,20 @@
     if (!W || !H) return; // chưa có kích thước hợp lệ (đang chờ resize() gọi lại)
     const team = mode === 'team';
     const demoTag = $('demoTag');
-    if (W / H >= 1.25) { // màn ngang: HUD nằm cột trái, sàn đấu dùng gần hết chiều cao
-      k = Math.min(W * .62 / arena.w, H * .92 / arena.h);
-      AWk = arena.w * k; ax = W * .58 - AWk / 2; ay = H * .5 - arena.h * k / 2;
+    if (W / H >= 1.25) { // màn ngang: HUD và Chat đặt ở 2 bên mép, bản đồ tràn rộng tối đa không để khoảng trống vô ích
+      const availW = Math.max(W * .75, W - 280); // tận dụng tối đa chiều ngang
+      k = Math.min(availW / arena.w, H * .96 / arena.h);
+      AWk = arena.w * k; ax = (W * .52) - AWk / 2; ay = H * .5 - arena.h * k / 2;
       demoTag.style.top = ''; demoTag.style.bottom = ''; demoTag.style.transform = '';
-    } else { // màn dọc (live điện thoại 9:16): khớp phần NỘI DUNG căn cứ vào khoảng giữa HUD và vùng an toàn phía dưới
+    } else { // màn dọc (live điện thoại 9:16): mở rộng sàn chiến trường tối đa, giảm khoảng đệm thừa
       const hudEl = $(team ? 'hudT' : 'hud'), hudH = hudEl ? hudEl.getBoundingClientRect().height : 0;
-      const guess = H * (SAFE_TOP / 100 + (team ? .27 : .22));
-      const top = Math.max(guess, H * (SAFE_TOP / 100) + hudH + H * .015), bottom = H * (1 - SAFE_BOTTOM / 100);
-      const hw = PLAZA_R + 8, c0 = arena.cy - (PLAZA_R + 4), c1 = (team ? arena.h - arena.cy : arena.cy) + (PLAZA_R + 4);
-      k = Math.max(0.1, Math.min(W * .94 / (2 * hw), (bottom - top) / (c1 - c0))); // căn cứ hiển thị to rõ, không bị thu nhỏ lệch góc
+      const top = Math.max(H * 0.04, H * (SAFE_TOP / 100) + hudH + 4), bottom = H * (1 - (SAFE_BOTTOM * 0.6) / 100);
+      const hw = (arena.w * 0.49), c0 = arena.cy - (PLAZA_R + 1), c1 = (team ? arena.h - arena.cy : arena.cy) + (PLAZA_R + 1);
+      k = Math.max(0.1, Math.min(W * 1.0 / (2 * hw), (bottom - top) / (c1 - c0))); // mở rộng trọn vẹn cả 2 căn cứ chéo góc
       ax = W / 2 - arena.cx * k; ay = top + ((bottom - top) - (c1 - c0) * k) / 2 - c0 * k; AWk = arena.w * k;
       if (team) { // 2 thành trì xếp dọc cân đối: đặt banner trình diễn đúng khe hở giữa hai sàn
         demoTag.style.top = (ay + arena.h / 2 * k) + 'px'; demoTag.style.bottom = 'auto'; demoTag.style.transform = 'translate(-50%, -50%)';
-        const tyY = top + (bottom - top) * .15; $('ttyBlue').style.top = tyY + 'px'; $('ttyRed').style.top = tyY + 'px';
+        const tyY = top + (bottom - top) * .12; $('ttyBlue').style.top = tyY + 'px'; $('ttyRed').style.top = tyY + 'px';
       } else { demoTag.style.top = ''; demoTag.style.bottom = ''; demoTag.style.transform = ''; }
     }
     // Thẻ "quà khủng": căn giữa theo SÀN ĐẤU, không phải theo cả trang
@@ -539,29 +548,28 @@
   const ownBase = (t) => (t === 'atk' ? 'def' : t);
 
   function groundRect() {
-    const team = mode === 'team';
-    // màn dọc (live điện thoại): nền phủ kín toàn bộ màn hình luôn, không chỉ vùng sàn đấu, để không lộ ra khoảng trong suốt
-    if (W / H < 1.25) return { x0: -ax / k - 9, x1: (W - ax) / k + 9, y0: -ay / k - 9, y1: (H - ay) / k + 9 };
-    const y0 = team ? -4 : 4, y1 = team ? arena.h + 4 : 104;
-    return { x0: -8, y0, x1: 108, y1 };
+    // Luôn phủ kín toàn bộ màn hình hoặc rộng ra 2 bên để không bị khoảng trống vô ích
+    return { x0: -ax / k - 12, x1: (W - ax) / k + 12, y0: -ay / k - 12, y1: (H - ay) / k + 12 };
   }
-  // Đảo chiến trường chuẩn Clash of Clans: thảm cỏ chữ nhật bo góc, viền rừng cây xung quanh
+  // Đảo chiến trường chuẩn Clash of Clans: thảm cỏ chữ nhật bo góc, tràn ra 2 bên
   function mapRect() {
     const team = mode === 'team';
     const cx = arena.cx, cy = team ? arena.h / 2 : arena.cy;
-    const w = team ? 80 : 82, h = team ? (arena.h - 10) : 82;
+    // Mở rộng bề ngang để đảo chiến trường tràn đầy sang 2 bên
+    const w = team ? 88 : 94, h = team ? (arena.h - 8) : 88;
     return { cx, cy, w, h, x0: cx - w / 2, x1: cx + w / 2, y0: cy - h / 2, y1: cy + h / 2 };
   }
   const inMap = (x, y, M) => x >= M.x0 && x <= M.x1 && y >= M.y0 && y <= M.y1;
 
   function buildDecor() { // cây, đá, cỏ, hoa: đặt cố định theo hạt giống để mỗi ván có bố cục quen thuộc
     const rnd = mulberry(4321 + Math.round(arena.h)), G = groundRect(), team = mode === 'team', M = mapRect();
+    const bx = arena.bx != null ? arena.bx : (arena.w * 0.16);
     const free = (x, y) => {
-      if (!team) return Math.hypot(x - arena.cx, y - arena.cy) > PLAZA_R + 2 && Math.abs(x - arena.cx) > 7;
-      const p1y = arena.cy, p2y = arena.h - arena.cy;
-      return Math.hypot(x - arena.cx, y - p1y) > PLAZA_R + 2 &&
-             Math.hypot(x - arena.cx, y - p2y) > PLAZA_R + 2 &&
-             Math.abs(x - arena.cx) > 8; // chừa trục đường nối 2 căn cứ ở giữa
+      if (!team) return Math.hypot(x - arena.cx, y - arena.cy) > PLAZA_R + 2;
+      const p1x = arena.cx - bx, p1y = arena.cy;
+      const p2x = arena.cx + bx, p2y = arena.h - arena.cy;
+      return Math.hypot(x - p1x, y - p1y) > PLAZA_R + 2 &&
+             Math.hypot(x - p2x, y - p2y) > PLAZA_R + 2;
     };
     decor = [];
     // want: 'in' = nằm trên thảm cỏ chiến trường, 'out' = nằm ngoài (rừng cây bao bọc bản đồ)
@@ -731,83 +739,57 @@
 
   /* ================== Vẽ nền chiến trường ================== */
   const BS = () => (mode === 'team' ? 1.3 : 1.22); // hệ số phóng to công trình
-  const PLAZAS = () => (mode === 'team' ? [{ x: arena.cx - (arena.bx || 0), y: arena.cy, r: PLAZA_R, t: 'blue' }, { x: arena.cx + (arena.bx || 0), y: arena.h - arena.cy, r: PLAZA_R, t: 'red' }] : [{ x: arena.cx, y: arena.cy, r: PLAZA_R, t: null }]);
-
-  function plaza(cx, cy, rad, team) { // Thành trì vuông vắn chuẩn Clash of Clans lát đá cobble, tường thành đá kiên cố bao quanh
-    const x = PX(cx), y = PY(cy), W_ = rad * 1.88 * k, H_ = rad * 1.88 * k, r = 8 * k;
-    const x0 = x - W_ / 2, y0 = y - H_ / 2;
-    // Bóng đổ nền thành
-    ctx.fillStyle = 'rgba(12, 35, 12, .45)';
-    rr(x0 + 2, y0 + 6, W_, H_, r); ctx.fill();
-    // Nền sân đá
-    ctx.fillStyle = '#8f8068';
-    rr(x0, y0, W_, H_, r); ctx.fill();
-    const cPat = tilePattern('cobble');
-    if (cPat) {
-      ctx.fillStyle = cPat; rr(x0, y0, W_, H_, r); ctx.fill();
-      ctx.strokeStyle = 'rgba(30,20,10,.35)'; ctx.lineWidth = Math.max(2, k * .5);
-      rr(x0 + 2, y0 + 2, W_ - 4, H_ - 4, r - 1); ctx.stroke();
-    } else {
-      ctx.fillStyle = lgr(x0, y0, x0, y0 + H_, [[0, '#d8caa6'], [1, '#9e8f70']]);
-      rr(x0, y0, W_, H_, r); ctx.fill();
-    }
-    // Quầng sáng trên sân thành
-    ctx.fillStyle = rgr(x, y, 0, W_ * .75, [[0, 'rgba(255,250,220,.22)'], [1, 'rgba(255,250,220,0)']]);
-    rr(x0, y0, W_, H_, r); ctx.fill();
-    // Tường thành đá bao quanh căn cứ
-    const wallThick = Math.max(3.5, k * .9);
-    ctx.strokeStyle = '#5a4c38'; ctx.lineWidth = wallThick + 2;
-    rr(x0, y0, W_, H_, r); ctx.stroke();
-    ctx.strokeStyle = team ? TC(team) : '#dfd2b5'; ctx.lineWidth = wallThick;
-    rr(x0, y0, W_, H_, r); ctx.stroke();
-    // 4 góc thành trì (tháp góc kiên cố pháo đài CoC)
-    const corners = [[x0, y0], [x0 + W_, y0], [x0 + W_, y0 + H_], [x0, y0 + H_]];
-    const bR = Math.max(4, k * 1.4);
-    for (const [bx, by] of corners) {
-      circle(bx, by, bR + 1.5); FS('#3a2c1e', 1.5);
-      circle(bx, by, bR); FS(team ? TC(team) : '#dfd2b5', 1.5);
-      circle(bx, by, bR * .45); FS('#ffe27a', 1);
-    }
-  }
 
   function paintGround(t = 0) {
     if (!GROUND_ON) return;
     const G = groundRect(), x0 = PX(G.x0), y0 = PY(G.y0), x1 = PX(G.x1), y1 = PY(G.y1), w = x1 - x0, h = y1 - y0, rad = k * 7, team = mode === 'team', rnd = mulberry(99);
     // Rừng cây nền phủ kín xung quanh
     ctx.fillStyle = 'rgba(8,4,16,.4)'; rr(x0 + 2, y0 + 10, w, h, rad); ctx.fill();
-    ctx.fillStyle = lgr(0, y0, 0, y1, [[0, '#2f5c26'], [.5, '#264d1f'], [1, '#1d3f18']]); rr(x0, y0, w, h, rad); ctx.fill();
+    ctx.fillStyle = lgr(0, y0, 0, y1, [[0, '#264d1f'], [.5, '#1e3e19'], [1, '#152e12']]); rr(x0, y0, w, h, rad); ctx.fill();
     const M = mapRect(), dx = PX(M.cx), dy = PY(M.cy);
     const mW = M.w * k, mH = M.h * k, mx0 = dx - mW / 2, my0 = dy - mH / 2, mRad = 10 * k;
-    // Đảo cỏ chữ nhật bo góc chuẩn Clash of Clans
+    // Đảo cỏ chiến trường Clash of Clans
     ctx.save(); rr(mx0, my0, mW, mH, mRad); ctx.clip();
-    ctx.fillStyle = lgr(0, my0, 0, my0 + mH, [[0, '#86d656'], [.5, '#62c042'], [1, '#4aa935']]); ctx.fillRect(mx0, my0, mW, mH);
-    const chk = checkerPattern(); if (chk) { ctx.fillStyle = chk; ctx.fillRect(mx0, my0, mW, mH); }
-    const gPat = tilePattern('grass'); if (gPat) { ctx.globalAlpha = .45; ctx.fillStyle = gPat; ctx.fillRect(mx0, my0, mW, mH); ctx.globalAlpha = 1; }
+    ctx.fillStyle = lgr(0, my0, 0, my0 + mH, [[0, '#66b840'], [.5, '#529e32'], [1, '#3e8024']]); ctx.fillRect(mx0, my0, mW, mH);
+    
+    // Lưới ô vuông quả trám phối cảnh isometric nghiêng 2.5D đặc trưng Clash of Clans phủ toàn bản đồ
+    const isoStep = 5.6 * k; // bước lưới nghiêng
+    const isoSlope = 0.56;   // góc nghiêng phối cảnh 2.5D chuẩn Clash of Clans
+    ctx.lineWidth = Math.max(1, k * .14);
+
+    // Đường nghiêng xuống bên phải (\)
+    const startC1 = my0 - (mx0 + mW) * isoSlope - isoStep * 4;
+    const endC1 = (my0 + mH) - mx0 * isoSlope + isoStep * 4;
+    for (let c = startC1, idx = 0; c <= endC1; c += isoStep, idx++) {
+      ctx.strokeStyle = (idx % 2 === 0) ? 'rgba(255, 255, 255, 0.058)' : 'rgba(0, 0, 0, 0.05)';
+      ctx.beginPath();
+      ctx.moveTo(mx0 - 10, c + (mx0 - 10) * isoSlope);
+      ctx.lineTo(mx0 + mW + 10, c + (mx0 + mW + 10) * isoSlope);
+      ctx.stroke();
+    }
+
+    // Đường nghiêng xuống bên trái (/)
+    const startC2 = my0 + mx0 * isoSlope - isoStep * 4;
+    const endC2 = (my0 + mH) + (mx0 + mW) * isoSlope + isoStep * 4;
+    for (let c = startC2, idx = 0; c <= endC2; c += isoStep, idx++) {
+      ctx.strokeStyle = (idx % 2 === 0) ? 'rgba(255, 255, 255, 0.058)' : 'rgba(0, 0, 0, 0.05)';
+      ctx.beginPath();
+      ctx.moveTo(mx0 - 10, c - (mx0 - 10) * isoSlope);
+      ctx.lineTo(mx0 + mW + 10, c - (mx0 + mW + 10) * isoSlope);
+      ctx.stroke();
+    }
+
+    const gPat = tilePattern('grass'); if (gPat) { ctx.globalAlpha = .35; ctx.fillStyle = gPat; ctx.fillRect(mx0, my0, mW, mH); ctx.globalAlpha = 1; }
     for (let i = 0; i < 46; i++) {
       const bx = mx0 + rnd() * mW, by = my0 + rnd() * mH, rx = k * (3 + rnd() * 5), dark = rnd() < .55;
       ctx.save(); ctx.translate(bx, by); ctx.scale(1, .55); ctx.fillStyle = rgr(0, 0, 0, rx, [[0, dark ? 'rgba(20,90,20,.16)' : 'rgba(210,255,130,.16)'], [1, 'rgba(0,0,0,0)']]); circle(0, 0, rx); ctx.fill(); ctx.restore();
     }
-    ctx.fillStyle = rgr(dx - mW * .2, dy - mH * .2, 0, mW * 1.2, [[0, 'rgba(255,244,190,.28)'], [1, 'rgba(255,244,190,0)']]); ctx.fillRect(mx0, my0, mW, mH);
+    ctx.fillStyle = rgr(dx - mW * .2, dy - mH * .2, 0, mW * 1.2, [[0, 'rgba(255,244,190,.22)'], [1, 'rgba(255,244,190,0)']]); ctx.fillRect(mx0, my0, mW, mH);
     ctx.fillStyle = rgr(dx, dy, mW * .3, mW * .9, [[0, 'rgba(10,50,10,0)'], [1, 'rgba(10,50,10,.32)']]); ctx.fillRect(mx0, my0, mW, mH);
-    if (team) { ctx.fillStyle = lgr(0, y0, 0, y1, [[0, 'rgba(50,130,255,.34)'], [.42, 'rgba(50,130,255,0)'], [.58, 'rgba(255,70,70,0)'], [1, 'rgba(255,70,70,.34)']]); ctx.fillRect(mx0, my0, mW, mH); }
+    // Ánh sáng màu đội tỏa xéo góc theo 2 căn cứ: Xanh góc trên-trái, Đỏ góc dưới-phải
+    if (team) { ctx.fillStyle = lgr(mx0, my0, mx0 + mW, my0 + mH, [[0, 'rgba(50,130,255,.26)'], [.38, 'rgba(50,130,255,0)'], [.62, 'rgba(255,70,70,0)'], [1, 'rgba(255,70,70,.26)']]); ctx.fillRect(mx0, my0, mW, mH); }
     ctx.restore();
-    // Đường mòn nối giữa các căn cứ
-    if (team) { // Trục đường thẳng đứng nối 2 căn cứ xuyên qua đấu trường trung tâm
-      const sx = PX(arena.cx), sy = PY(0), ex = PX(arena.cx), ey = PY(arena.h);
-      ctx.save(); ctx.lineCap = 'round';
-      ctx.strokeStyle = '#a8864c'; ctx.lineWidth = 14 * k; ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(ex, ey); ctx.stroke();
-      const dPat = tilePattern('dirt'); ctx.strokeStyle = dPat || lgr(sx - 7 * k, 0, sx + 7 * k, 0, [[0, '#cfae74'], [.5, '#e4c994'], [1, '#cfae74']]);
-      ctx.lineWidth = 12 * k; ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(ex, ey); ctx.stroke();
-      ctx.fillStyle = 'rgba(120,90,50,.18)';
-      for (let i = 0; i < 70; i++) { const f = rnd(), px2 = sx + (rnd() - .5) * 8 * k, py2 = sy + (ey - sy) * f; circle(px2, py2, k * (.2 + rnd() * .35)); ctx.fill(); }
-      ctx.restore();
-    } else {
-      const road = (x, y, ww, hh) => { ctx.fillStyle = '#a8864c'; rr(x - k * .5, y - k * .5, ww + k, hh + k, k * 3.2); ctx.fill(); ctx.fillStyle = tilePattern('dirt') || lgr(x, y, x + ww, y + hh, [[0, '#dcc08a'], [1, '#c9aa72']]); rr(x, y, ww, hh, k * 3); ctx.fill(); };
-      road(PX(arena.cx) - 5 * k, PY(arena.cy), 10 * k, (G.y1 - arena.cy) * k);
-      road(Math.max(x0 + rad * .3, -k * 4), PY(arena.cy + 8) - 4 * k, PX(arena.cx) - Math.max(x0 + rad * .3, -k * 4), 8 * k);
-      road(PX(arena.cx), PY(arena.cy + 8) - 4 * k, Math.min(x1 - rad * .3, W + k * 4) - PX(arena.cx), 8 * k);
-    }
-    for (const p of PLAZAS()) plaza(p.x, p.y, p.r, p.t);
+
     for (const d of decor) {
       if (d.t === 'tuft') { const x = PX(d.x), y = PY(d.y), s = d.s * k * .6; ctx.strokeStyle = '#3f8f2f'; ctx.lineWidth = Math.max(1.5, k * .2); ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(x - s * .5, y); ctx.lineTo(x - s * .9, y - s); ctx.moveTo(x, y); ctx.lineTo(x, y - s * 1.35); ctx.moveTo(x + s * .5, y); ctx.lineTo(x + s * .9, y - s); ctx.stroke(); }
       else if (d.t === 'flower') { const x = PX(d.x), y = PY(d.y), s = d.s * k * .34; ctx.strokeStyle = '#3f8f2f'; ctx.lineWidth = Math.max(1.2, k * .16); ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x, y + s * 1.6); ctx.stroke(); ctx.fillStyle = ['#ffffff', '#ffd23a', '#ff8fc8', '#8fd8ff'][Math.floor(d.v * 4)]; for (let i = 0; i < 5; i++) { circle(x + Math.cos(i * 1.256) * s, y + Math.sin(i * 1.256) * s, s * .72); ctx.fill(); } ctx.fillStyle = '#e8842a'; circle(x, y, s * .6); ctx.fill(); }
@@ -837,14 +819,6 @@
     for (let i = 0; i < 4; i++) { // bóng mây trôi trên mặt đất
       const span = G.x1 - G.x0 + 90, wx = G.x0 - 45 + ((t * .0016 * (.7 + i * .25) + i * 61) % span), wy = G.y0 + (i * .27 + .12) * (G.y1 - G.y0), rx = k * (17 + i * 3);
       ctx.save(); ctx.translate(PX(wx), PY(wy)); ctx.scale(1, .55); ctx.fillStyle = rgr(0, 0, 0, rx, [[0, 'rgba(8,30,8,.16)'], [1, 'rgba(8,30,8,0)']]); circle(0, 0, rx); ctx.fill(); ctx.restore();
-    }
-    for (const p of PLAZAS()) { // Đuốc đặt tại 4 góc pháo đài
-      const px = PX(p.x), py = PY(p.y), W_ = p.r * 1.88 * k, H_ = p.r * 1.88 * k;
-      const x0 = px - W_ / 2, y0 = py - H_ / 2;
-      torch(x0, y0, t, 0);
-      torch(x0 + W_, y0, t, 1);
-      torch(x0 + W_, y0 + H_, t, 2);
-      torch(x0, y0 + H_, t, 3);
     }
   }
   function drawButterflies(t) {
@@ -913,10 +887,82 @@
   ];
 
   function plinth(R, b) {
-    ctx.fillStyle = 'rgba(0,0,0,.3)'; ell(R * .18, R * .74, R * 1.32, R * .55); ctx.fill();
-    ell(0, R * .58, R * 1.22, R * .5); FS(lgr(0, R * .1, 0, R * 1.05, [[0, '#dfd3bb'], [1, '#a2927a']]), Math.max(1.8, R * .06));
-    ctx.strokeStyle = 'rgba(80,64,44,.4)'; ctx.lineWidth = 1.2; ell(0, R * .58, R * .95, R * .38); ctx.stroke();
-    if (mode === 'team' && b.team !== 'def') { ctx.strokeStyle = TC(b.team); ctx.lineWidth = Math.max(2.5, R * .1); ctx.globalAlpha = .9; ell(0, R * .58, R * 1.08, R * .44); ctx.stroke(); ctx.globalAlpha = 1; }
+    // Mỗi công trình được đặt trên nền các ô vuông chuẩn lưới Clash of Clans tương ứng kích thước công trình
+    const n = (b.type === 'townHall') ? 4 : (b.radius >= 4 ? 3 : 2); // số ô lưới (2x2, 3x3, 4x4)
+    const tw = (R * 2.3) / n; // độ rộng mỗi ô vuông theo trục X
+    const th = tw * 0.54;     // độ cao mỗi ô vuông theo trục Y tạo góc nghiêng 3D isometric
+    const halfW = (n * tw) / 2, halfH = (n * th) / 2;
+    const baseY = R * 0.48;   // đặt ở chân móng công trình
+    const teamCol = (mode === 'team' && b.team !== 'def') ? TC(b.team) : null;
+
+    ctx.save();
+    // 1. Bóng đổ nghiêng 3D của cả khối móng công trình
+    ctx.fillStyle = 'rgba(10, 26, 12, 0.42)';
+    ctx.beginPath();
+    ctx.moveTo(-halfW + 4, baseY - halfH + 7);
+    ctx.lineTo(halfW + 8, baseY - halfH + 7);
+    ctx.lineTo(halfW + 8, baseY + halfH + 8);
+    ctx.lineTo(-halfW + 4, baseY + halfH + 8);
+    ctx.closePath();
+    ctx.fill();
+
+    // 2. Viền đất đào móng / bãi cỏ phẳng viền ngoài (turf edge)
+    ctx.fillStyle = '#427829';
+    ctx.strokeStyle = '#2d581a';
+    ctx.lineWidth = Math.max(1.8, R * 0.05);
+    ctx.beginPath();
+    ctx.rect(-halfW - 2, baseY - halfH - 2, halfW * 2 + 4, halfH * 2 + 4);
+    ctx.fill();
+    ctx.stroke();
+
+    // 3. Từng ô vuông gạch đá lát nền tương ứng kích thước công trình (giống Clash of Clans)
+    for (let iy = 0; iy < n; iy++) {
+      for (let ix = 0; ix < n; ix++) {
+        const ox = -halfW + ix * tw;
+        const oy = baseY - halfH + iy * th;
+        const pad = Math.max(0.8, tw * 0.04);
+        const tileW = tw - pad * 2;
+        const tileH = th - pad * 2;
+        const isCenter = (n >= 3 && ix >= 1 && ix < n - 1 && iy >= 1 && iy < n - 1);
+        const alt = (ix + iy) % 2 === 0;
+
+        // Bề mặt ô đá lát vuông
+        ctx.fillStyle = isCenter
+          ? (alt ? '#b8a688' : '#aa9678')
+          : (alt ? '#d5c4a4' : '#c6b492');
+        ctx.fillRect(ox + pad, oy + pad, tileW, tileH);
+
+        // Hiệu ứng khối vát 3D (3D bevel) cho từng viên gạch ô vuông
+        // Cạnh trên sáng phản chiếu ánh sáng mặt trời
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.28)';
+        ctx.fillRect(ox + pad, oy + pad, tileW, Math.max(1, tileH * 0.16));
+        // Cạnh dưới tối tạo bóng đổ chiều sâu 3D
+        ctx.fillStyle = 'rgba(50, 35, 20, 0.35)';
+        ctx.fillRect(ox + pad, oy + pad + tileH - Math.max(1.2, tileH * 0.18), tileW, Math.max(1.2, tileH * 0.18));
+
+        // Đường rãnh viền ô vuông (mortar lines)
+        ctx.strokeStyle = 'rgba(50, 36, 22, 0.45)';
+        ctx.lineWidth = Math.max(1, R * 0.035);
+        ctx.strokeRect(ox + pad, oy + pad, tileW, tileH);
+      }
+    }
+
+    // 4. Viền đá nẹp bảo vệ xung quanh khối ô vuông
+    ctx.strokeStyle = teamCol || '#7d6950';
+    ctx.lineWidth = Math.max(2, R * (teamCol ? 0.08 : 0.05));
+    ctx.strokeRect(-halfW, baseY - halfH, halfW * 2, halfH * 2);
+
+    // 5. Nếu có đội, vẽ các ghim góc màu đội bóng bẩy
+    if (teamCol) {
+      const pinR = Math.max(2, R * 0.1);
+      for (const [px, py] of [[-halfW, baseY - halfH], [halfW, baseY - halfH], [halfW, baseY + halfH], [-halfW, baseY + halfH]]) {
+        circle(px, py, pinR);
+        FS(teamCol, 1.2);
+        circle(px, py, pinR * 0.4);
+        FS('#ffe27a', 0.8);
+      }
+    }
+    ctx.restore();
   }
 
   function bTownHall(R, b, t, dmg) {
@@ -1063,13 +1109,18 @@
   function facingAngle(b) {
     return 0;
   }
+  function drawBuildingPlinth(b) {
+    const R = b.radius * k * BS(), x = PX(b.x), y = PY(b.y);
+    ctx.save(); ctx.translate(x, y);
+    const bsp = bSprite(b.type);
+    if (bsp && bsp.e.plinth === false) { ctx.fillStyle = 'rgba(0,0,0,.3)'; ell(R * .15, R * .72, R * 1.2, R * .5); ctx.fill(); if (mode === 'team' && b.team !== 'def') { ctx.strokeStyle = TC(b.team); ctx.lineWidth = Math.max(2.5, R * .1); ell(0, R * .62, R * 1.1, R * .45); ctx.stroke(); } }
+    else plinth(R, b);
+    ctx.restore();
+  }
   function drawBuilding(b, t) {
     const R = b.radius * k * BS(), x = PX(b.x), y = PY(b.y), hpr = b.maxHp > 0 ? Math.max(0, b.dHp / b.maxHp) : 0;
     ctx.save(); ctx.translate(x + (b.hitT > 0 ? rand(-1.5, 1.5) : 0), y);
     b._fa = 0;
-    const bsp = bSprite(b.type);
-    if (bsp && bsp.e.plinth === false) { ctx.fillStyle = 'rgba(0,0,0,.3)'; ell(R * .15, R * .72, R * 1.2, R * .5); ctx.fill(); if (mode === 'team' && b.team !== 'def') { ctx.strokeStyle = TC(b.team); ctx.lineWidth = Math.max(2.5, R * .1); ell(0, R * .62, R * 1.1, R * .45); ctx.stroke(); } }
-    else plinth(R, b);
     if (b.dead) {
       drawRubble(b, R, t);
       if (b.collT < .6) { const p = b.collT / .6; ctx.translate(0, R * .6); ctx.scale(1 + .12 * p, 1 - .85 * p); ctx.translate(0, -R * .6); ctx.globalAlpha = 1 - p; drawBody(b, R, t, 1); }
@@ -1718,6 +1769,7 @@
     $('ttyBlue').dataset.k = ''; $('ttyRed').dataset.k = '';
     $('hud').classList.toggle('boss', !!boss); $('lvl').textContent = 'Cấp ' + level + (boss ? ' (Boss)' : '');
     const m = $('mod'); m.hidden = !modLabel; m.firstChild.textContent = modLabel ? '🎲 ' + modLabel : '';
+    const mb = $('modeBtn'); if (mb) mb.textContent = mode === 'team' ? 'Chế độ: Đội (Team) [P]' : 'Chế độ: Đơn (Solo) [P]';
     hud = { T: {}, tl: d.roundLen || 0, en: false, top: mode === 'team' ? { blue: [], red: [] } : [], bo: null, gd: false, ot: false, lr: false, phase: null, pl: 0 }; tlAt = performance.now();
     topLeaderId = null;
     setLayout(d.layout); $('top').dataset.k = ''; $('ttBlue').dataset.k = ''; $('ttRed').dataset.k = '';
@@ -1863,6 +1915,7 @@
     ctx.save(); if (shake > .5) ctx.translate(rand(-shake, shake) * .6, rand(-shake, shake) * .6);
     drawGround(t); drawAmbient(t); drawDecals(dt);
     if (mode === 'team' && hud.bo) drawChest(t);
+    for (const b of bmap.values()) drawBuildingPlinth(b);
     const units = [...umap.values()];
     const items = [...bmap.values()].map((b) => ({ y: b.y, b })).concat(units.map((u) => ({ y: u.y, u }))).concat(decor.filter((d) => d.t === 'tree' || d.t === 'rock').map((d) => ({ y: d.y, d })));
     items.sort((a, b) => a.y - b.y);
@@ -1875,7 +1928,7 @@
 
   /* ===== Phím tắt thử (mở bằng trình duyệt trên máy chạy server) =====
      1 Archer  2 Barbarian  3 Hog Rider  4 Giant  5 Balloon  6 Electro Dragon
-     7 Lightning  8 Freeze  9 Heal  0 Rage  Q Thiên thạch  W Độc  E Khiên  |  M: tắt/bật tiếng
+     7 Lightning  8 Freeze  9 Heal  0 Rage  Q Thiên thạch  W Độc  E Khiên  |  M: tắt/bật tiếng  |  P: đổi chế độ Solo / Đội
      Solo: giữ Shift = gọi 5 cùng lúc. Chế độ đội: số = đội Xanh, Shift + số = đội Đỏ, giữ Alt = gọi 5 cùng lúc. */
   const KEYS = { 1: 'archer', 2: 'barbarian', 3: 'hogRider', 4: 'giant', 5: 'balloon', 6: 'electroDragon', 7: 'lightning', 8: 'freeze', 9: 'heal', 0: 'rage', q: 'meteor', w: 'poison', e: 'shield' };
   const SHIFT_DIGITS = { '!': '1', '@': '2', '#': '3', '$': '4', '%': '5', '^': '6', '&': '7', '*': '8', '(': '9', ')': '0' };
@@ -1883,11 +1936,24 @@
     sfx.unlock();
     if (e.key === 'm' || e.key === 'M') { sfx.toggle(); return; }
     if (e.key === 'n' || e.key === 'N') { sfx.music(); return; }
+    if (e.key === 'p' || e.key === 'P') {
+      const nextMode = mode === 'team' ? 'solo' : 'team';
+      fetch('/api/admin', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'setMode', value: nextMode }) }).catch(() => {});
+      return;
+    }
     const lk = String(e.key).toLowerCase(), key = KEYS[e.key] ? e.key : (KEYS[lk] && /[qwe]/.test(lk) ? lk : SHIFT_DIGITS[e.key]); if (!key) return;
     const team = mode === 'team' ? (e.shiftKey ? 'red' : 'blue') : 'atk';
     const count = mode === 'team' ? (e.altKey ? 5 : 1) : (e.shiftKey && !/[qwe]/.test(key) ? 5 : 1);
     fetch('/sim?key=' + KEYS[key] + '&count=' + count + '&team=' + team).catch(() => {});
   });
+  const mbEl = $('modeBtn');
+  if (mbEl) {
+    mbEl.addEventListener('click', () => {
+      sfx.unlock();
+      const nextMode = mode === 'team' ? 'solo' : 'team';
+      fetch('/api/admin', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'setMode', value: nextMode }) }).catch(() => {});
+    });
+  }
 })();
 </script>
 </body>

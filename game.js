@@ -78,8 +78,8 @@ class Game {
     }
     const ta = (c.team && c.team.arena) || { w: 100, h: 140, cy: 36 };
     this.arena = team ? { w: ta.w, h: ta.h, cx: ta.w / 2, cy: ta.cy } : { w: 100, h: 100, cx: c.arena.cx, cy: c.arena.cy };
-    // 2 căn cứ thẳng hàng dọc theo trục giữa sân đấu chuẩn Clash of Clans / Clash Royale
-    if (team) this.arena.bx = (c.team.baseOffsetX != null ? c.team.baseOffsetX : 0) * this.arena.w;
+    // 2 căn cứ đặt chéo góc nhau (xéo xéo nhau) chuẩn góc nhìn isometric Clash of Clans
+    if (team) this.arena.bx = (c.team.baseOffsetX != null ? c.team.baseOffsetX : 0.16) * this.arena.w;
 
     this.status = 'playing';
     this.roundLen = team ? c.team.durationSec : c.round.durationSec + (this.boss ? c.town.bossExtraSec || 0 : 0);
@@ -115,18 +115,17 @@ class Game {
     if (this.boss) for (const e of c.bossLayout || []) for (let i = 0; i < (e.count || 1); i++) types.push(e.type);
     this._shuffle(types);
 
-    // Vị trí tương đối so với tâm căn cứ: lưới vuông kiên cố kiểu làng Clash of Clans bao quanh Nhà Chính ở tâm (0,0)
-    const GRID = 8.5;
+    // Vị trí công trình theo góc nghiêng kim cương isometric 2.5D chuẩn Clash of Clans bao quanh Nhà Chính
+    const gx = 8.6, gy = 6.2;
     const slots = [
-      // Vòng 1 (sát Nhà Chính): 8 vị trí bảo vệ trực tiếp
-      [-GRID, -GRID], [0, -GRID], [GRID, -GRID],
-      [-GRID, 0],                 [GRID, 0],
-      [-GRID, GRID],  [0, GRID],  [GRID, GRID],
+      // Vòng 1 (sát Nhà Chính): 8 vị trí bảo vệ trực tiếp theo góc phối cảnh nghiêng CoC
+      [-gx, -gy], [gx, -gy], [-gx, gy], [gx, gy],
+      [0, -gy * 1.55], [gx * 1.55, 0], [0, gy * 1.55], [-gx * 1.55, 0],
       // Vòng 2 (vành đai pháo đài): 12 vị trí bao quanh
-      [-GRID * 2, 0], [GRID * 2, 0], [0, -GRID * 2], [0, GRID * 2],
-      [-GRID * 2, -GRID], [-GRID * 2, GRID], [GRID * 2, -GRID], [GRID * 2, GRID],
-      [-GRID, -GRID * 2], [GRID, -GRID * 2], [-GRID, GRID * 2], [GRID, GRID * 2],
-      [-GRID * 2, -GRID * 2], [GRID * 2, -GRID * 2], [-GRID * 2, GRID * 2], [GRID * 2, GRID * 2]
+      [-gx * 2, 0], [gx * 2, 0], [0, -gy * 2.3], [0, gy * 2.3],
+      [-gx * 1.8, -gy * 1.4], [-gx * 1.8, gy * 1.4], [gx * 1.8, -gy * 1.4], [gx * 1.8, gy * 1.4],
+      [-gx * 0.9, -gy * 2.2], [gx * 0.9, -gy * 2.2], [-gx * 0.9, gy * 2.2], [gx * 0.9, gy * 2.2],
+      [-gx * 2.2, -gy * 1.8], [gx * 2.2, -gy * 1.8], [-gx * 2.2, gy * 1.8], [gx * 2.2, gy * 1.8]
     ];
     this._shuffle(slots);
     const chosen = types.slice(0, slots.length);
@@ -240,11 +239,18 @@ class Game {
   _spawnPoint(team) {
     const r = this.rng, A = this.arena;
     if (this.mode === 'team') {
-      const zone = team === 'blue' ? [6, A.h * 0.42] : [A.h * 0.58, A.h - 6];
-      const s = Math.floor(r() * 3);
-      if (s === 0) return [-3, zone[0] + r() * (zone[1] - zone[0])];
-      if (s === 1) return [A.w + 3, zone[0] + r() * (zone[1] - zone[0])];
-      return [15 + r() * (A.w - 30), team === 'blue' ? -3 : A.h + 3];
+      const bx = A.bx != null ? A.bx : A.w * 0.16;
+      if (team === 'blue') {
+        const s = Math.floor(r() * 3);
+        if (s === 0) return [-3, 8 + r() * (A.h * 0.38)];       // mép trái phía trên gần căn cứ Xanh
+        if (s === 1) return [4 + r() * (A.w * 0.52), -3];        // mép trên phía trái
+        return [r() * (A.cx - bx * 0.3), 10 + r() * 40];         // sườn góc trên-trái
+      } else {
+        const s = Math.floor(r() * 3);
+        if (s === 0) return [A.w + 3, A.h - (8 + r() * (A.h * 0.38))];  // mép phải phía dưới gần căn cứ Đỏ
+        if (s === 1) return [A.w - (4 + r() * (A.w * 0.52)), A.h + 3];  // mép dưới phía phải
+        return [A.w - r() * (A.cx - bx * 0.3), A.h - (10 + r() * 40)];  // sườn góc dưới-phải
+      }
     }
     const s = Math.floor(r() * 3);
     if (s === 0) return [-3, 45 + r() * 50];

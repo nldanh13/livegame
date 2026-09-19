@@ -522,7 +522,7 @@
     "durationSec": 240,
     "breakSec": 15,
     "baseScale": 0.85,
-    "baseOffsetX": 0,
+    "baseOffsetX": 0.16,
     "arena": {
       "w": 100,
       "h": 140,
