@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Điều khiển - Công thành chiến</title>
+<style>
+  :root { --bg: #1b0f22; --card: #2a1833; --line: #43284f; --txt: #fff4e0; --dim: #b9a3c2; --ember: #ff8a3d; --ok: #5fe08a; --bad: #ff6b5e; }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  body { margin: 0; background: var(--bg); color: var(--txt); font: 15px/1.45 'Segoe UI', system-ui, sans-serif; }
+  main { max-width: 860px; margin: 0 auto; padding: 20px 16px 48px; display: grid; gap: 16px; }
+  h1 { font-size: 22px; margin: 0; }
+  h2 { font-size: 15px; margin: 0 0 10px; color: var(--dim); font-weight: 600; }
+  section { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .stat { display: flex; flex-wrap: wrap; gap: 6px 22px; }
+  .stat div b { display: block; font-size: 20px; }
+  .stat div span { color: var(--dim); font-size: 13px; }
+  .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--bad); margin-right: 6px; }
+  .dot.on { background: var(--ok); }
+  button, input {
+    font: inherit; color: var(--txt); background: #3a2246; border: 1px solid var(--line);
+    border-radius: 8px; padding: 8px 12px; cursor: pointer;
+  }
+  button:hover { background: #4a2c59; }
+  button:focus-visible, input:focus-visible { outline: 2px solid var(--ember); outline-offset: 2px; }
+  button.warn { border-color: #7a3040; }
+  input { cursor: text; width: 76px; }
+  select { font: inherit; color: var(--txt); background: #3a2246; border: 1px solid var(--line); border-radius: 8px; padding: 7px 10px; }
+  #bar { height: 12px; background: #120817; border-radius: 99px; overflow: hidden; margin: 10px 0 4px; }
+  #bar i { display: block; height: 100%; background: var(--ok); transition: width .3s; }
+  ol { margin: 0; padding-left: 20px; }
+  #log { font: 13px/1.5 ui-monospace, Consolas, monospace; max-height: 260px; overflow: auto; color: var(--dim); }
+  #log div { white-space: pre-wrap; }
+  #msg { color: var(--dim); font-size: 13px; min-height: 1.2em; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Điều khiển Công thành chiến</h1>
+
+  <section>
+    <h2>Trạng thái</h2>
+    <div class="stat">
+      <div><b id="sLevel">-</b><span>Cấp hiện tại</span></div>
+      <div><b id="sHp">-</b><span>Đã phá hủy</span></div>
+      <div><b id="sStars">-</b><span>Số sao</span></div>
+      <div><b id="sBld">-</b><span>Công trình còn lại</span></div>
+      <div><b id="sCombo">-</b><span>Combo</span></div>
+      <div><b id="sDiff">-</b><span>Độ khó tự chỉnh</span></div>
+      <div><b id="sWon">-</b><span>Ván thắng (tổng)</span></div>
+    </div>
+    <div id="bar"><i id="barFill" style="width:0%"></i></div>
+    <div id="mod" style="color:var(--dim);font-size:13px"></div>
+    <div id="teamInfo" style="margin-top:6px;font-size:14px" hidden></div>
+    <div><span class="dot" id="dot"></span><span id="tt">-</span></div>
+  </section>
+
+  <section>
+    <h2>Thử lính và phép (không tính vào hạng và kỷ lục)</h2>
+    <div class="row" style="margin-bottom:10px" id="teamPick" hidden>
+      <label>Gửi cho đội <select id="simTeam"><option value="blue">Xanh</option><option value="red">Đỏ</option></select></label>
+    </div>
+    <div class="row" id="sim"></div>
+    <div class="row" style="margin-top:10px">
+      <label>Số lượng <input id="cnt" type="number" min="1" max="50" value="1"></label>
+    </div>
+  </section>
+
+  <section id="warnBox" hidden>
+    <h2 style="color:#ffb347">Cảnh báo cấu hình</h2>
+    <ul id="warnList" style="margin:0;padding-left:20px"></ul>
+  </section>
+
+  <section>
+    <h2>Gán quà TikTok cho lính / phép</h2>
+    <p style="margin:0 0 6px;opacity:.85;font-size:13px">Danh sách tự cập nhật khi khán giả tặng quà thật. Chọn lính hoặc phép rồi bấm ra ngoài là lưu ngay. Quà chưa gán sẽ dùng bậc xu (cột "đang dùng").</p>
+    <div class="row"><button id="giftReload">Tải lại danh sách</button></div>
+    <table id="giftTable" style="width:100%;border-collapse:collapse;margin-top:6px;font-size:13px"></table>
+  </section>
+
+  <section>
+    <h2>Dữ liệu mùa</h2>
+    <div class="row">
+      <a href="/api/backup" download><button type="button">Tải bản sao lưu thống kê</button></a>
+      <button id="resetSeason">Xóa Đại gia mùa + tỷ số mùa</button>
+    </div>
+  </section>
+
+  <section id="tuneBox">
+    <h2>Chỉnh cân bằng (áp dụng ngay, lưu vào config.json)</h2>
+    <div id="tuneList"></div>
+  </section>
+
+  <section>
+    <h2>Thống kê các trận đã chơi</h2>
+    <div class="row"><button id="statBtn">Tải thống kê</button></div>
+    <pre id="statOut" style="white-space:pre-wrap;margin:8px 0 0;font-size:13px"></pre>
+  </section>
+
+  <section id="evBox" hidden>
+    <h2>Sự kiện thử (chế độ Đội)</h2>
+    <div class="row">
+      <button data-ev="guardian">Gọi Rồng canh kho báu</button>
+      <button data-ev="golden">Vào Giờ vàng</button>
+      <button data-ev="fund" data-t="blue">Nạp quỹ Xanh +100</button>
+      <button data-ev="fund" data-t="red">Nạp quỹ Đỏ +100</button>
+      <button data-ev="morale" data-t="blue">Đầy tinh thần Xanh</button>
+      <button data-ev="morale" data-t="red">Đầy tinh thần Đỏ</button>
+    </div>
+  </section>
+
+  <section>
+    <h2>Điều khiển ván</h2>
+    <div class="row" style="margin-bottom:10px">
+      <button id="mSolo">Chế độ Solo (cả phòng đánh 1 căn cứ)</button>
+      <button id="mTeam">Chế độ Đội (Xanh đấu Đỏ)</button>
+    </div>
+    <div class="row">
+      <button data-a="skip">Kết thúc ván ngay</button>
+      <button data-a="reset">Chơi lại cấp này</button>
+      <label>Nhảy tới cấp <input id="lv" type="number" min="1" max="999" value="1"></label>
+      <button id="goLv">Đi</button>
+      <label>Độ khó <input id="df" type="number" min="0.5" max="2" step="0.1" value="1"></label>
+      <button id="goDf">Đặt</button>
+      <button class="warn" id="wipe">Xóa kỷ lục và về cấp 1</button>
+    </div>
+    <div id="msg"></div>
+  </section>
+
+  <section>
+    <h2>Top 5 mọi thời đại</h2>
+    <ol id="top"></ol>
+  </section>
+
+  <section>
+    <h2>Nhật ký</h2>
+    <div id="log"></div>
+  </section>
+</main>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const fmt = (n) => Math.max(0, Math.round(n)).toLocaleString('vi-VN');
+let built = false;
+
+async function post(body) {
+  try {
+    const r = await fetch('/api/admin', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    const j = await r.json();
+    $('msg').textContent = j.ok ? 'Đã thực hiện.' : 'Lỗi: ' + (j.error || r.status);
+  } catch (e) { $('msg').textContent = 'Không gọi được server.'; }
+  refresh();
+}
+
+function buildButtons(keys) {
+  const box = $('sim'); box.replaceChildren();
+  [...keys.troops, ...keys.spells].forEach((k) => {
+    const b = document.createElement('button');
+    b.textContent = k;
+    b.onclick = () => post({ action: 'sim', key: k, count: $('cnt').value, team: $('simTeam').value });
+    box.append(b);
+  });
+}
+
+async function refresh() {
+  try {
+    const d = await (await fetch('/api/status')).json();
+    if (!built) { buildButtons(d.keys); built = true; }
+    const g = d.game;
+    $('sLevel').textContent = g.mode === 'team' ? 'Đội' : g.level + (g.boss ? ' (Boss)' : '');
+    $('teamPick').hidden = g.mode !== 'team'; $('evBox').hidden = g.mode !== 'team';
+    const ti = $('teamInfo'); ti.hidden = !g.team;
+    if (g.team) ti.textContent = 'Xanh ' + g.team.blue.p + '% (' + g.team.blue.stars + ' sao)  -  Đỏ ' + g.team.red.p + '% (' + g.team.red.stars + ' sao)  |  Người hoạt động: Xanh ' + g.team.counts.blue + ', Đỏ ' + g.team.counts.red + '  |  Quỹ: X ' + g.team.fund.blue + ', Đ ' + g.team.fund.red + '  |  Tỷ số mùa: ' + g.team.score.blue + ' - ' + g.team.score.red + ' (hòa ' + g.team.score.draws + ')';
+    $('sHp').textContent = g.mode === 'team' && g.team ? 'X ' + g.team.blue.p + '% / Đ ' + g.team.red.p + '%' : g.destruction.toFixed(1) + '%';
+    $('sStars').textContent = g.mode === 'team' && g.team ? g.team.blue.stars + ' - ' + g.team.red.stars : g.stars.filter(Boolean).length + ' / 3';
+    $('sBld').textContent = g.alive + ' / ' + g.total;
+    $('sCombo').textContent = g.combo.n > 0 ? '×' + g.combo.m.toFixed(1) + ' (' + g.combo.n + ')' : '-';
+    $('sDiff').textContent = '×' + g.difficulty.toFixed(2);
+    $('sWon').textContent = d.stats.roundsWon;
+    $('barFill').style.width = (g.mode === 'team' && g.team ? Math.max(g.team.blue.p, g.team.red.p) : g.destruction) + '%';
+    $('mod').textContent = 'Trạng thái: ' + g.status + ' | Còn ' + g.timeLeft + 's' + (g.team && g.team.golden ? ' (GIỜ VÀNG)' : '') + (g.team && g.team.overtime ? ' (HIỆP PHỤ)' : '') + (g.team && g.team.guardian ? ' | Rồng đang ở giữa sân' : '') + ' | ' + g.units + ' lính' + (g.phase ? ' | Pha: ' + (g.phase === 'clash' ? 'giao tranh (còn ' + g.clashLeft + 's)' : 'công thành') : '') + (g.mod ? ' | ' + g.mod : '');
+    $('dot').className = 'dot' + (d.tiktok.connected ? ' on' : '');
+    $('tt').textContent = d.tiktok.user === 'ten_kenh_cua_ban' ? 'Chưa đặt tên kênh TikTok (chế độ thử)' : (d.tiktok.connected ? 'Đã kết nối @' : 'Chưa kết nối @') + d.tiktok.user;
+
+    const top = $('top'); top.replaceChildren();
+    d.stats.allTime.forEach((p) => { const li = document.createElement('li'); li.textContent = p.name + ' - ' + fmt(p.dmg); top.append(li); });
+    if (!d.stats.allTime.length) { const li = document.createElement('li'); li.textContent = 'Chưa có dữ liệu'; top.append(li); }
+
+    const lg = $('log'); lg.replaceChildren();
+    d.log.forEach((l) => { const div = document.createElement('div'); div.textContent = new Date(l.t).toLocaleTimeString('vi-VN') + '  ' + l.msg; lg.append(div); });
+  } catch (e) { $('msg').textContent = 'Mất kết nối server.'; }
+}
+
+document.querySelectorAll('button[data-a]').forEach((b) => (b.onclick = () => post({ action: b.dataset.a })));
+$('mSolo').onclick = () => { if (confirm('Chuyển sang chế độ Solo? Ván hiện tại sẽ bị hủy.')) post({ action: 'setMode', value: 'solo' }); };
+$('mTeam').onclick = () => { if (confirm('Chuyển sang chế độ Đội? Ván hiện tại sẽ bị hủy.')) post({ action: 'setMode', value: 'team' }); };
+document.querySelectorAll('button[data-ev]').forEach((b) => (b.onclick = () => post({ action: 'event', key: b.dataset.ev, value: b.dataset.t || 'blue', count: 100 })));
+$('goDf').onclick = () => post({ action: 'setDifficulty', value: $('df').value });
+$('goLv').onclick = () => post({ action: 'setLevel', level: $('lv').value });
+$('wipe').onclick = () => { if (confirm('Xóa toàn bộ kỷ lục và quay về cấp 1?')) post({ action: 'resetStats' }); };
+refresh(); setInterval(refresh, 1500);
+
+(function () {
+  const list = document.getElementById('tuneList');
+  fetch('/api/tune').then((r) => r.json()).then((rows) => {
+    rows.forEach((r) => {
+      const wrap = document.createElement('div'); wrap.style.cssText = 'display:grid;grid-template-columns:230px 1fr 70px;gap:8px;align-items:center;margin:4px 0';
+      const lab = document.createElement('span'); lab.textContent = r.label;
+      const inp = document.createElement('input'); inp.type = 'range'; inp.min = r.min; inp.max = r.max; inp.step = r.step; inp.value = r.value;
+      const val = document.createElement('b'); val.textContent = r.value;
+      let t; inp.oninput = () => { val.textContent = inp.value; clearTimeout(t); t = setTimeout(() => fetch('/api/tune', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ path: r.path, value: Number(inp.value) }) }), 300); };
+      wrap.append(lab, inp, val); list.append(wrap);
+    });
+  }).catch(() => { list.textContent = 'Không tải được danh sách thông số.'; });
+  document.getElementById('statBtn').onclick = () => fetch('/api/matches').then((r) => r.json()).then((d) => {
+    const t = d.team, out = [];
+    out.push('Tổng số trận: ' + d.total + ' (trận đội: ' + t.n + ')');
+    if (t.n) out.push('Trận đội - Xanh thắng ' + t.blue + ', Đỏ thắng ' + t.red + ', hòa ' + t.draw + ' | hiệp phụ ' + t.overtime + ' trận | Rồng bị hạ ' + t.guardianKilled + '/' + t.n + ' trận | trung bình ' + t.avgSec + ' giây');
+    out.push('Quà/lính dùng nhiều nhất: ' + (d.topGifts.map(([k, n]) => k + ' ×' + n).join(', ') || '(chưa có)'));
+    document.getElementById('statOut').textContent = out.join('\n');
+  });
+})();
+
+(function () {
+  const $$ = (id) => document.getElementById(id);
+  const put = (path, body) => fetch(path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  function loadGifts() {
+    fetch('/api/gifts').then((r) => r.json()).then(({ rows, options }) => {
+      const t = $$('giftTable'); t.replaceChildren();
+      const head = document.createElement('tr'); ['Tên quà', 'Xu/quà', 'Đã thấy', 'Gán cho', 'Đang dùng'].forEach((x) => { const th = document.createElement('th'); th.textContent = x; th.style.cssText = 'text-align:left;padding:3px 6px;border-bottom:1px solid #6a5580'; head.append(th); }); t.append(head);
+      const lab = Object.fromEntries(options.map((o) => [o.key, o.label]));
+      rows.forEach((r) => {
+        const tr = document.createElement('tr');
+        const cell = (v) => { const td = document.createElement('td'); td.style.padding = '3px 6px'; td.append(v); tr.append(td); return td; };
+        cell(r.name); cell(String(r.diamonds)); cell(String(r.count));
+        const sel = document.createElement('select');
+        const none = document.createElement('option'); none.value = ''; none.textContent = '(không gán)'; sel.append(none);
+        for (const type of ['Lính', 'Phép']) { const g = document.createElement('optgroup'); g.label = type; options.filter((o) => o.type === type).forEach((o) => { const op = document.createElement('option'); op.value = o.key; op.textContent = o.label; g.append(op); }); sel.append(g); }
+        sel.value = r.key; sel.onchange = () => put('/api/gifts', { name: r.name, key: sel.value }).then(loadGifts);
+        cell(sel); cell(r.effective ? (lab[r.effective] || r.effective) + (r.key ? '' : ' (theo bậc xu)') : 'không làm gì');
+        t.append(tr);
+      });
+      if (!rows.length) { const tr = document.createElement('tr'); const td = document.createElement('td'); td.colSpan = 5; td.textContent = 'Chưa có quà nào. Khi khán giả tặng quà, tên thật sẽ hiện ở đây.'; tr.append(td); t.append(tr); }
+    });
+  }
+  $$('giftReload').onclick = loadGifts; loadGifts(); setInterval(loadGifts, 20000);
+  $$('resetSeason').onclick = () => { if (confirm('Xóa toàn bộ Đại gia mùa và tỷ số mùa?')) put('/api/admin', { action: 'resetSeason' }); };
+  fetch('/api/status').then((r) => r.json()).then((s) => {
+    if (s.warnings && s.warnings.length) { $$('warnBox').hidden = false; s.warnings.forEach((w) => { const li = document.createElement('li'); li.textContent = w; $$('warnList').append(li); }); }
+  }).catch(() => {});
+})();
+</script>
+</body>
+</html>

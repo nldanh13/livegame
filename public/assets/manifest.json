@@ -1,0 +1,165 @@
+{
+ "version": 1,
+ "_ghi_chu": "Thả ảnh PNG (nền trong suốt) vào đúng đường dẫn 'file' bên dưới là game tự dùng, thiếu file nào thì tự vẽ tay cái đó. w = bề rộng tính theo đơn vị sân (1 đơn vị = k điểm ảnh). ay = vị trí chân/đáy trên ảnh (0 = đỉnh, 1 = đáy). Xem README.md.",
+ "ground": {
+  "grass": {
+   "file": "tex/grass.png",
+   "tile": 12
+  },
+  "cobble": {
+   "file": "tex/cobble.png",
+   "tile": 14
+  },
+  "dirt": {
+   "file": "tex/dirt.png",
+   "tile": 10
+  }
+ },
+ "buildings": {
+  "townHall": {
+   "file": "buildings/townHall.png",
+   "w": 15,
+   "ay": 0.9,
+   "plinth": false
+  },
+  "cannon": {
+   "file": "buildings/cannon.png",
+   "w": 8,
+   "ay": 0.9,
+   "plinth": false
+  },
+  "archerTower": {
+   "file": "buildings/archerTower.png",
+   "w": 7,
+   "ay": 0.9,
+   "plinth": false
+  },
+  "mortar": {
+   "file": "buildings/mortar.png",
+   "w": 8,
+   "ay": 0.9,
+   "plinth": false
+  },
+  "airDefense": {
+   "file": "buildings/airDefense.png",
+   "w": 8,
+   "ay": 0.9,
+   "plinth": false
+  },
+  "wizardTower": {
+   "file": "buildings/wizardTower.png",
+   "w": 7,
+   "ay": 0.9,
+   "plinth": false
+  },
+  "infernoTower": {
+   "file": "buildings/infernoTower.png",
+   "w": 7.5,
+   "ay": 0.9,
+   "plinth": false
+  },
+  "goldMine": {
+   "file": "buildings/goldMine.png",
+   "w": 8,
+   "ay": 0.9,
+   "plinth": false
+  },
+  "elixirCollector": {
+   "file": "buildings/elixirCollector.png",
+   "w": 7,
+   "ay": 0.9,
+   "plinth": false
+  },
+  "storage": {
+   "file": "buildings/storage.png",
+   "w": 8,
+   "ay": 0.9,
+   "plinth": false
+  }
+ },
+ "units": {
+  "barbarian": {
+   "file": "units/barbarian.png",
+   "w": 4,
+   "ay": 0.95,
+   "faces": "right"
+  },
+  "archer": {
+   "file": "units/archer.png",
+   "w": 3.6,
+   "ay": 0.95,
+   "faces": "right"
+  },
+  "giant": {
+   "file": "units/giant.png",
+   "w": 6.5,
+   "ay": 0.95,
+   "faces": "right"
+  },
+  "wizard": {
+   "file": "units/wizard.png",
+   "w": 3.8,
+   "ay": 0.95,
+   "faces": "right"
+  },
+  "minion": {
+   "file": "units/minion.png",
+   "w": 3,
+   "ay": 0.95,
+   "faces": "right"
+  },
+  "hogRider": {
+   "file": "units/hogRider.png",
+   "w": 6,
+   "ay": 0.95,
+   "faces": "right"
+  },
+  "balloon": {
+   "file": "units/balloon.png",
+   "w": 5,
+   "ay": 0.95,
+   "faces": "right"
+  },
+  "electroDragon": {
+   "file": "units/electroDragon.png",
+   "w": 8,
+   "ay": 0.95,
+   "faces": "right"
+  },
+  "guardian": {
+   "file": "units/guardian.png",
+   "w": 12,
+   "ay": 0.95,
+   "faces": "right"
+  },
+  "siegeMachine": {
+   "file": "units/siegeMachine.png",
+   "w": 8,
+   "ay": 0.95,
+   "faces": "right"
+  },
+  "hero": {
+   "file": "units/hero.png",
+   "w": 6,
+   "ay": 0.95,
+   "faces": "right"
+  }
+ },
+ "decor": {
+  "tree": {
+   "files": [
+    "decor/tree1.png",
+    "decor/tree2.png",
+    "decor/tree3.png"
+   ],
+   "w": 7
+  },
+  "rock": {
+   "files": [
+    "decor/rock1.png",
+    "decor/rock2.png"
+   ],
+   "w": 4
+  }
+ }
+}

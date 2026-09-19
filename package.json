@@ -1,0 +1,17 @@
+{
+  "name": "tiktok-siege-live",
+  "version": "5.5.2",
+  "description": "Công thành chiến - Săn 3 sao: quà TikTok Live triệu hồi lính đánh Nhà Chính (OBS overlay)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "socket.io": "^4.7.5",
+    "tiktok-live-connector": "^1.2.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
