@@ -120,7 +120,7 @@ let endPending = null;
 // Quà/phép dồn dập (đông người tương tác cùng lúc) -> gộp lại, gửi 1 lần mỗi khung hình
 // thay vì mỗi món quà 1 gói tin riêng, để trình duyệt overlay (OBS) không bị dồn việc mà giật.
 let evQueue = [];
-const game = new Game(config, {
+const gameHooks = {
   emit(type, data) {
     if (type === 'spawn' || type === 'spell') { evQueue.push([type, data]); return; }
     io.emit(type, data);
@@ -142,18 +142,48 @@ const game = new Game(config, {
     if (owner.avatar) a.avatar = owner.avatar;
     scheduleSave();
   },
+};
+let game = new Game(config, gameHooks);
+
+// Sửa game.js khi đang live: không áp dụng ngay giữa ván (tránh giật/lỗi khi khán giả đang xem),
+// mà chờ ván hiện tại kết thúc rồi mới nạp luật chơi mới cho ván sau.
+const GAME_PATH = path.join(__dirname, 'game.js');
+let pendingGameReload = false;
+fs.watchFile(GAME_PATH, { interval: 1000 }, () => {
+  pendingGameReload = true;
+  log('📝 game.js vừa sửa - sẽ áp dụng luật chơi mới khi ván hiện tại kết thúc');
 });
+function reloadGameIfPending() {
+  if (!pendingGameReload) return;
+  pendingGameReload = false;
+  try {
+    delete require.cache[require.resolve('./game')];
+    const { Game: FreshGame } = require('./game');
+    game = new FreshGame(config, gameHooks);
+    log('♻️  Đã nạp lại luật chơi mới từ game.js cho ván này');
+  } catch (e) {
+    console.error('⚠️  game.js lỗi cú pháp, giữ nguyên luật chơi cũ:', e.message);
+  }
+}
+
+// Sửa public/index.html khi đang live: overlay đang mở (OBS Browser Source) không tự dừng giữa ván,
+// mà chỉ tự tải lại đúng lúc ván mới bắt đầu (dựa vào thời điểm sửa file), để không giật hình đang xem.
+function overlayVer() {
+  const f = OVERLAY_CANDIDATES.find((x) => fs.existsSync(x));
+  try { return f ? Math.round(fs.statSync(f).mtimeMs) : 0; } catch (_) { return 0; }
+}
 
 function roundPayload() {
   return {
     mode: game.mode, level: game.level, boss: game.boss, mod: game.mod ? game.mod.label : '',
     layout: game.layout(), roundLen: game.roundLen, arena: game.arena,
-    teamScore: stats.teamScore, teams: teamInfo(),
+    teamScore: stats.teamScore, teams: teamInfo(), ver: overlayVer(),
   };
 }
 
 function newRound(level) {
   clearTimeout(endPending); clearTimeout(roundTimer); roundSeq++; giftUse = {}; roundReal = false; if (cheerState.size > 5000) cheerState.clear();
+  reloadGameIfPending();
   if (stats.mode === 'team') {
     game.newRound(config.team.level, stats.teamDifficulty, 'team');
     updateHandicap();

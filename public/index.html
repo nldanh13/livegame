@@ -1655,9 +1655,13 @@
   /* ================== Socket ================== */
   const socket = io();
   const setCfg = (d) => { cfg = { troops: d.troops, spells: d.spells || {}, buildings: d.buildings || {}, npcs: d.npcs || {}, gifts: d.gifts || cfg.gifts || {}, brand: d.brand || cfg.brand || {}, effects: d.effects || cfg.effects || {}, team: d.team || cfg.team }; };
+  // Sửa public/index.html khi đang live: không tự tải lại giữa ván (đang xem dở không bị giật),
+  // chỉ tải lại đúng lúc ván mới bắt đầu, khi phát hiện file đã đổi so với lúc trang này được mở.
+  let overlayVer = null;
   socket.on('connect', () => { $('conn').hidden = true; });
   socket.on('disconnect', () => { $('conn').hidden = false; });
   socket.on('init', (d) => {
+    if (overlayVer === null && d.ver !== undefined) overlayVer = d.ver;
     setCfg(d); (d.owners || []).forEach((o) => owners.set(o.i, o));
     applyRound(d); if (d.snap) applySnap(d.snap);
     if (d.status === 'ended') status = 'ended';
@@ -1680,6 +1684,7 @@
   socket.on('demo', (d) => { $('demoTag').hidden = !d.on; });
   socket.on('roundEnd', showResult);
   socket.on('roundStart', (d) => {
+    if (overlayVer !== null && d.ver !== undefined && d.ver !== overlayVer) { location.reload(); return; }
     $('result').hidden = true; resultUntil = 0; owners.clear(); applyRound(d);
     if (d.mode === 'team') banner('GIAO TRANH!', '');
     else { banner(d.boss ? 'BOSS - CẤP ' + d.level : 'CẤP ' + d.level, d.boss); if (d.boss) sfx.boss(); }
