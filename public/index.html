@@ -561,8 +561,9 @@
     const rnd = mulberry(4321 + Math.round(arena.h)), G = groundRect(), team = mode === 'team', M = mapDiamond();
     const free = (x, y) => {
       if (!team) return Math.hypot(x - arena.cx, y - arena.cy) > PLAZA_R + 2;
-      const bx = arena.bx || 0;
-      return Math.hypot(x - (arena.cx - bx), y - arena.cy) > PLAZA_R + 2 && Math.hypot(x - (arena.cx + bx), y - (arena.h - arena.cy)) > PLAZA_R + 2 && Math.abs(y - arena.h / 2) > 12;
+      const bx = arena.bx || 0, p1x = arena.cx - bx, p1y = arena.cy, p2x = arena.cx + bx, p2y = arena.h - arena.cy;
+      const ang = Math.atan2(p2y - p1y, p2x - p1x), distRoad = Math.abs((x - p1x) * -Math.sin(ang) + (y - p1y) * Math.cos(ang));
+      return Math.hypot(x - p1x, y - p1y) > PLAZA_R + 2 && Math.hypot(x - p2x, y - p2y) > PLAZA_R + 2 && distRoad > 8;
     };
     decor = [];
     // want: 'in' = phải nằm trong đảo cỏ, 'out' = phải nằm ngoài (dải rừng viền quanh đảo)
@@ -796,11 +797,17 @@
     if (team) { ctx.fillStyle = lgr(0, y0, 0, y1, [[0, 'rgba(50,130,255,.34)'], [.42, 'rgba(50,130,255,0)'], [.58, 'rgba(255,70,70,0)'], [1, 'rgba(255,70,70,.34)']]); ctx.fillRect(dx - dR, dy - dR, dR * 2, dR * 2); }
     ctx.restore();
     // đường đất: vẽ đè lên cả rừng lẫn đảo cỏ, như con đường mòn xuyên rừng dẫn vào bản doanh
-    if (team) {
-      const my = arena.h / 2, rx0 = Math.max(x0 + rad * .35, 0), rw = Math.min(x1 - rad * .35, W) - rx0;
-      ctx.fillStyle = '#a8864c'; rr(rx0, PY(my - 6.6), rw, 13.2 * k, k * 3.2); ctx.fill();
-      const dPat = tilePattern('dirt'); ctx.fillStyle = dPat || lgr(0, PY(my - 6), 0, PY(my + 6), [[0, '#cfae74'], [.5, '#e4c994'], [1, '#cfae74']]); rr(rx0, PY(my - 6), rw, 12 * k, k * 3); ctx.fill();
-      ctx.fillStyle = 'rgba(120,90,50,.18)'; for (let i = 0; i < 70; i++) { circle(rx0 + rnd() * rw, PY(my - 5 + rnd() * 10), k * (.2 + rnd() * .35)); ctx.fill(); }
+    if (team) { // đường chạy chéo nối đúng hướng 2 sân (thay vì cắt ngang bản đồ) - khớp với 2 sân đặt chéo góc
+      const bx = arena.bx || 0, p1x = arena.cx - bx, p1y = arena.cy, p2x = arena.cx + bx, p2y = arena.h - arena.cy;
+      const ang = Math.atan2(p2y - p1y, p2x - p1x), ext = 200;
+      const sx = PX(p1x - Math.cos(ang) * ext), sy = PY(p1y - Math.sin(ang) * ext), ex = PX(p2x + Math.cos(ang) * ext), ey = PY(p2y + Math.sin(ang) * ext);
+      ctx.save(); ctx.lineCap = 'round';
+      ctx.strokeStyle = '#a8864c'; ctx.lineWidth = 13.2 * k; ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(ex, ey); ctx.stroke();
+      const dPat = tilePattern('dirt'); ctx.strokeStyle = dPat || lgr(sx, sy, ex, ey, [[0, '#cfae74'], [.5, '#e4c994'], [1, '#cfae74']]);
+      ctx.lineWidth = 12 * k; ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(ex, ey); ctx.stroke();
+      ctx.fillStyle = 'rgba(120,90,50,.18)';
+      for (let i = 0; i < 70; i++) { const f = rnd(), px2 = sx + (ex - sx) * f, py2 = sy + (ey - sy) * f, off = (rnd() - .5) * 10 * k; circle(px2 - Math.sin(ang) * off, py2 + Math.cos(ang) * off, k * (.2 + rnd() * .35)); ctx.fill(); }
+      ctx.restore();
     } else {
       const road = (x, y, ww, hh) => { ctx.fillStyle = '#a8864c'; rr(x - k * .5, y - k * .5, ww + k, hh + k, k * 3.2); ctx.fill(); ctx.fillStyle = tilePattern('dirt') || lgr(x, y, x + ww, y + hh, [[0, '#dcc08a'], [1, '#c9aa72']]); rr(x, y, ww, hh, k * 3); ctx.fill(); };
       road(PX(arena.cx) - 5 * k, PY(arena.cy), 10 * k, (G.y1 - arena.cy) * k);
@@ -958,7 +965,7 @@
     const lw = Math.max(1.6, R * .07);
     circle(0, 0, R * .98); FS(lgr(0, -R, 0, R, [[0, '#8a7562'], [1, '#5a4736']]), lw);
     circle(0, 0, R * .68); FS(lgr(0, -R, 0, R, [[0, '#6e5b4a'], [1, '#43352a']]), lw * .8);
-    ctx.save(); ctx.rotate(b.aimA); const rec = b.recoil * R * .3;
+    ctx.save(); ctx.rotate(b.aimA - (b._fa || 0)); const rec = b.recoil * R * .3;
     ctx.beginPath(); rr(-R * .25 - rec, -R * .32, R * 1.6, R * .64, R * .16); FS(lgr(0, -R * .32, 0, R * .32, [[0, '#6b6b7a'], [.4, '#3e3e4a'], [1, '#22222b']]), lw);
     ctx.beginPath(); rr(R * 1.02 - rec, -R * .4, R * .24, R * .8, R * .08); FS('#8a8a99', lw);
     ctx.fillStyle = 'rgba(255,255,255,.35)'; ctx.fillRect(-R * .1 - rec, -R * .24, R * 1.0, R * .1); ctx.restore();
@@ -977,7 +984,7 @@
     const lw = Math.max(1.6, R * .07);
     circle(0, R * .08, R * .98); FS(lgr(0, -R, 0, R, [[0, '#6a6a7c'], [1, '#3a3a48']]), lw);
     circle(0, 0, R * .62); FS('#20202a', lw * .8);
-    ctx.save(); ctx.rotate(b.aimA); ctx.beginPath(); rr(-R * .22, -R * .32, R * 1.15, R * .64, R * .14); FS(lgr(0, -R * .3, 0, R * .3, [[0, '#e0b64c'], [1, '#9a7420']]), lw); ctx.restore();
+    ctx.save(); ctx.rotate(b.aimA - (b._fa || 0)); ctx.beginPath(); rr(-R * .22, -R * .32, R * 1.15, R * .64, R * .14); FS(lgr(0, -R * .3, 0, R * .3, [[0, '#e0b64c'], [1, '#9a7420']]), lw); ctx.restore();
     ctx.strokeStyle = 'rgba(255,255,255,.3)'; ctx.lineWidth = 1.4; circle(0, R * .08, R * .8); ctx.stroke();
   }
   function bAir(R, b, t) {
@@ -1059,16 +1066,27 @@
     if (b.collT < 6) { ctx.globalAlpha = 1 - b.collT / 6; flame(0, 0, R * .35, t, b.id); ctx.globalAlpha = 1; }
   }
 
+  // Góc "mặt tiền" của nhà: quay ra hướng ngoài tâm sân, để nhà 4 phía của sân hình thoi trông xoay theo đúng cạnh
+  function facingAngle(b) {
+    const team = mode === 'team', bx = team ? (arena.bx || 0) : 0;
+    const cx = team ? (b.team === 'red' ? arena.cx + bx : arena.cx - bx) : arena.cx;
+    const cy = team ? (b.team === 'red' ? arena.h - arena.cy : arena.cy) : arena.cy;
+    const dx = b.x - cx, dy = b.y - cy;
+    if (Math.abs(dx) < .5 && Math.abs(dy) < .5) return 0; // Nhà Chính ở tâm: giữ hướng mặc định
+    return Math.atan2(dy, dx) - Math.PI / 2;
+  }
   function drawBuilding(b, t) {
     const R = b.radius * k * BS(), x = PX(b.x), y = PY(b.y), hpr = b.maxHp > 0 ? Math.max(0, b.dHp / b.maxHp) : 0;
     ctx.save(); ctx.translate(x + (b.hitT > 0 ? rand(-1.5, 1.5) : 0), y);
+    const fa = b._fa = facingAngle(b);
+    ctx.save(); ctx.rotate(fa); // phần thân nhà xoay theo hướng ra ngoài tâm sân
     const bsp = bSprite(b.type);
     if (bsp && bsp.e.plinth === false) { ctx.fillStyle = 'rgba(0,0,0,.3)'; ell(R * .15, R * .72, R * 1.2, R * .5); ctx.fill(); if (mode === 'team' && b.team !== 'def') { ctx.strokeStyle = TC(b.team); ctx.lineWidth = Math.max(2.5, R * .1); ell(0, R * .62, R * 1.1, R * .45); ctx.stroke(); } }
     else plinth(R, b);
     if (b.dead) {
       drawRubble(b, R, t);
       if (b.collT < .6) { const p = b.collT / .6; ctx.translate(0, R * .6); ctx.scale(1 + .12 * p, 1 - .85 * p); ctx.translate(0, -R * .6); ctx.globalAlpha = 1 - p; drawBody(b, R, t, 1); }
-      ctx.restore(); return;
+      ctx.restore(); ctx.restore(); return;
     }
     drawBody(b, R, t, 1 - hpr);
     if (b.hitT > 0) { ctx.fillStyle = 'rgba(255,255,255,' + b.hitT * 2 + ')'; circle(0, -R * .2, R * .9); ctx.fill(); }
@@ -1078,6 +1096,7 @@
       ctx.fillStyle = 'rgba(220,245,255,.92)';
       for (let i = 0; i < 5; i++) { const a = i * 1.26 - .3; ctx.beginPath(); ctx.moveTo(Math.cos(a) * R * .8, Math.sin(a) * R * .8); ctx.lineTo(Math.cos(a - .12) * R * 1.05, Math.sin(a - .12) * R * 1.05 - R * .35); ctx.lineTo(Math.cos(a + .12) * R * 1.05, Math.sin(a + .12) * R * 1.05); ctx.fill(); }
     }
+    ctx.restore(); // hết phần xoay theo hướng nhà - thanh máu bên dưới vẽ thẳng, không xoay, để luôn đọc được
     if (hpr < .999) {
       const w = R * 1.8, hh = Math.max(5, k * .95), yy = -R * (b.type === 'townHall' ? 2.15 : 1.6);
       ctx.beginPath(); rr(-w / 2 - 2, yy - 2, w + 4, hh + 4, hh); ctx.fillStyle = 'rgba(20,6,26,.9)'; ctx.fill();
