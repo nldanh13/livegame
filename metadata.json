@@ -1,0 +1,6 @@
+{
+  "name": "Công thành chiến",
+  "description": "TikTok Live siege battle game with real-time troop spawning, team combat, and OBS overlay",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

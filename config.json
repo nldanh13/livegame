@@ -1,0 +1,691 @@
+{
+  "arena": {
+    "cx": 50,
+    "cy": 46
+  },
+  "town": {
+    "bossEvery": 5,
+    "bossHpMultiplier": 1.5,
+    "bossExtraSec": 60
+  },
+  "round": {
+    "durationSec": 180,
+    "breakSec": 12,
+    "maxUnits": 150,
+    "golden": {
+      "sec": 20,
+      "mult": 2
+    }
+  },
+  "difficulty": {
+    "start": 1,
+    "min": 0.5,
+    "max": 2,
+    "easeOnTimeout": 0.12,
+    "hardenOnFastWin": 0.15,
+    "fastWinRatio": 0.5,
+    "perLevelHp": 0.15,
+    "perLevelDps": 0.06,
+    "lateRush": {
+      "startFrac": 0.3,
+      "maxDefMult": 1.35
+    }
+  },
+  "stars": {
+    "half": 0.5
+  },
+  "combo": {
+    "enabled": true,
+    "windowSec": 7,
+    "stepEvery": 3,
+    "bonusPerStep": 0.1,
+    "maxMultiplier": 2
+  },
+  "effects": {
+    "epicPoints": 100,
+    "legendaryPoints": 500
+  },
+  "buildings": {
+    "townHall": {
+      "label": "Nhà Chính",
+      "kind": "townhall",
+      "hp": 1600,
+      "radius": 6,
+      "weight": 22
+    },
+    "cannon": {
+      "label": "Pháo",
+      "kind": "defense",
+      "hp": 380,
+      "radius": 3.2,
+      "weight": 8,
+      "dps": 20,
+      "range": 15,
+      "targets": "ground"
+    },
+    "archerTower": {
+      "label": "Tháp cung",
+      "kind": "defense",
+      "hp": 320,
+      "radius": 3,
+      "weight": 8,
+      "dps": 13,
+      "range": 18,
+      "targets": "both"
+    },
+    "mortar": {
+      "label": "Súng cối",
+      "kind": "defense",
+      "hp": 360,
+      "radius": 3.4,
+      "weight": 8,
+      "dps": 12,
+      "range": 24,
+      "minRange": 6,
+      "splash": 4,
+      "targets": "ground"
+    },
+    "airDefense": {
+      "label": "Phòng không",
+      "kind": "defense",
+      "hp": 340,
+      "radius": 3,
+      "weight": 8,
+      "dps": 38,
+      "range": 17,
+      "targets": "air"
+    },
+    "wizardTower": {
+      "label": "Tháp pháp sư",
+      "kind": "defense",
+      "hp": 380,
+      "radius": 3.2,
+      "weight": 9,
+      "dps": 16,
+      "range": 16,
+      "splash": 3.5,
+      "targets": "both"
+    },
+    "infernoTower": {
+      "label": "Tháp lửa",
+      "kind": "defense",
+      "hp": 520,
+      "radius": 3.4,
+      "weight": 12,
+      "dps": 10,
+      "rampDps": 70,
+      "rampSec": 6,
+      "range": 15,
+      "targets": "both"
+    },
+    "goldMine": {
+      "label": "Mỏ vàng",
+      "kind": "resource",
+      "hp": 220,
+      "radius": 3,
+      "weight": 3.5
+    },
+    "elixirCollector": {
+      "label": "Bình linh dược",
+      "kind": "resource",
+      "hp": 220,
+      "radius": 3,
+      "weight": 3.5
+    },
+    "storage": {
+      "label": "Kho chứa",
+      "kind": "resource",
+      "hp": 260,
+      "radius": 3.2,
+      "weight": 3.5
+    }
+  },
+  "layout": [
+    {
+      "type": "townHall",
+      "minLevel": 1
+    },
+    {
+      "type": "cannon",
+      "minLevel": 1,
+      "count": 2
+    },
+    {
+      "type": "archerTower",
+      "minLevel": 1
+    },
+    {
+      "type": "goldMine",
+      "minLevel": 1
+    },
+    {
+      "type": "elixirCollector",
+      "minLevel": 1
+    },
+    {
+      "type": "storage",
+      "minLevel": 1
+    },
+    {
+      "type": "airDefense",
+      "minLevel": 2
+    },
+    {
+      "type": "mortar",
+      "minLevel": 3
+    },
+    {
+      "type": "archerTower",
+      "minLevel": 4
+    },
+    {
+      "type": "wizardTower",
+      "minLevel": 5
+    },
+    {
+      "type": "goldMine",
+      "minLevel": 5
+    },
+    {
+      "type": "infernoTower",
+      "minLevel": 7
+    },
+    {
+      "type": "cannon",
+      "minLevel": 8
+    }
+  ],
+  "bossLayout": [
+    {
+      "type": "infernoTower",
+      "count": 2
+    },
+    {
+      "type": "wizardTower"
+    }
+  ],
+  "modifiers": [
+    {
+      "id": "ironWalls",
+      "label": "Giáp sắt: công trình +30% máu",
+      "hp": 1.3
+    },
+    {
+      "id": "gunners",
+      "label": "Pháo binh: phòng thủ +30% sát thương",
+      "defDps": 1.3
+    },
+    {
+      "id": "goldenHour",
+      "label": "Giờ vàng: lính +25% sát thương",
+      "troopDps": 1.25
+    }
+  ],
+  "bossModifier": {
+    "id": "boss",
+    "label": "Boss: nổi điên khi bị phá 50%"
+  },
+  "troops": {
+    "archer": {
+      "label": "Cung thủ",
+      "look": "ranged",
+      "hp": 30,
+      "dps": 8,
+      "speed": 9,
+      "range": 9,
+      "target": "nearest",
+      "color": "#e0568f",
+      "accent": "#7a1f4d",
+      "size": 0.8,
+      "maxSpawn": 6,
+      "hits": "both",
+      "foe": "seek",
+      "unitDps": 9,
+      "hat": "hood",
+      "hair": "#ff8fc8"
+    },
+    "barbarian": {
+      "label": "Dũng sĩ",
+      "look": "melee",
+      "hp": 55,
+      "dps": 9,
+      "speed": 9,
+      "range": 1.2,
+      "target": "nearest",
+      "color": "#f2b544",
+      "accent": "#c97a1a",
+      "size": 1,
+      "maxSpawn": 8,
+      "hits": "ground",
+      "foe": "seek",
+      "unitDps": 12,
+      "hair": "#ffd23a",
+      "beard": "mustache"
+    },
+    "hogRider": {
+      "label": "Kỵ sĩ heo",
+      "look": "hog",
+      "hp": 160,
+      "dps": 22,
+      "speed": 15,
+      "range": 1.2,
+      "target": "defense",
+      "color": "#c98a5a",
+      "accent": "#5a3320",
+      "size": 1.3,
+      "maxSpawn": 4,
+      "hits": "ground",
+      "foe": "contact",
+      "unitDps": 20
+    },
+    "giant": {
+      "label": "Đại lực sĩ",
+      "look": "melee",
+      "hp": 520,
+      "dps": 26,
+      "speed": 6,
+      "range": 1.4,
+      "target": "defense",
+      "color": "#d9825b",
+      "accent": "#8a3d1f",
+      "size": 1.7,
+      "maxSpawn": 3,
+      "hits": "ground",
+      "foe": "contact",
+      "unitDps": 24,
+      "hair": "#ff9a3a",
+      "beard": "beard"
+    },
+    "balloon": {
+      "label": "Khinh khí cầu",
+      "look": "balloon",
+      "air": true,
+      "hp": 300,
+      "dps": 45,
+      "speed": 5.5,
+      "range": 1,
+      "target": "defense",
+      "color": "#e5533d",
+      "accent": "#7a1f1f",
+      "size": 1.6,
+      "maxSpawn": 3,
+      "hits": "none",
+      "foe": "none"
+    },
+    "electroDragon": {
+      "label": "Rồng sét",
+      "look": "dragon",
+      "air": true,
+      "hp": 1100,
+      "dps": 55,
+      "speed": 7,
+      "range": 6,
+      "target": "nearest",
+      "chain": 2,
+      "color": "#5cc8ff",
+      "accent": "#1c6fd1",
+      "size": 2.3,
+      "maxSpawn": 2,
+      "hits": "both",
+      "foe": "seek",
+      "unitDps": 45,
+      "unitSplash": 3
+    },
+    "wizard": {
+      "label": "Pháp sư",
+      "look": "ranged",
+      "hp": 60,
+      "dps": 22,
+      "speed": 8,
+      "range": 8,
+      "target": "nearest",
+      "color": "#7a5cff",
+      "accent": "#3b2a8a",
+      "size": 0.95,
+      "maxSpawn": 4,
+      "hits": "both",
+      "foe": "seek",
+      "unitDps": 30,
+      "unitSplash": 3.5,
+      "hat": "wizard"
+    },
+    "minion": {
+      "label": "Yêu tinh bay",
+      "look": "dragon",
+      "air": true,
+      "hp": 45,
+      "dps": 10,
+      "speed": 12,
+      "range": 3,
+      "target": "nearest",
+      "color": "#4a6ae0",
+      "accent": "#1f2f78",
+      "size": 0.7,
+      "maxSpawn": 8,
+      "hits": "both",
+      "foe": "seek",
+      "unitDps": 14
+    }
+  },
+  "spells": {
+    "lightning": {
+      "label": "Sét",
+      "kind": "instant",
+      "bolts": 3,
+      "damage": 300,
+      "color": "#7fd4ff"
+    },
+    "freeze": {
+      "label": "Đóng băng",
+      "kind": "freeze",
+      "durationSec": 8,
+      "color": "#a8e6ff"
+    },
+    "heal": {
+      "label": "Hồi máu",
+      "kind": "heal",
+      "heal": 0.5,
+      "color": "#6ff0a0"
+    },
+    "rage": {
+      "label": "Cuồng nộ",
+      "kind": "buff",
+      "multiplier": 1.5,
+      "durationSec": 15,
+      "color": "#b56cff"
+    },
+    "repair": {
+      "label": "Sửa chữa",
+      "kind": "repair",
+      "heal": 0.3,
+      "color": "#7dffa0"
+    },
+    "meteor": {
+      "label": "Thiên thạch",
+      "kind": "meteor",
+      "damage": 450,
+      "radius": 15,
+      "unitDamage": 200,
+      "color": "#ff8a3d"
+    },
+    "poison": {
+      "label": "Độc",
+      "kind": "poison",
+      "durationSec": 10,
+      "pctPerSec": 0.03,
+      "color": "#8be04a"
+    },
+    "shield": {
+      "label": "Khiên",
+      "kind": "shield",
+      "durationSec": 8,
+      "color": "#7fd4ff"
+    }
+  },
+  "ranks": [
+    {
+      "name": "Tân binh",
+      "min": 0,
+      "mult": 1,
+      "color": "#d8cfe0"
+    },
+    {
+      "name": "Chiến binh",
+      "min": 1500,
+      "mult": 1.1,
+      "color": "#e6a36a"
+    },
+    {
+      "name": "Tinh anh",
+      "min": 8000,
+      "mult": 1.25,
+      "color": "#9fd4ff"
+    },
+    {
+      "name": "Huyền thoại",
+      "min": 30000,
+      "mult": 1.5,
+      "color": "#ffcf4a"
+    }
+  ],
+  "gifts": {
+    "Rose": "barbarian",
+    "Ice Cream Cone": "giant",
+    "Lion": "electroDragon",
+    "Finger Heart": "lightning",
+    "Heart Me": "freeze",
+    "Hand Hearts": "heal",
+    "Galaxy": "rage",
+    "Doughnut": "repair",
+    "Rocket": "meteor",
+    "Money Gun": "poison",
+    "Perfume": "shield"
+  },
+  "diamondTiers": [
+    {
+      "minDiamonds": 500,
+      "troop": "electroDragon"
+    },
+    {
+      "minDiamonds": 100,
+      "troop": "balloon"
+    },
+    {
+      "minDiamonds": 30,
+      "troop": "giant"
+    },
+    {
+      "minDiamonds": 20,
+      "troop": "minion"
+    },
+    {
+      "minDiamonds": 10,
+      "troop": "hogRider"
+    },
+    {
+      "minDiamonds": 5,
+      "troop": "wizard"
+    },
+    {
+      "minDiamonds": 1,
+      "troop": "barbarian"
+    }
+  ],
+  "likes": {
+    "enabled": true,
+    "likesPerTroop": 30,
+    "troop": "archer"
+  },
+  "events": {
+    "follow": {
+      "enabled": true,
+      "troop": "barbarian",
+      "count": 1
+    },
+    "share": {
+      "enabled": true,
+      "troop": "archer",
+      "count": 5
+    }
+  },
+  "chat": {
+    "enabled": true,
+    "cooldownSec": 45,
+    "commands": {
+      "!tancong": "barbarian",
+      "!cung": "archer"
+    }
+  },
+  "mode": "solo",
+  "team": {
+    "level": 3,
+    "durationSec": 240,
+    "breakSec": 15,
+    "baseScale": 0.85,
+    "baseOffsetX": 0,
+    "arena": {
+      "w": 100,
+      "h": 140,
+      "cy": 36
+    },
+    "names": {
+      "blue": "Xanh",
+      "red": "Đỏ"
+    },
+    "colors": {
+      "blue": "#3fa0ff",
+      "red": "#ff4d4d"
+    },
+    "joinCommands": {
+      "!xanh": "blue",
+      "!blue": "blue",
+      "!do": "red",
+      "!đỏ": "red",
+      "!red": "red",
+      "!doi": "auto",
+      "!đội": "auto"
+    },
+    "handicap": {
+      "enabled": true,
+      "activeMinutes": 20,
+      "perRatio": 0.25,
+      "maxBonus": 0.5
+    },
+    "hpMult": 1.8,
+    "catchUp": {
+      "gap": 0.3,
+      "bonus": 0.2
+    },
+    "contactRadius": 7,
+    "unitCredit": 0.5,
+    "clashSec": 90,
+    "siegeBonus": 1.25,
+    "golden": {
+      "sec": 30,
+      "mult": 2
+    },
+    "overtimeSec": 45,
+    "guardian": {
+      "atSec": 55,
+      "leaveSec": 70,
+      "hp": 1800,
+      "hpPerPlayer": 0.03,
+      "maxPlayers": 40,
+      "dps": 26,
+      "range": 9,
+      "splash": 4.5,
+      "buffSec": 20,
+      "buffMult": 1.5,
+      "killFund": 60
+    },
+    "fund": {
+      "start": 350,
+      "growth": 1.35,
+      "likePoints": 1,
+      "followPoints": 5,
+      "sharePoints": 10,
+      "chatPoints": 1
+    },
+    "bounty": {
+      "minPoints": 40,
+      "fund": 12
+    },
+    "cheer": {
+      "start": 45,
+      "growth": 1.25,
+      "buffSec": 12,
+      "buffMult": 1.3,
+      "healFrac": 0.3,
+      "perUserGapSec": 1.5,
+      "perUserCap": 30
+    },
+    "lead": {
+      "flipMargin": 0.03,
+      "closeMargin": 0.05,
+      "closeWithinSec": 45
+    },
+    "multCap": 2.2,
+    "maxUnitsPerTeam": 80
+  },
+  "npcs": {
+    "guardian": {
+      "label": "Rồng canh kho báu",
+      "look": "dragon",
+      "air": false,
+      "hp": 2600,
+      "size": 3.6,
+      "color": "#e0483c",
+      "accent": "#7a1a1a"
+    },
+    "siegeMachine": {
+      "label": "Máy phá thành",
+      "look": "siege",
+      "hp": 1800,
+      "dps": 60,
+      "speed": 4.5,
+      "range": 1.6,
+      "target": "defense",
+      "hits": "none",
+      "foe": "none",
+      "color": "#9a6a3c",
+      "accent": "#4a2e18",
+      "size": 2.3
+    },
+    "hero": {
+      "label": "Tướng",
+      "look": "melee",
+      "crown": true,
+      "hp": 1100,
+      "dps": 36,
+      "unitDps": 55,
+      "speed": 8,
+      "range": 1.6,
+      "target": "nearest",
+      "hits": "ground",
+      "foe": "seek",
+      "color": "#ffcf4a",
+      "accent": "#b8801a",
+      "size": 2.1
+    }
+  },
+  "moderation": {
+    "enabled": true,
+    "replaceWith": "Khán giả",
+    "maxLen": 24,
+    "badWords": [
+      "dm",
+      "dmm",
+      "dcm",
+      "dcmm",
+      "vcl",
+      "vl",
+      "cc",
+      "dit",
+      "lon",
+      "cac",
+      "buoi",
+      "cut",
+      "deo",
+      "clgt",
+      "ditme",
+      "concac",
+      "concho",
+      "ditcon",
+      "loncon",
+      "cailon",
+      "cailoz",
+      "fuck",
+      "shit",
+      "bitch"
+    ]
+  },
+  "demo": {
+    "enabled": true,
+    "idleSec": 30,
+    "everySec": 3
+  },
+  "brand": {
+    "name": "",
+    "text": "Nhớ theo dõi kênh để không bỏ lỡ trận sau!"
+  }
+}

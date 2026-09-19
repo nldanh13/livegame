@@ -1,0 +1,20 @@
+/* Tùy chỉnh giao diện HUD mà không cần sửa index.html. File này được nạp tự động (nếu có).
+   Ví dụ: dùng ảnh khung do bạn thiết kế (Canva, Figma...) thay cho khung CSS mặc định.
+   Bỏ dấu comment và chỉnh đường dẫn ảnh để dùng thử. */
+
+/* Đổi màu chủ đạo:
+:root { --gold: #ffd76a; --rim: #f0b64a; --p1: #40295a; --p2: #24153a; }
+*/
+
+/* Khung thanh phá hủy / thanh đội bằng ảnh (nên dùng ảnh 9-slice, nền trong suốt):
+.bar, .tb { border: 0; border-image: url('/assets/ui/bar-frame.png') 30 fill / 12px stretch; box-shadow: none; }
+*/
+
+/* Ảnh nền cho panel (danh sách top, bảng hướng dẫn, thẻ tin nhắn):
+.chip, .ev, #guide, .tpanel { background: url('/assets/ui/panel.png') center / 100% 100% no-repeat; border: 0; }
+*/
+
+/* Đổi font chữ (đặt file .woff2 vào assets/ui/):
+@font-face { font-family: 'MyFont'; src: url('/assets/ui/myfont.woff2') format('woff2'); }
+html, body { font-family: 'MyFont', 'Baloo 2', sans-serif; }
+*/
