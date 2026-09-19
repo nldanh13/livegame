@@ -11,7 +11,11 @@
   "round": {
     "durationSec": 180,
     "breakSec": 12,
-    "maxUnits": 150
+    "maxUnits": 150,
+    "golden": {
+      "sec": 20,
+      "mult": 2
+    }
   },
   "difficulty": {
     "start": 1,
@@ -21,7 +25,11 @@
     "hardenOnFastWin": 0.15,
     "fastWinRatio": 0.5,
     "perLevelHp": 0.15,
-    "perLevelDps": 0.06
+    "perLevelDps": 0.06,
+    "lateRush": {
+      "startFrac": 0.3,
+      "maxDefMult": 1.35
+    }
   },
   "stars": {
     "half": 0.5

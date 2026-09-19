@@ -40,6 +40,7 @@ class Game {
     this.golden = false; this.overtime = false; this.overtimeUsed = false; this.clearReason = null;
     this.guardian = null; this.guardianState = 0; this.activePlayers = 0;
     this.leader = null; this.slowT = 0; this.closeT = 0; this.bountyFlushT = 0; this.flip = false;
+    this.lateRushOn = false;
   }
 
   setConfig(c) { this.cfg = c; }
@@ -89,6 +90,7 @@ class Game {
     this.clashLeft = team ? (c.team.clashSec || 90) : 0;
     this.golden = false; this.overtime = false; this.overtimeUsed = false; this.clearReason = null;
     this.guardian = null; this.guardianState = 0; this.leader = null; this.slowT = 0; this.closeT = 0; this.bountyFlushT = 0;
+    this.lateRushOn = false;
     this._buildBase();
     for (const t of this.teams) this.T[t].tw = this._weightOf(this.ENEMY[t]) || 1;
   }
@@ -159,7 +161,7 @@ class Game {
 
   topPlayers(n = 3, team = null) {
     return this.owners.filter((o) => !team || o.team === team).sort((a, b) => b.dmg - a.dmg).slice(0, n).filter((o) => o.dmg > 0)
-      .map((o) => ({ name: o.name, avatar: o.avatar, dmg: Math.round(o.dmg), kills: o.kills, frags: o.frags, color: o.color, team: o.team }));
+      .map((o) => ({ i: o.i, name: o.name, avatar: o.avatar, dmg: Math.round(o.dmg), kills: o.kills, frags: o.frags, color: o.color, team: o.team }));
   }
 
   _credit(ownerIdx, amount) {
@@ -193,7 +195,11 @@ class Game {
     const cap = this.mode === 'team' && this.cfg.team.multCap ? this.cfg.team.multCap : Infinity;
     return Math.min(stack, cap) * this.goldenMult();
   }
-  goldenMult() { return this.golden ? ((this.cfg.team && this.cfg.team.golden && this.cfg.team.golden.mult) || 2) : 1; }
+  goldenMult() {
+    if (!this.golden) return 1;
+    const g = this.mode === 'team' ? (this.cfg.team && this.cfg.team.golden) : (this.cfg.round && this.cfg.round.golden);
+    return (g && g.mult) || 2;
+  }
   setActive(n) { this.activePlayers = n || 0; }
   // Đội đang bị bỏ xa được cộng sát thương để trận không kết thúc quá sớm
   _catchUp(team) {
@@ -202,7 +208,20 @@ class Game {
     const other = this.teams.find((t) => t !== team);
     return this.destruction(other) - this.destruction(team) >= cu.gap ? 1 + cu.bonus : 1;
   }
-  defMult() { return this.mode === 'solo' && this.enraged ? 1.4 : 1; }
+  // Càng gần hết giờ, phòng thủ (solo) càng mạnh dần lên để trận đấu dồn dập hơn, tách biệt với boss nổi điên
+  defMult() {
+    if (this.mode !== 'solo') return 1;
+    let m = this.enraged ? 1.4 : 1;
+    const lr = this.cfg.difficulty && this.cfg.difficulty.lateRush;
+    if (lr && lr.startFrac && this.roundLen > 0) {
+      const frac = this.timeLeft / this.roundLen;
+      if (frac <= lr.startFrac) {
+        const p = clamp(1 - frac / lr.startFrac, 0, 1);
+        m = Math.max(m, 1 + p * ((lr.maxDefMult || 1.4) - 1));
+      }
+    }
+    return m;
+  }
   setHandicap(h) { this.handicap = h || {}; }
 
   /* ------------------------------------------------------------ */
@@ -423,7 +442,7 @@ class Game {
       this.clashLeft -= dt;
       if (this.clashLeft <= 0) { this.clashLeft = 0; this.phase = 'siege'; this.emit('phase', { phase: 'siege', bonus: (this.cfg.team && this.cfg.team.siegeBonus) || 1 }); }
     }
-    if (this.mode === 'team') this._teamEvents(dt);
+    if (this.mode === 'team') this._teamEvents(dt); else this._soloEvents(dt);
     this._unitsStep(dt);
     this._applyPending();
     if (this.status === 'playing') this._defensesStep(dt);
@@ -441,6 +460,18 @@ class Game {
         this.timeLeft = 0; this.status = 'timeup';
         this.emit('timeup', {});
       }
+    }
+  }
+
+  /* ---------- Sự kiện trận solo: giờ vàng cuối trận, phòng thủ tăng cường ---------- */
+  _soloEvents(dt) {
+    const rc = this.cfg.round || {}, g = rc.golden;
+    if (g && g.sec && !this.golden && this.timeLeft > 0 && this.timeLeft <= g.sec) {
+      this.golden = true; this.emit('golden', { mult: g.mult || 2, sec: Math.max(0, Math.round(this.timeLeft)) });
+    }
+    const lr = this.cfg.difficulty && this.cfg.difficulty.lateRush;
+    if (lr && lr.startFrac && !this.lateRushOn && this.roundLen > 0 && this.timeLeft / this.roundLen <= lr.startFrac) {
+      this.lateRushOn = true; this.emit('lateRush', {});
     }
   }
 
@@ -788,7 +819,7 @@ class Game {
       tl: Math.round(this.timeLeft * 10) / 10,
       en: this.enraged,
       ph: this.phase, pl: r1(Math.max(0, this.clashLeft)),
-      gd: this.golden, ot: this.overtime,
+      gd: this.golden, ot: this.overtime, lr: this.lateRushOn,
       bo: gu ? { id: gu.id, hp: Math.round(gu.hp / gu.maxHp * 100), left: r1(gu.left) } : null,
       T,
     };

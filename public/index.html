@@ -65,11 +65,13 @@
   .chip span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .chip b { color: var(--ember); font-weight: 800; }
   .chip.bounty { border-color: #ff4a5e; box-shadow: 0 0 12px rgba(255, 60, 80, .75), 0 3px 0 rgba(0,0,0,.35); }
+  .chip.lead { border-color: var(--gold); box-shadow: 0 0 14px rgba(255, 207, 74, .85), 0 3px 0 rgba(0,0,0,.35); }
+  .chip.lead b { color: var(--gold); }
 
   #badges { display: flex; justify-content: center; gap: .8vh; margin-top: 1vh; flex-wrap: wrap; }
   .badge { position: relative; overflow: hidden; border-radius: 12px; padding: .05em .8em; font-weight: 800; font-size: clamp(12px, 1.9vh, 21px); background: linear-gradient(#2e1d45, #1a0e2b); border: 2px solid var(--c); box-shadow: 0 3px 0 rgba(0,0,0,.4); text-shadow: var(--out); }
   .badge i { position: absolute; left: 0; bottom: 0; height: 4px; background: var(--c); transition: width .2s linear; }
-  #combo { --c: var(--ember); } #rage { --c: #b56cff; color: #e6ceff; } #freeze { --c: #a8e6ff; color: #d8f4ff; } #enrage { --c: #ff4a5e; color: #ffb0b8; } #mod { --c: #ffcf4a; font-weight: 600; }
+  #combo { --c: var(--ember); } #rage { --c: #b56cff; color: #e6ceff; } #freeze { --c: #a8e6ff; color: #d8f4ff; } #enrage { --c: #ff4a5e; color: #ffb0b8; } #rush { --c: #ff8a3d; color: #ffd9b0; } #mod { --c: #ffcf4a; font-weight: 600; }
 
   /* ---------- Feed ---------- */
   #feed { position: fixed; left: 2.5vw; bottom: 20vh; width: min(66vw, 460px); display: flex; flex-direction: column; gap: .7vh; }
@@ -216,6 +218,7 @@
   <div id="badges">
     <div class="badge" id="mod" hidden><span></span></div>
     <div class="badge" id="enrage" hidden><span>Boss nổi điên: phòng thủ +40%</span></div>
+    <div class="badge" id="rush" hidden><span>Phòng thủ tăng cường!</span></div>
     <div class="badge" id="combo" hidden><span></span><i></i></div>
     <div class="badge" id="rage" hidden><span></span><i></i></div>
     <div class="badge" id="freeze" hidden><span></span><i></i></div>
@@ -423,7 +426,7 @@
   let cfg = { troops: {}, spells: {}, buildings: {}, npcs: {}, gifts: {}, brand: {}, team: { names: { blue: 'Xanh', red: 'Đỏ' }, colors: { blue: '#3fa0ff', red: '#ff4d4d' }, hint: '!xanh / !do' } };
   const bmap = new Map(), umap = new Map(), owners = new Map();
   let level = 1, boss = false, modLabel = '', status = 'playing';
-  let hud = { T: {}, tl: 0, en: false, top: [], bo: null, gd: false, ot: false, phase: null, pl: 0 }, tlAt = 0;
+  let hud = { T: {}, tl: 0, en: false, top: [], bo: null, gd: false, ot: false, lr: false, phase: null, pl: 0 }, tlAt = 0;
   let teamScore = { blue: 0, red: 0, draws: 0 }, teamInfo = { counts: { blue: 0, red: 0 }, handicap: { blue: 1, red: 1 } };
   let dispP = { atk: 0, blue: 0, red: 0 }, shake = 0, skyFlash = 0, resultUntil = 0, lastBoUntil = 0;
   const floaters = [], particles = [], projectiles = [], rings = [], bolts = [], meteors = [], decals = [];
@@ -506,7 +509,7 @@
       for (let i = 0; i < (boom ? 40 : 10); i++) particles.push({ x: PX(u.x), y: PY(u.y) - 10, vx: rand(-150, 150) * (boom ? 2 : 1), vy: rand(-200, 40) * (boom ? 2 : 1), life: rand(.3, .7) * (boom ? 2 : 1), color: Math.random() < .5 ? u.cfg.color : '#ddd', size: rand(3, 6) * Math.max(1, k / 8), g: 500 });
     }
     hud.T = s.T || {}; hud.tl = s.tl; tlAt = performance.now(); hud.en = s.en; hud.phase = s.ph || null; hud.pl = s.pl || 0;
-    hud.gd = !!s.gd; hud.ot = !!s.ot; hud.bo = s.bo || null; if (hud.bo) lastBoUntil = performance.now() + 500;
+    hud.gd = !!s.gd; hud.ot = !!s.ot; hud.lr = !!s.lr; hud.bo = s.bo || null; if (hud.bo) lastBoUntil = performance.now() + 500;
     hud.top = s.top || (mode === 'team' ? { blue: [], red: [] } : []);
     renderStars(); renderTop();
   }
@@ -515,7 +518,15 @@
     hudStars.forEach((d, i) => d.classList.toggle('on', !!TS('atk').s[i]));
     for (const t of ['blue', 'red']) hudStarsT[t].forEach((d, i) => d.classList.toggle('on', !!TS(t).s[i]));
   }
-  function chipFor(p, bounty) { const c = el('div', 'chip' + (bounty ? ' bounty' : '')); c.append(avatar(p.avatar, p.color), el('span', '', p.name), el('b', '', fmt(p.dmg !== undefined ? p.dmg : p.pts))); return c; }
+  function chipFor(p, bounty, lead) { const c = el('div', 'chip' + (bounty ? ' bounty' : '') + (lead ? ' lead' : '')); c.append(avatar(p.avatar, p.color), el('span', '', (lead ? '👑 ' : '') + p.name), el('b', '', fmt(p.dmg !== undefined ? p.dmg : p.pts))); return c; }
+  let topLeaderId = null;
+  function onTopChange(p) {
+    sfx.coin(); shake = Math.max(shake, 8);
+    banner((p.name || 'Khán giả').toUpperCase() + ' VƯƠN LÊN DẪN ĐẦU!', '', true);
+    const r = $('top').getBoundingClientRect();
+    for (let i = 0; i < 30; i++) particles.push({ x: r.left + r.width / 2, y: r.top + r.height / 2, vx: rand(-160, 160), vy: rand(-260, -40), life: rand(.6, 1.1), color: ['#ffe27a', '#fff6c0', '#ffb020'][i % 3], size: rand(3, 6), g: 500 });
+    noteFeed(p.name + ' vươn lên dẫn đầu bảng xếp hạng!', 'Tặng quà để giành lại ngôi đầu', '#ffcf4a');
+  }
   function renderTop() {
     if (mode === 'team') { // hàng "đối đầu": người đóng góp nhiều nhất mỗi đội (điểm quà), có dấu truy nã
       for (const t of ['blue', 'red']) {
@@ -525,9 +536,14 @@
       }
       return;
     }
-    const top = $('top'), key = JSON.stringify(hud.top);
+    const arr = hud.top || [], leader = arr[0];
+    if (leader && leader.i !== undefined) {
+      if (topLeaderId !== null && leader.i !== topLeaderId) onTopChange(leader);
+      topLeaderId = leader.i;
+    }
+    const top = $('top'), key = JSON.stringify(arr);
     if (top.dataset.k === key) return; top.dataset.k = key; top.replaceChildren();
-    (hud.top || []).forEach((p) => top.append(chipFor(p)));
+    arr.forEach((p, i) => top.append(chipFor(p, false, i === 0)));
   }
 
   /* ================== Kho hình ảnh: sprite + chất liệu (tùy chọn) ==================
@@ -1435,7 +1451,8 @@
     noteFeed((d.by || TU(d.team)) + ' hạ Rồng!', 'Đội ' + TN(d.team) + ' được ×' + d.mult + ' sát thương ' + d.buffSec + 's', TC(d.team));
   }
   function onGuardianLeft() { banner('RỒNG BAY ĐI, KHO BÁU BIẾN MẤT', '', true); noteFeed('Không ai hạ được Rồng', 'Kho báu đã biến mất', '#aaa'); }
-  function onGolden(d) { sfx.drum(); setTimeout(() => sfx.drum(), 180); setTimeout(() => sfx.gold(), 360); shake = 12; banner('GIỜ VÀNG! SÁT THƯƠNG ×' + d.mult, ''); noteFeed('GIỜ VÀNG: sát thương ×' + d.mult, '30 giây cuối, tặng quà lúc này giá trị gấp đôi!', '#ffcf4a'); }
+  function onGolden(d) { sfx.drum(); setTimeout(() => sfx.drum(), 180); setTimeout(() => sfx.gold(), 360); shake = 12; banner('GIỜ VÀNG! SÁT THƯƠNG ×' + d.mult, ''); noteFeed('GIỜ VÀNG: sát thương ×' + d.mult, 'Tặng quà lúc này giá trị gấp đôi!', '#ffcf4a'); }
+  function onLateRush() { sfx.boss(); shake = 10; banner('PHÒNG THỦ TĂNG CƯỜNG!', true, true); noteFeed('Phòng thủ tăng cường!', 'Tặng quà ngay để hạ căn cứ trước khi quá muộn', '#ff8a3d'); }
   function onOvertime(d) { sfx.boss(); shake = 18; banner('HIỆP PHỤ!', true); noteFeed('HÒA! Vào hiệp phụ ' + d.sec + ' giây', 'Đội nào phá được công trình trước sẽ thắng', '#ff4a5e'); }
   function onLeadChange(d) { sfx.drum(); shake = 8; banner(TU(d.team) + ' ĐẢO NGƯỢC TÌNH THẾ!', 't' + d.team, true); }
   function onCloseCall(d) { sfx.drum(); banner('CÂN SỨC! ' + (d.trailing ? TU(d.trailing) + ' SẮP LẬT KÈO' : 'HAI ĐỘI NGANG NHAU'), d.trailing ? 't' + d.trailing : '', true); }
@@ -1495,7 +1512,8 @@
     $('hud').hidden = mode === 'team'; $('hudT').hidden = mode !== 'team'; $('feed').classList.toggle('team', mode === 'team');
     $('hud').classList.toggle('boss', !!boss); $('lvl').textContent = 'Cấp ' + level + (boss ? ' (Boss)' : '');
     const m = $('mod'); m.hidden = !modLabel; m.firstChild.textContent = modLabel;
-    hud = { T: {}, tl: d.roundLen || 0, en: false, top: mode === 'team' ? { blue: [], red: [] } : [], bo: null, gd: false, ot: false, phase: null, pl: 0 }; tlAt = performance.now();
+    hud = { T: {}, tl: d.roundLen || 0, en: false, top: mode === 'team' ? { blue: [], red: [] } : [], bo: null, gd: false, ot: false, lr: false, phase: null, pl: 0 }; tlAt = performance.now();
+    topLeaderId = null;
     setLayout(d.layout); $('top').dataset.k = ''; $('ttBlue').dataset.k = ''; $('ttRed').dataset.k = '';
     $('tHint').textContent = 'Chat !xanh / !do chọn đội · chat lại lệnh = hô hào';
     renderStars(); renderTop();
@@ -1524,7 +1542,7 @@
   socket.on('phase', () => { sfx.rage(); shake = 10; banner('CÔNG THÀNH!', ''); ring(PX(arena.w / 2), PY(arena.h / 2), 20, AWk * .7, .9, '#ffcf4a'); });
   socket.on('enrage', () => { sfx.boss(); shake = 14; banner('BOSS NỔI ĐIÊN!', true); const c = baseCenter('def'); ring(c.x, c.y, 20, AWk * .8, .9, '#ff4a5e'); });
   socket.on('unlock', onUnlock); socket.on('morale', onMorale); socket.on('guardian', onGuardian); socket.on('guardianDown', onGuardianDown); socket.on('guardianLeft', onGuardianLeft);
-  socket.on('golden', onGolden); socket.on('overtime', onOvertime); socket.on('leadChange', onLeadChange); socket.on('closeCall', onCloseCall);
+  socket.on('golden', onGolden); socket.on('lateRush', onLateRush); socket.on('overtime', onOvertime); socket.on('leadChange', onLeadChange); socket.on('closeCall', onCloseCall);
   socket.on('catchUp', onCatchUp); socket.on('bounty', onBounty); socket.on('bountyClaimed', onBountyClaimed); socket.on('spellBlocked', onSpellBlocked);
   socket.on('demo', (d) => { $('demoTag').hidden = !d.on; });
   socket.on('roundEnd', showResult);
@@ -1574,6 +1592,7 @@
     setBadgeNode($('rage'), on && rg && localLeft(rg.l) > 0, rg ? 'Cuồng nộ ×' + rg.m + '  ' + Math.ceil(localLeft(rg.l)) + 's' : '', rg ? localLeft(rg.l) / 15 : 0);
     setBadgeNode($('freeze'), on && localLeft(T.fz) > 0, 'Đóng băng phòng thủ  ' + Math.ceil(localLeft(T.fz)) + 's', localLeft(T.fz) / 8);
     $('enrage').hidden = !(on && hud.en);
+    $('rush').hidden = !(on && hud.lr && !hud.en);
   }
 
   function updateHudTeam() {
