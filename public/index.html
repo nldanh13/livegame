@@ -173,7 +173,8 @@
 
   /* ---------- Khung dọc 9:16 (live điện thoại): chữ theo vw, tránh vùng giao diện TikTok ---------- */
   @media (max-aspect-ratio: 124/100) {
-    #hud, #hudT { top: var(--safeTop, 9vh); width: min(94vw, 900px); }
+    /* TikTok đặt cột nút tim/bình luận/chia sẻ/quà dọc theo mép phải -> HUD lệch trái, chừa mép phải trống thay vì căn giữa sát 2 mép */
+    #hud, #hudT { top: var(--safeTop, 9vh); left: 2.5vw; right: var(--safeRight, 13vw); width: auto; transform: none; }
     .meta { line-height: 1.15; }
     #lvl { font-size: 4.2vw; } #timer { font-size: 5.2vw; } #tScore { font-size: 3.4vw; } #tPhase { font-size: 3vw; }
     .bar { height: 7vw; } #pText { font-size: 3.8vw; }
@@ -184,7 +185,8 @@
     .chip { font-size: 3.2vw; max-width: 44vw; } .badge { font-size: 3vw; }
     #feed { left: 2.5vw; width: 58vw; bottom: calc(var(--safeBottom, 16vh) + 1vh); }
     #demoTag { font-size: 2.8vw; }
-    #guide { width: 36vw; bottom: calc(var(--safeBottom, 16vh) + 1vh); font-size: 2.6vw; }
+    /* Giữa màn hình, tránh cả bình luận (trái) lẫn cột nút TikTok (phải) */
+    #guide { left: 50%; right: auto; transform: translateX(-50%); width: 72vw; bottom: calc(var(--safeBottom, 16vh) + 1vh); font-size: 2.6vw; text-align: center; }
     .ev { font-size: 3.3vw; }
     #banner { font-size: 11vw; top: 38vh; } #banner.small { font-size: 7vw; }
     #result h1 { font-size: 9vw; } #result h2 { font-size: 4vw; } #result .sub { font-size: 3.6vw; } #result p { font-size: 3.4vw; }
@@ -282,13 +284,18 @@
   const fmt = (n) => Math.max(0, Math.round(n)).toLocaleString('vi-VN');
   const safeImg = (u) => (typeof u === 'string' && /^https:\/\//.test(u) ? u : '');
   const qp = (name, def) => { const m = new RegExp('[?&]' + name + '=([0-9.]+)').exec(location.search); return m ? parseFloat(m[1]) : def; };
-  // Vùng an toàn trên khung dọc (% chiều cao) để tránh thanh trên và ô chat/nhập của TikTok: ?safeTop=9&safeBottom=16
-  const SAFE_TOP = qp('safeTop', 9), SAFE_BOTTOM = qp('safeBottom', 16);
+  // Vùng an toàn trên khung dọc (% chiều cao/rộng) để tránh thanh trên, cột nút (tim/bình luận/quà) bên phải
+  // và ô chat/nhập của TikTok: ?safeTop=9&safeBottom=16&safeRight=13
+  const SAFE_TOP = qp('safeTop', 9), SAFE_BOTTOM = qp('safeBottom', 16), SAFE_RIGHT = qp('safeRight', 13);
   const CALM = qp('calm', 0) === 1; // ?calm=1: bỏ rung màn hình và chớp sáng (thân thiện với người nhạy cảm ánh sáng)
   const NOCACHE = qp('nocache', 0) === 1;
   if (CALM && document.body && document.body.classList) document.body.classList.add('calm');
   const GROUND_ON = qp('ground', 1) !== 0; // ?ground=0: bỏ nền chiến trường, để trong suốt hoàn toàn
-  if (document.documentElement) { document.documentElement.style.setProperty('--safeTop', SAFE_TOP + 'vh'); document.documentElement.style.setProperty('--safeBottom', SAFE_BOTTOM + 'vh'); }
+  if (document.documentElement) {
+    document.documentElement.style.setProperty('--safeTop', SAFE_TOP + 'vh');
+    document.documentElement.style.setProperty('--safeBottom', SAFE_BOTTOM + 'vh');
+    document.documentElement.style.setProperty('--safeRight', SAFE_RIGHT + 'vw');
+  }
   // Xem thử trên trình duyệt: ?bg=1 (nền tối) hoặc ?bg=green. Trong OBS để nguyên: nền trong suốt.
   { const m = /[?&]bg=(\w+)/.exec(location.search); if (m && document.body) document.body.style.background = m[1] === 'green' ? '#0a7a3a' : 'linear-gradient(160deg,#1c1626,#2b2140 60%,#3a2a4f)'; }
 
