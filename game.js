@@ -270,7 +270,7 @@ class Game {
         state: 0, target: null, ang: this.rng() * Math.PI * 2,
       });
     }
-    this.emit('spawn', { user: this.publicOwner(owner), troop: key, count, units: n, source, mult: r1(this.troopMult(team)), team });
+    this.emit('spawn', { user: this.publicOwner(owner), troop: key, count, units: n, source, mult: r1(this.troopMult(team)), team, pts: points || 0 });
     return true;
   }
 
@@ -287,7 +287,7 @@ class Game {
     this.bumpCombo(team);
     const owner = this._owner(user, rank, team);
     if (points) this._points(owner, team, points);
-    const info = { user: this.publicOwner(owner), spell: key, count, source, team };
+    const info = { user: this.publicOwner(owner), spell: key, count, source, team, pts: points || 0 };
     const enemyBase = this.ENEMY[team];
     const dmgMult = this.comboMult(team) * (s.rageLeft > 0 ? s.rageMult : 1) * this.goldenMult();
 

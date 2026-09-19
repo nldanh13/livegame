@@ -41,6 +41,10 @@
     "bonusPerStep": 0.1,
     "maxMultiplier": 2
   },
+  "effects": {
+    "epicPoints": 100,
+    "legendaryPoints": 500
+  },
   "buildings": {
     "townHall": {
       "label": "Nhà Chính",

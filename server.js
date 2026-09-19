@@ -61,6 +61,7 @@ configWarnings.forEach((m) => console.warn('⚠️  Cấu hình: ' + m));
 const clientConfig = () => ({
   troops: config.troops, spells: config.spells, buildings: config.buildings, npcs: config.npcs || {}, gifts: config.gifts || {}, brand: config.brand || {},
   team: { names: config.team.names, colors: config.team.colors, hint: '!xanh / !do', siegeBonus: config.team.siegeBonus || 1, clashSec: config.team.clashSec || 90 },
+  effects: config.effects || {},
 });
 
 fs.watchFile(CONFIG_PATH, { interval: 1000 }, () => {
@@ -116,8 +117,12 @@ function rankOf(userId) {
 let roundTimer = null;
 let endPending = null;
 
+// Quà/phép dồn dập (đông người tương tác cùng lúc) -> gộp lại, gửi 1 lần mỗi khung hình
+// thay vì mỗi món quà 1 gói tin riêng, để trình duyệt overlay (OBS) không bị dồn việc mà giật.
+let evQueue = [];
 const game = new Game(config, {
   emit(type, data) {
+    if (type === 'spawn' || type === 'spell') { evQueue.push([type, data]); return; }
     io.emit(type, data);
     if (type === 'cleared') { endPending = setTimeout(() => endRound('win'), 2800); }
     else if (type === 'timeup') { endRound('timeout'); }
@@ -234,6 +239,7 @@ setInterval(() => {
   lastTick = now;
   if (game.status === 'playing') game.tick(dt);
   tickN++;
+  if (evQueue.length) { io.emit('batch', evQueue); evQueue = []; }
   if (game.status === 'playing' || game.status === 'cleared') {
     if (tickN % 2 === 0 && (game.units.length || tickN % 10 === 0)) io.volatile.emit('snap', snapPayload());
   }
