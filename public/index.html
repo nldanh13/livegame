@@ -388,17 +388,32 @@
   const cv = $('cv'); let ctx = cv.getContext('2d');
   let W = 0, H = 0, k = 1, ax = 0, ay = 0, AWk = 0;
   let mode = 'solo', arena = { w: 100, h: 100, cx: 50, cy: 46 };
+  let lastHudH = -1;
   function layoutGeom() {
     const team = mode === 'team';
+    const demoTag = $('demoTag');
     if (W / H >= 1.25) { // màn ngang: HUD nằm cột trái, sàn đấu dùng gần hết chiều cao
       k = Math.min(W * .62 / arena.w, H * .92 / arena.h);
       AWk = arena.w * k; ax = W * .58 - AWk / 2; ay = H * .5 - arena.h * k / 2;
+      demoTag.style.top = ''; demoTag.style.bottom = ''; demoTag.style.transform = '';
     } else { // màn dọc (live điện thoại 9:16): khớp phần NỘI DUNG căn cứ vào khoảng giữa HUD và vùng an toàn phía dưới
-      const top = H * (SAFE_TOP / 100 + (team ? .27 : .22)), bottom = H * (1 - SAFE_BOTTOM / 100);
+      // Số huy hiệu (combo/cuồng nộ/bám đuổi...) hiện cùng lúc có thể làm HUD cao hơn ước lượng tĩnh
+      // -> đo chiều cao thật để tránh huy hiệu đè lên sàn đấu.
+      const hudEl = $(team ? 'hudT' : 'hud'), hudH = hudEl ? hudEl.getBoundingClientRect().height : 0;
+      const guess = H * (SAFE_TOP / 100 + (team ? .27 : .22));
+      const top = Math.max(guess, H * (SAFE_TOP / 100) + hudH + H * .015), bottom = H * (1 - SAFE_BOTTOM / 100);
       const hw = team ? 28 : 33, c0 = team ? arena.cy - 28 : arena.cy - 33, c1 = team ? arena.h - arena.cy + 28 : arena.cy + 33;
       k = Math.min(W * .92 / (2 * hw), (bottom - top) / (c1 - c0));
       ax = W / 2 - arena.cx * k; ay = top + ((bottom - top) - (c1 - c0) * k) / 2 - c0 * k; AWk = arena.w * k;
+      if (team) { // 2 sàn xếp dọc: đặt banner trình diễn đúng khe hở giữa hai sàn, không đè lên bên nào
+        demoTag.style.top = (ay + arena.h / 2 * k) + 'px'; demoTag.style.bottom = 'auto'; demoTag.style.transform = 'translate(-50%, -50%)';
+      } else { demoTag.style.top = ''; demoTag.style.bottom = ''; demoTag.style.transform = ''; }
     }
+  }
+  function syncHudHeight() {
+    const hudEl = $(mode === 'team' ? 'hudT' : 'hud');
+    const hh = hudEl ? hudEl.getBoundingClientRect().height : 0;
+    if (Math.abs(hh - lastHudH) > 1) { lastHudH = hh; layoutGeom(); }
   }
   function resize() {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -1593,6 +1608,7 @@
     setBadgeNode($('freeze'), on && localLeft(T.fz) > 0, 'Đóng băng phòng thủ  ' + Math.ceil(localLeft(T.fz)) + 's', localLeft(T.fz) / 8);
     $('enrage').hidden = !(on && hud.en);
     $('rush').hidden = !(on && hud.lr && !hud.en);
+    syncHudHeight();
   }
 
   function updateHudTeam() {
@@ -1633,6 +1649,7 @@
       setBadgeNode(bd.mb, false, '', 0);
       setBadgeNode(bd.cu, on && T.cu, 'Bám đuổi +' + Math.round((((cfg.team.catchUp && cfg.team.catchUp.bonus) || .2)) * 100) + '%', 1);
     }
+    syncHudHeight();
   }
 
   function updateHud() {
