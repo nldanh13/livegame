@@ -446,6 +446,7 @@
   let mode = 'solo', arena = { w: 100, h: 100, cx: 50, cy: 46 };
   let lastHudH = -1;
   function layoutGeom() {
+    if (!W || !H) return; // chưa có kích thước hợp lệ (đang chờ resize() gọi lại)
     const team = mode === 'team';
     const demoTag = $('demoTag');
     if (W / H >= 1.25) { // màn ngang: HUD nằm cột trái, sàn đấu dùng gần hết chiều cao
@@ -459,7 +460,7 @@
       const guess = H * (SAFE_TOP / 100 + (team ? .27 : .22));
       const top = Math.max(guess, H * (SAFE_TOP / 100) + hudH + H * .015), bottom = H * (1 - SAFE_BOTTOM / 100);
       const hw = team ? 28 + (arena.bx || 0) : 33, c0 = team ? arena.cy - 28 : arena.cy - 33, c1 = team ? arena.h - arena.cy + 28 : arena.cy + 33;
-      k = Math.min(W * .92 / (2 * hw), (bottom - top) / (c1 - c0));
+      k = Math.max(0.1, Math.min(W * .92 / (2 * hw), (bottom - top) / (c1 - c0))); // sàn nhỏ nhất vẫn còn thấy được, không bao giờ biến mất
       ax = W / 2 - arena.cx * k; ay = top + ((bottom - top) - (c1 - c0) * k) / 2 - c0 * k; AWk = arena.w * k;
       if (team) { // 2 sàn xếp dọc: đặt banner trình diễn đúng khe hở giữa hai sàn, không đè lên bên nào
         demoTag.style.top = (ay + arena.h / 2 * k) + 'px'; demoTag.style.bottom = 'auto'; demoTag.style.transform = 'translate(-50%, -50%)';
@@ -477,12 +478,19 @@
     if (Math.abs(hh - lastHudH) > 1) { lastHudH = hh; layoutGeom(); }
   }
   function resize() {
+    const w = window.innerWidth, h = window.innerHeight;
+    // Trình duyệt di động có lúc báo kích thước = 0 trong khoảnh khắc đầu (thanh địa chỉ đang ẩn/hiện) ->
+    // nếu dùng ngay, tỉ lệ phóng to tính ra 0 và sàn đấu "biến mất" (không lỗi gì, chỉ vẽ ở kích thước 0).
+    // Đợi khung hình sau rồi thử lại thay vì dùng số 0 đó.
+    if (!w || !h) { requestAnimationFrame(resize); return; }
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    W = window.innerWidth; H = window.innerHeight;
+    W = w; H = h;
     cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     layoutGeom();
   }
-  window.addEventListener('resize', resize); resize();
+  window.addEventListener('resize', resize);
+  if (window.visualViewport) window.visualViewport.addEventListener('resize', resize); // bắt đúng lúc thanh địa chỉ mobile ẩn/hiện
+  resize();
   const PX = (x) => ax + x * k, PY = (y) => ay + y * k;
 
   function rr(x, y, w, h, r) {
