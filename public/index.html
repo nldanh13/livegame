@@ -467,6 +467,9 @@
         const tyY = top + (bottom - top) * .15; $('ttyBlue').style.top = tyY + 'px'; $('ttyRed').style.top = tyY + 'px';
       } else { demoTag.style.top = ''; demoTag.style.bottom = ''; demoTag.style.transform = ''; }
     }
+    // Thẻ "quà khủng": căn giữa theo SÀN ĐẤU, không phải theo cả trang (khung ngang sàn đấu chỉ chiếm nửa phải màn hình)
+    // (tính trực tiếp bằng ay+..*k thay vì gọi PY() vì layoutGeom() chạy trước khi PX/PY được khai báo lúc tải trang)
+    const epicCard = $('epicCard'); epicCard.style.left = (ax + AWk / 2) + 'px'; epicCard.style.top = (ay + (team ? arena.h / 2 : arena.cy) * k) + 'px';
   }
   function syncHudHeight() {
     const hudEl = $(mode === 'team' ? 'hudT' : 'hud');
@@ -1455,7 +1458,8 @@
   function epicMoment(user, label, legend) {
     shake = Math.max(shake, legend ? 26 : 16); skyFlash = Math.max(skyFlash, legend ? .7 : .45);
     legend ? sfx.legend() : sfx.epic();
-    const cx = W / 2, cy = H * .42;
+    // Tâm sàn đấu (không phải tâm cả trang) - khung ngang sàn đấu chỉ chiếm phần bên phải màn hình
+    const cx = ax + AWk / 2, cy = PY(mode === 'team' ? arena.h / 2 : arena.cy);
     const n = legend ? 110 : 60, cols = legend ? ['#ff6bd6', '#fff6c0', '#ffe27a'] : ['#ffcf4a', '#fff6c0', '#ffb020'];
     for (let i = 0; i < n; i++) particles.push({ x: cx, y: cy, vx: rand(-300, 300), vy: rand(-420, -60), life: rand(1, 1.8), color: cols[i % cols.length], size: rand(4, 9), g: 600 });
     ring(cx, cy, 20, AWk * (legend ? 1.1 : .85), 1, legend ? '#ff6bd6' : '#ffd76a');
