@@ -106,7 +106,6 @@ class Game {
     const hpScale = this.difficulty * (1 + lv * d.perLevelHp) * (this.mod && this.mod.hp ? this.mod.hp : 1) * (this.boss ? c.town.bossHpMultiplier || 1 : 1) * (team ? c.team.hpMult || 1 : 1);
     const dpsScale = (0.6 + 0.4 * this.difficulty) * (1 + lv * d.perLevelDps) * (this.mod && this.mod.defDps ? this.mod.defDps : 1);
     const rScale = team ? c.team.baseScale || 1 : 1;
-    const ringIn = 14, ringOut = 29; // rộng hơn cho công trình có chỗ dàn ra, đỡ chật
 
     const types = [];
     for (const e of c.layout) {
@@ -116,11 +115,16 @@ class Game {
     if (this.boss) for (const e of c.bossLayout || []) for (let i = 0; i < (e.count || 1); i++) types.push(e.type);
     this._shuffle(types);
 
-    // vị trí tương đối so với tâm căn cứ
+    // Vị trí tương đối so với tâm căn cứ: lưới ô vuông, chỉ giữ ô trong hình thoi (|gx|+|gy| <= bán kính lưới)
+    // - giống bố cục kiểu Clash of Clans thay vì rải theo vòng tròn như trước.
+    const GRID = 6, GRAD = 3; // khoảng cách giữa các ô và "bán kính" lưới (số ô tính theo khoảng cách Manhattan)
     const slots = [];
-    const a0 = this.rng() * Math.PI * 2, a1 = this.rng() * Math.PI * 2;
-    for (let i = 0; i < 6; i++) slots.push([Math.cos(a0 + i * Math.PI / 3) * ringIn, Math.sin(a0 + i * Math.PI / 3) * ringIn]);
-    for (let i = 0; i < 10; i++) slots.push([Math.cos(a1 + i * Math.PI / 5) * ringOut, Math.sin(a1 + i * Math.PI / 5) * ringOut]);
+    for (let gx = -GRAD; gx <= GRAD; gx++) {
+      for (let gy = -GRAD; gy <= GRAD; gy++) {
+        if ((gx === 0 && gy === 0) || Math.abs(gx) + Math.abs(gy) > GRAD) continue; // (0,0) dành cho Nhà Chính
+        slots.push([gx * GRID, gy * GRID]);
+      }
+    }
     this._shuffle(slots);
     const chosen = types.slice(0, slots.length);
 

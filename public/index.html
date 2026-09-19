@@ -459,7 +459,7 @@
       const hudEl = $(team ? 'hudT' : 'hud'), hudH = hudEl ? hudEl.getBoundingClientRect().height : 0;
       const guess = H * (SAFE_TOP / 100 + (team ? .27 : .22));
       const top = Math.max(guess, H * (SAFE_TOP / 100) + hudH + H * .015), bottom = H * (1 - SAFE_BOTTOM / 100);
-      const hw = team ? 28 + (arena.bx || 0) : 33, c0 = team ? arena.cy - 28 : arena.cy - 33, c1 = team ? arena.h - arena.cy + 28 : arena.cy + 33;
+      const hw = 26 + (team ? (arena.bx || 0) : 0), c0 = arena.cy - 26, c1 = (team ? arena.h - arena.cy : arena.cy) + 26;
       k = Math.max(0.1, Math.min(W * .92 / (2 * hw), (bottom - top) / (c1 - c0))); // sàn nhỏ nhất vẫn còn thấy được, không bao giờ biến mất
       ax = W / 2 - arena.cx * k; ay = top + ((bottom - top) - (c1 - c0) * k) / 2 - c0 * k; AWk = arena.w * k;
       if (team) { // 2 sàn xếp dọc: đặt banner trình diễn đúng khe hở giữa hai sàn, không đè lên bên nào
@@ -501,6 +501,7 @@
   }
   function circle(x, y, r) { ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); }
   function ell(x, y, rx, ry, rot) { ctx.beginPath(); ctx.ellipse(x, y, rx, ry, rot || 0, 0, Math.PI * 2); }
+  function diamond(x, y, r) { ctx.beginPath(); ctx.moveTo(x, y - r); ctx.lineTo(x + r, y); ctx.lineTo(x, y + r); ctx.lineTo(x - r, y); ctx.closePath(); }
   const OUT = '#2a1620';
   function FS(fill, lw) { ctx.fillStyle = fill; ctx.fill(); ctx.lineWidth = lw || 2; ctx.strokeStyle = OUT; ctx.lineJoin = 'round'; ctx.stroke(); }
   function lgr(x0, y0, x1, y1, stops) { const g = ctx.createLinearGradient(x0, y0, x1, y1); stops.forEach(([o, c]) => g.addColorStop(o, c)); return g; }
@@ -551,9 +552,9 @@
   function buildDecor() { // cây, đá, cỏ, hoa: đặt cố định theo hạt giống để mỗi ván có bố cục quen thuộc
     const rnd = mulberry(4321 + Math.round(arena.h)), G = groundRect(), team = mode === 'team';
     const free = (x, y) => {
-      if (!team) return Math.hypot(x - arena.cx, y - arena.cy) > 37;
+      if (!team) return Math.hypot(x - arena.cx, y - arena.cy) > 26;
       const bx = arena.bx || 0;
-      return Math.hypot(x - (arena.cx - bx), y - arena.cy) > 34 && Math.hypot(x - (arena.cx + bx), y - (arena.h - arena.cy)) > 34 && Math.abs(y - arena.h / 2) > 12;
+      return Math.hypot(x - (arena.cx - bx), y - arena.cy) > 26 && Math.hypot(x - (arena.cx + bx), y - (arena.h - arena.cy)) > 26 && Math.abs(y - arena.h / 2) > 12;
     };
     decor = [];
     const add = (t, n) => { let tries = 0; while (n > 0 && tries++ < 600) { const x = G.x0 + 5 + rnd() * (G.x1 - G.x0 - 10), y = G.y0 + 5 + rnd() * (G.y1 - G.y0 - 10); if (!free(x, y)) continue; decor.push({ t, x, y, s: .75 + rnd() * .6, v: rnd() }); n--; } };
@@ -705,35 +706,47 @@
 
   /* ================== Vẽ nền chiến trường ================== */
   const BS = () => (mode === 'team' ? 1.3 : 1.22); // hệ số phóng to công trình
-  const PLAZAS = () => (mode === 'team' ? [{ x: arena.cx - (arena.bx || 0), y: arena.cy, r: 35, t: 'blue' }, { x: arena.cx + (arena.bx || 0), y: arena.h - arena.cy, r: 35, t: 'red' }] : [{ x: arena.cx, y: arena.cy, r: 33, t: null }]);
+  const PLAZAS = () => (mode === 'team' ? [{ x: arena.cx - (arena.bx || 0), y: arena.cy, r: 24, t: 'blue' }, { x: arena.cx + (arena.bx || 0), y: arena.h - arena.cy, r: 24, t: 'red' }] : [{ x: arena.cx, y: arena.cy, r: 24, t: null }]);
 
-  function plaza(cx, cy, rad, team) { // sân đá lát cuội có viền khối đá
+  function plaza(cx, cy, rad, team) { // sân hình thoi (kiểu Clash of Clans) lát đá, có viền khối đá
     const x = PX(cx), y = PY(cy), R = rad * k, rnd = mulberry(Math.round(cx * 7 + cy * 13 + rad));
+    const corners = (r) => [[x, y - r], [x + r, y], [x, y + r], [x - r, y]];
     ctx.fillStyle = rgr(x, y + R * .05, R * .95, R * 1.25, [[0, 'rgba(15,45,10,.42)'], [1, 'rgba(15,45,10,0)']]); circle(x, y + R * .05, R * 1.25); ctx.fill();
-    ctx.fillStyle = '#8f8068'; circle(x, y, R); ctx.fill();
+    ctx.fillStyle = '#8f8068'; diamond(x, y, R); ctx.fill();
     ctx.lineCap = 'butt';
     const cPat = tilePattern('cobble');
-    if (cPat) { ctx.fillStyle = cPat; circle(x, y, R); ctx.fill(); ctx.strokeStyle = 'rgba(30,20,10,.35)'; ctx.lineWidth = Math.max(2, k * .5); circle(x, y, R * .97); ctx.stroke(); }
+    if (cPat) { ctx.fillStyle = cPat; diamond(x, y, R); ctx.fill(); ctx.strokeStyle = 'rgba(30,20,10,.35)'; ctx.lineWidth = Math.max(2, k * .5); diamond(x, y, R * .97); ctx.stroke(); }
     else for (const [rf, wf] of [[.92, .15], [.77, .16], [.61, .16], [.45, .16], [.29, .16]]) {
-      const r2 = R * rf, bw = R * wf, n = Math.max(10, Math.round(2 * Math.PI * r2 / (bw * 1.55))), off = rnd() * 6.28;
-      for (let a = 0; a < n; a++) {
-        const a0 = off + a * 6.2832 / n, sh = .84 + rnd() * .24;
-        ctx.strokeStyle = `rgb(${Math.min(255, Math.round(206 * sh))},${Math.min(255, Math.round(190 * sh))},${Math.min(255, Math.round(158 * sh))})`;
-        ctx.lineWidth = bw * .86; ctx.beginPath(); ctx.arc(x, y, r2, a0 + .014, a0 + 6.2832 / n - .014); ctx.stroke();
+      const r2 = R * rf, bw = R * wf, cs = corners(r2);
+      for (let s = 0; s < 4; s++) {
+        const a = cs[s], b = cs[(s + 1) % 4], n = Math.max(3, Math.round(Math.hypot(b[0] - a[0], b[1] - a[1]) / (bw * 1.55)));
+        for (let i = 0; i < n; i++) {
+          const f0 = i / n, f1 = (i + 1) / n, sh = .84 + rnd() * .24;
+          ctx.strokeStyle = `rgb(${Math.min(255, Math.round(206 * sh))},${Math.min(255, Math.round(190 * sh))},${Math.min(255, Math.round(158 * sh))})`;
+          ctx.lineWidth = bw * .86; ctx.beginPath();
+          ctx.moveTo(a[0] + (b[0] - a[0]) * f0, a[1] + (b[1] - a[1]) * f0); ctx.lineTo(a[0] + (b[0] - a[0]) * f1, a[1] + (b[1] - a[1]) * f1); ctx.stroke();
+        }
       }
     }
     if (!cPat) { ctx.fillStyle = rgr(x, y - R * .1, R * .04, R * .3, [[0, '#f2e8cc'], [1, '#d8caa6']]); circle(x, y, R * .21); ctx.fill(); }
-    ctx.fillStyle = rgr(x - R * .35, y - R * .4, 0, R * 1.15, [[0, 'rgba(255,250,220,.2)'], [1, 'rgba(255,250,220,0)']]); circle(x, y, R); ctx.fill();
-    const nb = Math.round(2 * Math.PI * R / (k * 3.3));
-    for (let a = 0; a < nb; a++) {
-      const an = a * 6.2832 / nb; ctx.save(); ctx.translate(x + Math.cos(an) * R * 1.02, y + Math.sin(an) * R * 1.02); ctx.rotate(an + 1.5708);
-      ctx.beginPath(); rr(-k * 1.4, -k * .95, k * 2.8, k * 1.9, k * .4); FS(lgr(0, -k * .95, 0, k * .95, [[0, '#d3c7ae'], [1, '#8e8068']]), Math.max(1.6, k * .17)); ctx.restore();
+    ctx.fillStyle = rgr(x - R * .35, y - R * .4, 0, R * 1.15, [[0, 'rgba(255,250,220,.2)'], [1, 'rgba(255,250,220,0)']]); diamond(x, y, R); ctx.fill();
+    { // viền khối đá quanh 4 cạnh hình thoi (mỗi cạnh cùng 1 hướng nghiêng cố định, không đi vòng cung như trước)
+      const RW = R * 1.02, cs = corners(RW), angles = [Math.PI * .25, Math.PI * .75, Math.PI * 1.25, Math.PI * 1.75];
+      for (let s = 0; s < 4; s++) {
+        const a = cs[s], b = cs[(s + 1) % 4], n = Math.max(2, Math.round(Math.hypot(b[0] - a[0], b[1] - a[1]) / (k * 3.3)));
+        for (let i = 0; i < n; i++) {
+          const f = (i + .5) / n, px = a[0] + (b[0] - a[0]) * f, py = a[1] + (b[1] - a[1]) * f;
+          ctx.save(); ctx.translate(px, py); ctx.rotate(angles[s]);
+          ctx.beginPath(); rr(-k * 1.4, -k * .95, k * 2.8, k * 1.9, k * .4); FS(lgr(0, -k * .95, 0, k * .95, [[0, '#d3c7ae'], [1, '#8e8068']]), Math.max(1.6, k * .17)); ctx.restore();
+        }
+      }
     }
     // quầng sáng ấm quanh mép tường + viền sáng phía trên: cho sân đấu có chiều sâu hơn
     ctx.save(); ctx.shadowColor = 'rgba(255, 224, 150, .5)'; ctx.shadowBlur = k * 1.8;
-    ctx.strokeStyle = 'rgba(255, 224, 150, .35)'; ctx.lineWidth = Math.max(2, k * .5); circle(x, y, R * 1.03); ctx.stroke(); ctx.restore();
-    ctx.strokeStyle = 'rgba(255,255,255,.25)'; ctx.lineWidth = Math.max(1.5, k * .3); ctx.beginPath(); ctx.arc(x, y, R * .995, -2.6, -0.5); ctx.stroke();
-    if (team) { ctx.strokeStyle = TC(team); ctx.lineWidth = Math.max(3, k * .7); ctx.globalAlpha = .92; circle(x, y, R * .982); ctx.stroke(); ctx.globalAlpha = 1; }
+    ctx.strokeStyle = 'rgba(255, 224, 150, .35)'; ctx.lineWidth = Math.max(2, k * .5); diamond(x, y, R * 1.03); ctx.stroke(); ctx.restore();
+    ctx.strokeStyle = 'rgba(255,255,255,.25)'; ctx.lineWidth = Math.max(1.5, k * .3);
+    ctx.beginPath(); ctx.moveTo(x - R * .995, y); ctx.lineTo(x, y - R * .995); ctx.lineTo(x + R * .995, y); ctx.stroke();
+    if (team) { ctx.strokeStyle = TC(team); ctx.lineWidth = Math.max(3, k * .7); ctx.globalAlpha = .92; diamond(x, y, R * .982); ctx.stroke(); ctx.globalAlpha = 1; }
   }
 
   function paintGround(t = 0) {
@@ -789,7 +802,13 @@
       ctx.save(); ctx.translate(PX(wx), PY(wy)); ctx.scale(1, .55); ctx.fillStyle = rgr(0, 0, 0, rx, [[0, 'rgba(8,30,8,.16)'], [1, 'rgba(8,30,8,0)']]); circle(0, 0, rx); ctx.fill(); ctx.restore();
     }
     const nT = mode === 'team' ? 10 : 12;
-    for (const p of PLAZAS()) for (let i = 0; i < nT; i++) { const a = i * 6.2832 / nT + .26; torch(PX(p.x) + Math.cos(a) * p.r * k * 1.02, PY(p.y) + Math.sin(a) * p.r * k * 1.02 + k * .4, t, i); }
+    for (const p of PLAZAS()) { // đuốc rải đều quanh 4 cạnh hình thoi thay vì quanh vòng tròn
+      const px = PX(p.x), py = PY(p.y), RW = p.r * k * 1.02, cs = [[px, py - RW], [px + RW, py], [px, py + RW], [px - RW, py]];
+      for (let i = 0; i < nT; i++) {
+        const tt = (i + .3) / nT, seg = Math.floor(tt * 4), f = tt * 4 - seg, a = cs[seg], b = cs[(seg + 1) % 4];
+        torch(a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f + k * .4, t, i);
+      }
+    }
   }
   function drawButterflies(t) {
     if (!GROUND_ON) return;
