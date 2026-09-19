@@ -54,7 +54,7 @@ class Game {
       fund: 0, fundMax: fu.start || 250, unlocks: 0,
       morale: 0, moraleMax: ch.start || 45, moraleBuffLeft: 0,
       buffLeft: 0, poisonEnemyLeft: 0, poisonPct: 0.03, shieldLeft: 0, cleanseLeft: 0,
-      cuOn: false, bounty: -1, bountyBuf: 0, bountyTarget: '',
+      cuOn: false, bounty: -1, bountyBuf: 0, bountyTarget: '', troopTotals: {},
     };
   }
 
@@ -252,6 +252,7 @@ class Game {
     this.bumpCombo(team);
     const owner = this._owner(user, rank, team);
     if (points) this._points(owner, team, points);
+    if (this.mode === 'team') { const s = this.T[team]; s.troopTotals[key] = (s.troopTotals[key] || 0) + count; }
     const rankMult = rank ? rank.mult || 1 : 1;
     // giới hạn số lính cùng lúc để OBS không bị giật: vượt trần thì gộp thành lính "to" hơn (sức mạnh giữ nguyên)
     const cap = this.mode === 'team' ? ((this.cfg.team && this.cfg.team.maxUnitsPerTeam) || 80) : ((this.cfg.round && this.cfg.round.maxUnits) || 150);
@@ -809,7 +810,7 @@ class Game {
           fu: Math.round(s.fund / s.fundMax * 100), fl: s.unlocks,
           mo: Math.round(s.morale / s.moraleMax * 100), mb: r1(s.moraleBuffLeft),
           bf: r1(s.buffLeft), ps: r1(s.poisonEnemyLeft), sh: r1(s.shieldLeft), cu: s.cuOn,
-          tp: this.topPoints(t), bt: s.bounty >= 0,
+          tp: this.topPoints(t), bt: s.bounty >= 0, tt: s.troopTotals,
         });
       }
     }

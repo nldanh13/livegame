@@ -203,10 +203,22 @@
   .tcount { font-size: clamp(12px, 1.9vh, 20px); }
   #conn { position: fixed; left: 8px; bottom: 8px; padding: .2em .8em; border-radius: 8px; background: rgba(120, 20, 30, .9); font-size: 13px; }
 
+  /* ---------- Cột số lượng lính theo loại (chế độ Đội): tổng lính mỗi loại đã tặng trong trận ---------- */
+  .tty { display: none; position: fixed; top: 20%; flex-direction: column; gap: .6vh; z-index: 5; pointer-events: none; max-height: 38vh; overflow: hidden; }
+  .tty .row { display: flex; align-items: center; gap: .4em; padding: .15em .7em .15em .3em; border-radius: 999px; font-weight: 800; font-size: clamp(10px, 1.6vh, 15px);
+    background: linear-gradient(#3d2a55, #241537); border: 2px solid var(--deep); box-shadow: inset 0 1px 0 rgba(255,255,255,.14), 0 2px 0 rgba(0,0,0,.35); text-shadow: var(--outs); white-space: nowrap; }
+  .tty .dot { width: 1.3em; height: 1.3em; border-radius: 50%; background: var(--c); border: 2px solid rgba(255,255,255,.5); flex: none; }
+  .tty b { color: var(--gold); }
+  #ttyBlue { left: 1.5vw; }
+  #ttyRed { right: var(--safeRight, 13vw); }
+  #ttyRed .row { flex-direction: row-reverse; }
+
   /* ---------- Khung dọc 9:16 (live điện thoại): chữ theo vw, tránh vùng giao diện TikTok ---------- */
   @media (max-aspect-ratio: 124/100) {
     /* TikTok đặt cột nút tim/bình luận/chia sẻ/quà dọc theo mép phải -> HUD lệch trái, chừa mép phải trống thay vì căn giữa sát 2 mép */
     #hud, #hudT { top: var(--safeTop, 9vh); left: 2.5vw; right: var(--safeRight, 13vw); width: auto; transform: none; }
+    .tty.show { display: flex; }
+    .tty .row { font-size: 3vw; } .tty .dot { width: 4vw; height: 4vw; }
     .meta { line-height: 1.15; }
     #lvl { font-size: 4.2vw; } #timer { font-size: 5.2vw; } #tScore { font-size: 3.4vw; } #tPhase { font-size: 3vw; }
     .bar { height: 7vw; } #pText { font-size: 3.8vw; }
@@ -281,6 +293,8 @@
   <div id="tHint"></div>
 </div>
 
+<div class="tty" id="ttyBlue"></div>
+<div class="tty" id="ttyRed"></div>
 <div id="feed"></div>
 <div id="guide"></div>
 <div id="demoTag" hidden>ĐANG TRÌNH DIỄN · tặng quà hoặc thả tim để vào cuộc!</div>
@@ -449,6 +463,8 @@
       ax = W / 2 - arena.cx * k; ay = top + ((bottom - top) - (c1 - c0) * k) / 2 - c0 * k; AWk = arena.w * k;
       if (team) { // 2 sàn xếp dọc: đặt banner trình diễn đúng khe hở giữa hai sàn, không đè lên bên nào
         demoTag.style.top = (ay + arena.h / 2 * k) + 'px'; demoTag.style.bottom = 'auto'; demoTag.style.transform = 'translate(-50%, -50%)';
+        // Cột lính bắt đầu từ gần đỉnh vùng sàn đấu THẬT rồi lớn dần xuống (không phải giữa màn hình) để không bị huy hiệu HUD đè lên khi HUD cao, và không lấn xuống vùng feed phía dưới
+        const tyY = top + (bottom - top) * .15; $('ttyBlue').style.top = tyY + 'px'; $('ttyRed').style.top = tyY + 'px';
       } else { demoTag.style.top = ''; demoTag.style.bottom = ''; demoTag.style.transform = ''; }
     }
   }
@@ -609,6 +625,17 @@
     const top = $('top'), key = JSON.stringify(arr);
     if (top.dataset.k === key) return; top.dataset.k = key; top.replaceChildren();
     arr.forEach((p, i) => top.append(chipFor(p, false, i)));
+  }
+  // Cột tổng số lính mỗi loại đã tặng trong trận (chế độ Đội) - thứ tự cố định theo config để hàng không nhảy lung tung
+  function renderTally(t) {
+    const box = $(t === 'blue' ? 'ttyBlue' : 'ttyRed'), tt = TS(t).tt || {}, key = JSON.stringify(tt);
+    if (box.dataset.k === key) return; box.dataset.k = key; box.replaceChildren();
+    for (const k of Object.keys(cfg.troops)) {
+      const n = tt[k]; if (!n) continue;
+      const c = cfg.troops[k], row = el('div', 'row'), dot = el('i', 'dot');
+      dot.style.setProperty('--c', c.color || '#fff'); row.append(dot, el('b', '', '×' + fmt(n)));
+      box.append(row);
+    }
   }
 
   /* ================== Kho hình ảnh: sprite + chất liệu (tùy chọn) ==================
@@ -1614,6 +1641,8 @@
     level = d.level; boss = d.boss; modLabel = d.mod || ''; status = 'playing';
     teamScore = d.teamScore || teamScore; teamInfo = d.teams || teamInfo;
     $('hud').hidden = mode === 'team'; $('hudT').hidden = mode !== 'team'; $('feed').classList.toggle('team', mode === 'team');
+    $('ttyBlue').classList.toggle('show', mode === 'team'); $('ttyRed').classList.toggle('show', mode === 'team');
+    $('ttyBlue').dataset.k = ''; $('ttyRed').dataset.k = '';
     $('hud').classList.toggle('boss', !!boss); $('lvl').textContent = 'Cấp ' + level + (boss ? ' (Boss)' : '');
     const m = $('mod'); m.hidden = !modLabel; m.firstChild.textContent = modLabel ? '🎲 ' + modLabel : '';
     hud = { T: {}, tl: d.roundLen || 0, en: false, top: mode === 'team' ? { blue: [], red: [] } : [], bo: null, gd: false, ot: false, lr: false, phase: null, pl: 0 }; tlAt = performance.now();
@@ -1737,6 +1766,7 @@
       setBadgeNode(bd.bf, on && localLeft(T.bf) > 0, '🐉 Buff Rồng ×' + ((cfg.team.guardian && cfg.team.guardian.buffMult) || 1.5) + ' ' + Math.ceil(localLeft(T.bf)) + 's', localLeft(T.bf) / 20);
       setBadgeNode(bd.mb, false, '', 0);
       setBadgeNode(bd.cu, on && T.cu, '🏃 Bám đuổi +' + Math.round((((cfg.team.catchUp && cfg.team.catchUp.bonus) || .2)) * 100) + '%', 1);
+      renderTally(t);
     }
     syncHudHeight();
   }
