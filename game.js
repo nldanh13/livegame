@@ -78,6 +78,8 @@ class Game {
     }
     const ta = (c.team && c.team.arena) || { w: 100, h: 140, cy: 36 };
     this.arena = team ? { w: ta.w, h: ta.h, cx: ta.w / 2, cy: ta.cy } : { w: 100, h: 100, cx: c.arena.cx, cy: c.arena.cy };
+    // 2 căn cứ đặt chéo 2 góc (thay vì thẳng hàng dọc) cho sàn đấu trông rộng/hoành tráng hơn - vẫn đối xứng 180° tuyệt đối công bằng
+    if (team) this.arena.bx = (c.team.baseOffsetX != null ? c.team.baseOffsetX : 0.22) * this.arena.w;
 
     this.status = 'playing';
     this.roundLen = team ? c.team.durationSec : c.round.durationSec + (this.boss ? c.town.bossExtraSec || 0 : 0);
@@ -136,8 +138,9 @@ class Game {
     };
 
     this.buildings = [];
+    const bx = A.bx || 0;
     const bases = team
-      ? [{ owner: 'blue', cx: A.cx, cy: A.cy, sign: 1 }, { owner: 'red', cx: A.cx, cy: A.h - A.cy, sign: -1 }] // đỏ = xoay 180° => công bằng tuyệt đối
+      ? [{ owner: 'blue', cx: A.cx - bx, cy: A.cy, sign: 1 }, { owner: 'red', cx: A.cx + bx, cy: A.h - A.cy, sign: -1 }] // đỏ = xoay 180° => công bằng tuyệt đối
       : [{ owner: 'def', cx: A.cx, cy: A.cy, sign: 1 }];
     for (const base of bases) {
       const th = mk('townHall', base.cx, base.cy, base.owner);

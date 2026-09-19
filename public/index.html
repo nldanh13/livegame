@@ -444,7 +444,7 @@
       const hudEl = $(team ? 'hudT' : 'hud'), hudH = hudEl ? hudEl.getBoundingClientRect().height : 0;
       const guess = H * (SAFE_TOP / 100 + (team ? .27 : .22));
       const top = Math.max(guess, H * (SAFE_TOP / 100) + hudH + H * .015), bottom = H * (1 - SAFE_BOTTOM / 100);
-      const hw = team ? 28 : 33, c0 = team ? arena.cy - 28 : arena.cy - 33, c1 = team ? arena.h - arena.cy + 28 : arena.cy + 33;
+      const hw = team ? 28 + (arena.bx || 0) : 33, c0 = team ? arena.cy - 28 : arena.cy - 33, c1 = team ? arena.h - arena.cy + 28 : arena.cy + 33;
       k = Math.min(W * .92 / (2 * hw), (bottom - top) / (c1 - c0));
       ax = W / 2 - arena.cx * k; ay = top + ((bottom - top) - (c1 - c0) * k) / 2 - c0 * k; AWk = arena.w * k;
       if (team) { // 2 sàn xếp dọc: đặt banner trình diễn đúng khe hở giữa hai sàn, không đè lên bên nào
@@ -525,7 +525,8 @@
     const rnd = mulberry(4321 + Math.round(arena.h)), G = groundRect(), team = mode === 'team';
     const free = (x, y) => {
       if (!team) return Math.hypot(x - arena.cx, y - arena.cy) > 37;
-      return Math.hypot(x - arena.cx, y - arena.cy) > 34 && Math.hypot(x - arena.cx, y - (arena.h - arena.cy)) > 34 && Math.abs(y - arena.h / 2) > 12;
+      const bx = arena.bx || 0;
+      return Math.hypot(x - (arena.cx - bx), y - arena.cy) > 34 && Math.hypot(x - (arena.cx + bx), y - (arena.h - arena.cy)) > 34 && Math.abs(y - arena.h / 2) > 12;
     };
     decor = [];
     const add = (t, n) => { let tries = 0; while (n > 0 && tries++ < 600) { const x = G.x0 + 5 + rnd() * (G.x1 - G.x0 - 10), y = G.y0 + 5 + rnd() * (G.y1 - G.y0 - 10); if (!free(x, y)) continue; decor.push({ t, x, y, s: .75 + rnd() * .6, v: rnd() }); n--; } };
@@ -666,7 +667,7 @@
 
   /* ================== Vẽ nền chiến trường ================== */
   const BS = () => (mode === 'team' ? 1.3 : 1.22); // hệ số phóng to công trình
-  const PLAZAS = () => (mode === 'team' ? [{ x: arena.cx, y: arena.cy, r: 31, t: 'blue' }, { x: arena.cx, y: arena.h - arena.cy, r: 31, t: 'red' }] : [{ x: arena.cx, y: arena.cy, r: 33, t: null }]);
+  const PLAZAS = () => (mode === 'team' ? [{ x: arena.cx - (arena.bx || 0), y: arena.cy, r: 31, t: 'blue' }, { x: arena.cx + (arena.bx || 0), y: arena.h - arena.cy, r: 31, t: 'red' }] : [{ x: arena.cx, y: arena.cy, r: 33, t: null }]);
 
   function plaza(cx, cy, rad, team) { // sân đá lát cuội có viền khối đá
     const x = PX(cx), y = PY(cy), R = rad * k, rnd = mulberry(Math.round(cx * 7 + cy * 13 + rad));
