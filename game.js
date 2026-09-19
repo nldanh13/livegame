@@ -117,7 +117,7 @@ class Game {
 
     // Vị trí tương đối so với tâm căn cứ: lưới ô vuông, chỉ giữ ô trong hình thoi (|gx|+|gy| <= bán kính lưới)
     // - giống bố cục kiểu Clash of Clans thay vì rải theo vòng tròn như trước.
-    const GRID = 6, GRAD = 3; // khoảng cách giữa các ô và "bán kính" lưới (số ô tính theo khoảng cách Manhattan)
+    const GRID = 9, GRAD = 3; // khoảng cách giữa các ô và "bán kính" lưới (số ô tính theo khoảng cách Manhattan) - khớp bán kính sân PLAZA_R=32 bên client
     const slots = [];
     for (let gx = -GRAD; gx <= GRAD; gx++) {
       for (let gy = -GRAD; gy <= GRAD; gy++) {

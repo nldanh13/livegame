@@ -445,6 +445,7 @@
   let W = 0, H = 0, k = 1, ax = 0, ay = 0, AWk = 0;
   let mode = 'solo', arena = { w: 100, h: 100, cx: 50, cy: 46 };
   let lastHudH = -1;
+  const PLAZA_R = 32; // bán kính sân đấu (khớp với lưới đặt nhà GRID*GRAD bên game.js) - chỉnh cả 2 nơi cùng lúc nếu đổi
   function layoutGeom() {
     if (!W || !H) return; // chưa có kích thước hợp lệ (đang chờ resize() gọi lại)
     const team = mode === 'team';
@@ -459,7 +460,7 @@
       const hudEl = $(team ? 'hudT' : 'hud'), hudH = hudEl ? hudEl.getBoundingClientRect().height : 0;
       const guess = H * (SAFE_TOP / 100 + (team ? .27 : .22));
       const top = Math.max(guess, H * (SAFE_TOP / 100) + hudH + H * .015), bottom = H * (1 - SAFE_BOTTOM / 100);
-      const hw = 26 + (team ? (arena.bx || 0) : 0), c0 = arena.cy - 26, c1 = (team ? arena.h - arena.cy : arena.cy) + 26;
+      const hw = PLAZA_R + 2 + (team ? (arena.bx || 0) : 0), c0 = arena.cy - (PLAZA_R + 2), c1 = (team ? arena.h - arena.cy : arena.cy) + (PLAZA_R + 2);
       k = Math.max(0.1, Math.min(W * .92 / (2 * hw), (bottom - top) / (c1 - c0))); // sàn nhỏ nhất vẫn còn thấy được, không bao giờ biến mất
       ax = W / 2 - arena.cx * k; ay = top + ((bottom - top) - (c1 - c0) * k) / 2 - c0 * k; AWk = arena.w * k;
       if (team) { // 2 sàn xếp dọc: đặt banner trình diễn đúng khe hở giữa hai sàn, không đè lên bên nào
@@ -552,16 +553,16 @@
   function mapDiamond() {
     const team = mode === 'team', bx = team ? (arena.bx || 0) : 0;
     const cx = arena.cx, cy = team ? arena.h / 2 : arena.cy, half = team ? (arena.h / 2 - arena.cy) : 0;
-    return { cx, cy, r: Math.hypot(bx, half) + 24 + 16 };
+    return { cx, cy, r: Math.hypot(bx, half) + PLAZA_R + 16 };
   }
   const inDiamond = (x, y, M) => Math.abs(x - M.cx) + Math.abs(y - M.cy) <= M.r;
 
   function buildDecor() { // cây, đá, cỏ, hoa: đặt cố định theo hạt giống để mỗi ván có bố cục quen thuộc
     const rnd = mulberry(4321 + Math.round(arena.h)), G = groundRect(), team = mode === 'team', M = mapDiamond();
     const free = (x, y) => {
-      if (!team) return Math.hypot(x - arena.cx, y - arena.cy) > 26;
+      if (!team) return Math.hypot(x - arena.cx, y - arena.cy) > PLAZA_R + 2;
       const bx = arena.bx || 0;
-      return Math.hypot(x - (arena.cx - bx), y - arena.cy) > 26 && Math.hypot(x - (arena.cx + bx), y - (arena.h - arena.cy)) > 26 && Math.abs(y - arena.h / 2) > 12;
+      return Math.hypot(x - (arena.cx - bx), y - arena.cy) > PLAZA_R + 2 && Math.hypot(x - (arena.cx + bx), y - (arena.h - arena.cy)) > PLAZA_R + 2 && Math.abs(y - arena.h / 2) > 12;
     };
     decor = [];
     // want: 'in' = phải nằm trong đảo cỏ, 'out' = phải nằm ngoài (dải rừng viền quanh đảo)
@@ -731,7 +732,7 @@
 
   /* ================== Vẽ nền chiến trường ================== */
   const BS = () => (mode === 'team' ? 1.3 : 1.22); // hệ số phóng to công trình
-  const PLAZAS = () => (mode === 'team' ? [{ x: arena.cx - (arena.bx || 0), y: arena.cy, r: 24, t: 'blue' }, { x: arena.cx + (arena.bx || 0), y: arena.h - arena.cy, r: 24, t: 'red' }] : [{ x: arena.cx, y: arena.cy, r: 24, t: null }]);
+  const PLAZAS = () => (mode === 'team' ? [{ x: arena.cx - (arena.bx || 0), y: arena.cy, r: PLAZA_R, t: 'blue' }, { x: arena.cx + (arena.bx || 0), y: arena.h - arena.cy, r: PLAZA_R, t: 'red' }] : [{ x: arena.cx, y: arena.cy, r: PLAZA_R, t: null }]);
 
   function plaza(cx, cy, rad, team) { // sân hình thoi (kiểu Clash of Clans) lát đá, có viền khối đá
     const x = PX(cx), y = PY(cy), R = rad * k, rnd = mulberry(Math.round(cx * 7 + cy * 13 + rad));
