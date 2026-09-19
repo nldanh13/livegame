@@ -548,17 +548,33 @@
     const y0 = team ? -4 : 4, y1 = team ? arena.h + 4 : 104;
     return { x0: -8, y0, x1: 108, y1 };
   }
+  // Đảo cỏ hình thoi lớn (kiểu bản đồ Clash of Clans) bao trọn (các) sân đấu, phần còn lại là rừng viền quanh
+  function mapDiamond() {
+    const team = mode === 'team', bx = team ? (arena.bx || 0) : 0;
+    const cx = arena.cx, cy = team ? arena.h / 2 : arena.cy, half = team ? (arena.h / 2 - arena.cy) : 0;
+    return { cx, cy, r: Math.hypot(bx, half) + 24 + 16 };
+  }
+  const inDiamond = (x, y, M) => Math.abs(x - M.cx) + Math.abs(y - M.cy) <= M.r;
 
   function buildDecor() { // cây, đá, cỏ, hoa: đặt cố định theo hạt giống để mỗi ván có bố cục quen thuộc
-    const rnd = mulberry(4321 + Math.round(arena.h)), G = groundRect(), team = mode === 'team';
+    const rnd = mulberry(4321 + Math.round(arena.h)), G = groundRect(), team = mode === 'team', M = mapDiamond();
     const free = (x, y) => {
       if (!team) return Math.hypot(x - arena.cx, y - arena.cy) > 26;
       const bx = arena.bx || 0;
       return Math.hypot(x - (arena.cx - bx), y - arena.cy) > 26 && Math.hypot(x - (arena.cx + bx), y - (arena.h - arena.cy)) > 26 && Math.abs(y - arena.h / 2) > 12;
     };
     decor = [];
-    const add = (t, n) => { let tries = 0; while (n > 0 && tries++ < 600) { const x = G.x0 + 5 + rnd() * (G.x1 - G.x0 - 10), y = G.y0 + 5 + rnd() * (G.y1 - G.y0 - 10); if (!free(x, y)) continue; decor.push({ t, x, y, s: .75 + rnd() * .6, v: rnd() }); n--; } };
-    add('tree', team ? 30 : 16); add('rock', 14); add('tuft', 130); add('flower', 50);
+    // want: 'in' = phải nằm trong đảo cỏ, 'out' = phải nằm ngoài (dải rừng viền quanh đảo)
+    const add = (t, n, want) => {
+      let tries = 0;
+      while (n > 0 && tries++ < 900) {
+        const x = G.x0 + 5 + rnd() * (G.x1 - G.x0 - 10), y = G.y0 + 5 + rnd() * (G.y1 - G.y0 - 10), din = inDiamond(x, y, M);
+        if (want === 'in' ? !din : din) continue;
+        if (din && !free(x, y)) continue;
+        decor.push({ t, x, y, s: .75 + rnd() * .6, v: rnd() }); n--;
+      }
+    };
+    add('tree', team ? 90 : 60, 'out'); add('rock', 36, 'out'); add('tuft', 130, 'in'); add('flower', 50, 'in');
   }
 
   function setLayout(layout) {
@@ -703,6 +719,15 @@
     const c = document.createElement('canvas'); c.width = px; c.height = px; c.getContext('2d').drawImage(im, 0, 0, px, px);
     return (patCache[key] = ctx.createPattern(c, 'repeat'));
   }
+  function checkerPattern() { // ô cỏ caro kiểu Clash of Clans cho đảo cỏ giữa bản đồ
+    const tile = Math.max(16, Math.round(6 * k)), key = 'chk|' + tile;
+    if (patCache[key]) return patCache[key];
+    const c = document.createElement('canvas'); c.width = tile * 2; c.height = tile * 2;
+    const g = c.getContext('2d');
+    g.fillStyle = '#5fbd3e'; g.fillRect(0, 0, tile * 2, tile * 2);
+    g.fillStyle = '#6ecb49'; g.fillRect(0, 0, tile, tile); g.fillRect(tile, tile, tile, tile);
+    return (patCache[key] = ctx.createPattern(c, 'repeat'));
+  }
 
   /* ================== Vẽ nền chiến trường ================== */
   const BS = () => (mode === 'team' ? 1.3 : 1.22); // hệ số phóng to công trình
@@ -752,19 +777,25 @@
   function paintGround(t = 0) {
     if (!GROUND_ON) return;
     const G = groundRect(), x0 = PX(G.x0), y0 = PY(G.y0), x1 = PX(G.x1), y1 = PY(G.y1), w = x1 - x0, h = y1 - y0, rad = k * 7, team = mode === 'team', rnd = mulberry(99);
+    // dải rừng nền (phủ kín toàn bộ vùng, tránh lộ khoảng trong suốt) - đảo cỏ hình thoi sẽ nổi bật ở giữa
     ctx.fillStyle = 'rgba(8,4,16,.4)'; rr(x0 + 2, y0 + 10, w, h, rad); ctx.fill();
-    ctx.fillStyle = lgr(0, y0, 0, y1, [[0, '#86d656'], [.5, '#62c042'], [1, '#4aa935']]); rr(x0, y0, w, h, rad); ctx.fill();
-    const gPat = tilePattern('grass'); if (gPat) { ctx.fillStyle = gPat; rr(x0, y0, w, h, rad); ctx.fill(); }
-    const ins = rad * .45; // sọc cắt cỏ
-    for (let i = Math.floor((G.x0 + 2) / 6); i * 6 < G.x1 - 2; i++) if (i & 1) { const sx = Math.max(x0 + ins, PX(i * 6)), ex = Math.min(x1 - ins, PX(i * 6 + 6)); if (ex > sx) { ctx.fillStyle = 'rgba(255,255,200,.075)'; ctx.fillRect(sx, y0 + ins, ex - sx, h - ins * 2); } }
+    ctx.fillStyle = lgr(0, y0, 0, y1, [[0, '#2f5c26'], [.5, '#264d1f'], [1, '#1d3f18']]); rr(x0, y0, w, h, rad); ctx.fill();
+    const M = mapDiamond(), dx = PX(M.cx), dy = PY(M.cy), dR = M.r * k;
+    // đảo cỏ hình thoi caro ở giữa (kiểu Clash of Clans), mọi hiệu ứng bề mặt giới hạn trong hình thoi nhờ clip
+    ctx.save(); diamond(dx, dy, dR); ctx.clip();
+    ctx.fillStyle = lgr(0, dy - dR, 0, dy + dR, [[0, '#86d656'], [.5, '#62c042'], [1, '#4aa935']]); ctx.fillRect(dx - dR, dy - dR, dR * 2, dR * 2);
+    const chk = checkerPattern(); if (chk) { ctx.fillStyle = chk; ctx.fillRect(dx - dR, dy - dR, dR * 2, dR * 2); }
+    const gPat = tilePattern('grass'); if (gPat) { ctx.globalAlpha = .45; ctx.fillStyle = gPat; ctx.fillRect(dx - dR, dy - dR, dR * 2, dR * 2); ctx.globalAlpha = 1; }
     for (let i = 0; i < 46; i++) { // vệt cỏ đậm/nhạt cho tự nhiên
-      const bx = x0 + ins + rnd() * (w - ins * 2), by = y0 + ins + rnd() * (h - ins * 2), rx = k * (3 + rnd() * 5), dark = rnd() < .55;
+      const bx = dx - dR + rnd() * dR * 2, by = dy - dR + rnd() * dR * 2, rx = k * (3 + rnd() * 5), dark = rnd() < .55;
       ctx.save(); ctx.translate(bx, by); ctx.scale(1, .55); ctx.fillStyle = rgr(0, 0, 0, rx, [[0, dark ? 'rgba(20,90,20,.16)' : 'rgba(210,255,130,.16)'], [1, 'rgba(0,0,0,0)']]); circle(0, 0, rx); ctx.fill(); ctx.restore();
     }
-    ctx.fillStyle = rgr(PX(28), PY(G.y0 + 16), 0, 75 * k, [[0, 'rgba(255,244,190,.30)'], [1, 'rgba(255,244,190,0)']]); rr(x0, y0, w, h, rad); ctx.fill();
-    ctx.fillStyle = rgr(x0 + w / 2, y0 + h / 2, Math.min(w, h) * .42, Math.max(w, h) * .68, [[0, 'rgba(10,50,10,0)'], [1, 'rgba(10,50,10,.34)']]); rr(x0, y0, w, h, rad); ctx.fill();
+    ctx.fillStyle = rgr(dx - dR * .3, dy - dR * .35, 0, dR * 1.6, [[0, 'rgba(255,244,190,.30)'], [1, 'rgba(255,244,190,0)']]); ctx.fillRect(dx - dR, dy - dR, dR * 2, dR * 2);
+    ctx.fillStyle = rgr(dx, dy, dR * .4, dR * 1.15, [[0, 'rgba(10,50,10,0)'], [1, 'rgba(10,50,10,.34)']]); ctx.fillRect(dx - dR, dy - dR, dR * 2, dR * 2);
+    if (team) { ctx.fillStyle = lgr(0, y0, 0, y1, [[0, 'rgba(50,130,255,.34)'], [.42, 'rgba(50,130,255,0)'], [.58, 'rgba(255,70,70,0)'], [1, 'rgba(255,70,70,.34)']]); ctx.fillRect(dx - dR, dy - dR, dR * 2, dR * 2); }
+    ctx.restore();
+    // đường đất: vẽ đè lên cả rừng lẫn đảo cỏ, như con đường mòn xuyên rừng dẫn vào bản doanh
     if (team) {
-      ctx.fillStyle = lgr(0, y0, 0, y1, [[0, 'rgba(50,130,255,.34)'], [.42, 'rgba(50,130,255,0)'], [.58, 'rgba(255,70,70,0)'], [1, 'rgba(255,70,70,.34)']]); rr(x0, y0, w, h, rad); ctx.fill();
       const my = arena.h / 2, rx0 = Math.max(x0 + rad * .35, 0), rw = Math.min(x1 - rad * .35, W) - rx0;
       ctx.fillStyle = '#a8864c'; rr(rx0, PY(my - 6.6), rw, 13.2 * k, k * 3.2); ctx.fill();
       const dPat = tilePattern('dirt'); ctx.fillStyle = dPat || lgr(0, PY(my - 6), 0, PY(my + 6), [[0, '#cfae74'], [.5, '#e4c994'], [1, '#cfae74']]); rr(rx0, PY(my - 6), rw, 12 * k, k * 3); ctx.fill();
@@ -780,6 +811,11 @@
       if (d.t === 'tuft') { const x = PX(d.x), y = PY(d.y), s = d.s * k * .6; ctx.strokeStyle = '#3f8f2f'; ctx.lineWidth = Math.max(1.5, k * .2); ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(x - s * .5, y); ctx.lineTo(x - s * .9, y - s); ctx.moveTo(x, y); ctx.lineTo(x, y - s * 1.35); ctx.moveTo(x + s * .5, y); ctx.lineTo(x + s * .9, y - s); ctx.stroke(); }
       else if (d.t === 'flower') { const x = PX(d.x), y = PY(d.y), s = d.s * k * .34; ctx.strokeStyle = '#3f8f2f'; ctx.lineWidth = Math.max(1.2, k * .16); ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x, y + s * 1.6); ctx.stroke(); ctx.fillStyle = ['#ffffff', '#ffd23a', '#ff8fc8', '#8fd8ff'][Math.floor(d.v * 4)]; for (let i = 0; i < 5; i++) { circle(x + Math.cos(i * 1.256) * s, y + Math.sin(i * 1.256) * s, s * .72); ctx.fill(); } ctx.fillStyle = '#e8842a'; circle(x, y, s * .6); ctx.fill(); }
     }
+    // viền đảo cỏ hình thoi - cho cảm giác "hòn đảo" nổi giữa rừng, giống ảnh mẫu Clash of Clans
+    ctx.save(); ctx.shadowColor = 'rgba(255,224,150,.35)'; ctx.shadowBlur = k * 2;
+    ctx.strokeStyle = 'rgba(255,224,150,.28)'; ctx.lineWidth = Math.max(3, k * .8); diamond(dx, dy, dR * 1.01); ctx.stroke(); ctx.restore();
+    ctx.lineWidth = Math.max(3, k * .9); ctx.strokeStyle = '#2f6b24'; diamond(dx, dy, dR); ctx.stroke();
+    ctx.lineWidth = 2; ctx.strokeStyle = 'rgba(20,10,20,.5)'; diamond(dx, dy, dR * 1.015); ctx.stroke();
     ctx.lineWidth = Math.max(4, k * 1.3); ctx.strokeStyle = '#3a7a2e'; rr(x0, y0, w, h, rad); ctx.stroke();
     ctx.lineWidth = 3; ctx.strokeStyle = '#14081e'; rr(x0 - k * .65, y0 - k * .65, w + k * 1.3, h + k * 1.3, rad + k * .6); ctx.stroke();
     ctx.lineWidth = 2; ctx.strokeStyle = 'rgba(255,255,255,.3)'; rr(x0 + k * .8, y0 + k * .8, w - k * 1.6, h - k * 1.6, rad - k * .6); ctx.stroke();
