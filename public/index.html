@@ -29,7 +29,7 @@
   /* ---------- HUD solo ---------- */
   #hud { position: fixed; top: 1.8vh; left: 50%; transform: translateX(-50%); width: min(88vw, 720px); }
   .meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: .8vh; }
-  #lvl { font-weight: 800; font-size: clamp(16px, 2.6vh, 28px); padding: .05em .9em; border-radius: 10px; background: linear-gradient(#6a3fa0, #43276e); border: 3px solid var(--deep); box-shadow: inset 0 2px 0 rgba(255,255,255,.25), 0 3px 0 rgba(0,0,0,.4); text-shadow: var(--out); }
+  #lvl { font-weight: 800; font-size: clamp(16px, 2.6vh, 28px); padding: .05em .9em; border-radius: 10px; background: linear-gradient(#6a3fa0, #43276e); border: 3px solid var(--rim); box-shadow: inset 0 2px 0 rgba(255,255,255,.25), 0 0 0 2px var(--deep), 0 3px 0 rgba(0,0,0,.4); text-shadow: var(--out); }
   #hud.boss #lvl { background: linear-gradient(#c23a4a, #7c1826); }
   #timer, #tTimer { font-weight: 800; font-size: clamp(18px, 3vh, 32px); font-variant-numeric: tabular-nums; padding: .0em .8em; border-radius: 999px; background: linear-gradient(#2b1a42, #170c28); border: 3px solid var(--rim); box-shadow: 0 0 0 3px var(--deep), 0 4px 0 3px rgba(0,0,0,.35); text-shadow: var(--out); }
   #timer.low, #tTimer.low { color: #ff6b5e; animation: throb .5s infinite alternate; }
@@ -119,8 +119,15 @@
   }
 
   /* ---------- Kết quả ---------- */
-  #result { position: fixed; inset: 0; display: grid; place-items: center; text-align: center; background: radial-gradient(rgba(30, 10, 46, .55), rgba(12, 4, 22, .85)); animation: fade .4s ease-out; }
-  #result h1 { margin: 0; font-size: clamp(30px, 7vh, 72px); font-weight: 800; text-shadow: var(--out); }
+  #result { position: fixed; inset: 0; display: grid; place-items: center; text-align: center; background: radial-gradient(rgba(30, 10, 46, .55), rgba(12, 4, 22, .85)); animation: fade .4s ease-out; overflow: hidden; }
+  #result::before { content: ''; position: absolute; inset: -30%; z-index: -1; pointer-events: none;
+    background: repeating-conic-gradient(rgba(255, 222, 130, .09) 0deg 7deg, transparent 7deg 18deg); animation: rays 50s linear infinite; }
+  @keyframes rays { to { transform: rotate(360deg); } }
+  #rTitle { margin: 0; font-size: clamp(30px, 7vh, 72px); font-weight: 800; line-height: 1.08;
+    background: linear-gradient(#fff6c8, #ffcf4a 55%, #f08a1a); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 4px 0 #14081e) drop-shadow(0 0 26px rgba(255, 140, 40, .65)); }
+  #rTitle.tblue { background: linear-gradient(#e4f3ff, #6cb8ff 55%, #2469d0); -webkit-background-clip: text; background-clip: text; filter: drop-shadow(0 4px 0 #14081e) drop-shadow(0 0 24px rgba(60, 150, 255, .7)); }
+  #rTitle.tred { background: linear-gradient(#ffe0dc, #ff7d70 55%, #d02c2c); -webkit-background-clip: text; background-clip: text; filter: drop-shadow(0 4px 0 #14081e) drop-shadow(0 0 24px rgba(255, 70, 70, .7)); }
   #result h2 { margin: 1.6vh 0 .8vh; font-size: clamp(14px, 2.4vh, 24px); font-weight: 800; color: var(--gold); text-shadow: var(--out); }
   #result .sub { font-size: clamp(14px, 2.4vh, 24px); opacity: .95; text-shadow: var(--out); }
   #result .rs { display: flex; justify-content: center; gap: 1.6vh; margin: 1vh 0 1vh; }
@@ -129,6 +136,9 @@
   #result li { display: flex; justify-content: space-between; gap: 1em; padding: .1em .7em; border-radius: 10px; margin-bottom: .6vh; background: linear-gradient(#3d2a55, #241537); border: 2px solid var(--deep); box-shadow: inset 0 1px 0 rgba(255,255,255,.14); }
   #result li span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   #result li b { color: var(--ember); white-space: nowrap; }
+  #result li .rank { color: var(--cream); margin-right: .15em; }
+  #result li.top1 { border-color: var(--gold); box-shadow: inset 0 1px 0 rgba(255,255,255,.14), 0 0 14px rgba(255, 207, 74, .6); }
+  #result li.top1 .rank { color: var(--gold); }
   #result p { margin: 1.4vh 0 0; font-size: clamp(14px, 2.4vh, 24px); opacity: .92; text-shadow: var(--out); }
   @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
   #rTeams { display: flex; gap: 2vh; justify-content: center; margin-top: 1vh; }
@@ -241,8 +251,8 @@
   <div id="top"></div>
   <div id="badges">
     <div class="badge" id="mod" hidden><span></span></div>
-    <div class="badge" id="enrage" hidden><span>Boss nổi điên: phòng thủ +40%</span></div>
-    <div class="badge" id="rush" hidden><span>Phòng thủ tăng cường!</span></div>
+    <div class="badge" id="enrage" hidden><span>💀 Boss nổi điên: phòng thủ +40%</span></div>
+    <div class="badge" id="rush" hidden><span>⚔️ Phòng thủ tăng cường!</span></div>
     <div class="badge" id="combo" hidden><span></span><i></i></div>
     <div class="badge" id="rage" hidden><span></span><i></i></div>
     <div class="badge" id="freeze" hidden><span></span><i></i></div>
@@ -567,7 +577,12 @@
     hudStars.forEach((d, i) => d.classList.toggle('on', !!TS('atk').s[i]));
     for (const t of ['blue', 'red']) hudStarsT[t].forEach((d, i) => d.classList.toggle('on', !!TS(t).s[i]));
   }
-  function chipFor(p, bounty, lead) { const c = el('div', 'chip' + (bounty ? ' bounty' : '') + (lead ? ' lead' : '')); c.append(avatar(p.avatar, p.color), el('span', '', (lead ? '👑 ' : '') + p.name), el('b', '', fmt(p.dmg !== undefined ? p.dmg : p.pts))); return c; }
+  function chipFor(p, bounty, rank) {
+    const c = el('div', 'chip' + (bounty ? ' bounty' : '') + (rank === 0 ? ' lead' : ''));
+    const prefix = rank === 0 ? '👑 ' : rank === 1 ? '🥈 ' : rank === 2 ? '🥉 ' : '';
+    c.append(avatar(p.avatar, p.color), el('span', '', prefix + p.name), el('b', '', fmt(p.dmg !== undefined ? p.dmg : p.pts)));
+    return c;
+  }
   let topLeaderId = null;
   function onTopChange(p) {
     sfx.coin(); shake = Math.max(shake, 8);
@@ -592,7 +607,7 @@
     }
     const top = $('top'), key = JSON.stringify(arr);
     if (top.dataset.k === key) return; top.dataset.k = key; top.replaceChildren();
-    arr.forEach((p, i) => top.append(chipFor(p, false, i === 0)));
+    arr.forEach((p, i) => top.append(chipFor(p, false, i)));
   }
 
   /* ================== Kho hình ảnh: sprite + chất liệu (tùy chọn) ==================
@@ -675,6 +690,10 @@
       const an = a * 6.2832 / nb; ctx.save(); ctx.translate(x + Math.cos(an) * R * 1.02, y + Math.sin(an) * R * 1.02); ctx.rotate(an + 1.5708);
       ctx.beginPath(); rr(-k * 1.4, -k * .95, k * 2.8, k * 1.9, k * .4); FS(lgr(0, -k * .95, 0, k * .95, [[0, '#d3c7ae'], [1, '#8e8068']]), Math.max(1.6, k * .17)); ctx.restore();
     }
+    // quầng sáng ấm quanh mép tường + viền sáng phía trên: cho sân đấu có chiều sâu hơn
+    ctx.save(); ctx.shadowColor = 'rgba(255, 224, 150, .5)'; ctx.shadowBlur = k * 1.8;
+    ctx.strokeStyle = 'rgba(255, 224, 150, .35)'; ctx.lineWidth = Math.max(2, k * .5); circle(x, y, R * 1.03); ctx.stroke(); ctx.restore();
+    ctx.strokeStyle = 'rgba(255,255,255,.25)'; ctx.lineWidth = Math.max(1.5, k * .3); ctx.beginPath(); ctx.arc(x, y, R * .995, -2.6, -0.5); ctx.stroke();
     if (team) { ctx.strokeStyle = TC(team); ctx.lineWidth = Math.max(3, k * .7); ctx.globalAlpha = .92; circle(x, y, R * .982); ctx.stroke(); ctx.globalAlpha = 1; }
   }
 
@@ -1539,9 +1558,15 @@
   function onBountyClaimed(d) { sfx.coin(); noteFeed('Đội ' + TN(d.team) + ' hạ ' + d.count + ' lính bị truy nã', '+' + d.fund + ' quỹ đội (' + d.target + ')', TC(d.team), 'kill'); }
   function onSpellBlocked(d) { const c = baseCenter(d.target); sfx.shield(); ring(c.x, c.y, 20, 32 * k, .6, '#bfe8ff'); }
 
+  const MEDAL = ['🥇', '🥈', '🥉'];
+  const rankSpan = (i, name, color) => {
+    const sp = el('span'); sp.append(el('b', 'rank', MEDAL[i] || (i + 1) + '.'), document.createTextNode(' ' + name));
+    if (color) sp.style.color = color;
+    return sp;
+  };
   function fillList(id, arr) {
     const ol = $(id); ol.replaceChildren();
-    arr.forEach((p, i) => { const li = el('li'); const sp = el('span', '', (i + 1) + '. ' + p.name); if (p.color) sp.style.color = p.color; li.append(sp, el('b', '', fmt(p.dmg) + (p.kills ? '  (' + p.kills + ' phá)' : ''))); ol.append(li); });
+    arr.forEach((p, i) => { const li = el('li', i < 3 ? 'top' + (i + 1) : ''); li.append(rankSpan(i, p.name, p.color), el('b', '', fmt(p.dmg) + (p.kills ? '  (' + p.kills + ' phá)' : ''))); ol.append(li); });
   }
   function finishResult(d, win) {
     $('rAllBox').hidden = !d.allTime || !d.allTime.length; if (d.allTime) fillList('rAll', d.allTime);
@@ -1551,7 +1576,7 @@
   function showResult(d) {
     if (d.mode === 'team') return showTeamResult(d);
     const win = d.result === 'win';
-    $('rSeasonBox').hidden = true; $('rSolo').hidden = false; $('rTeams').hidden = true; $('rSubT').textContent = ''; $('rScore').textContent = d.demo ? 'Trận trình diễn: không tính vào cấp độ' : ''; $('rTitle').style.color = '';
+    $('rSeasonBox').hidden = true; $('rSolo').hidden = false; $('rTeams').hidden = true; $('rSubT').textContent = ''; $('rScore').textContent = d.demo ? 'Trận trình diễn: không tính vào cấp độ' : ''; $('rTitle').className = '';
     $('rTitle').textContent = win ? (d.boss ? 'Hạ gục Boss!' : 'Phá hủy hoàn toàn!') : 'Hết giờ!';
     const rs = $('rStars'); rs.replaceChildren(); starBox().forEach((s, i) => { if (d.stars[i]) s.classList.add('on'); rs.append(s); });
     $('rSub').textContent = 'Phá hủy ' + d.destruction + '%' + (d.thKiller ? '  -  Hạ Nhà Chính: ' + d.thKiller : '');
@@ -1560,20 +1585,20 @@
   }
   function fillPts(id, arr) {
     const ol = $(id); ol.replaceChildren();
-    arr.forEach((p, i) => { const li = el('li'); li.append(el('span', '', (i + 1) + '. ' + p.name), el('b', '', fmt(p.pts) + ' điểm')); ol.append(li); });
+    arr.forEach((p, i) => { const li = el('li', i < 3 ? 'top' + (i + 1) : ''); li.append(rankSpan(i, p.name), el('b', '', fmt(p.pts) + ' điểm')); ol.append(li); });
   }
   const REASONS = { annihilation: 'Phá hủy hoàn toàn căn cứ đối phương', suddendeath: 'Hiệp phụ: phá được công trình trước là thắng', overtime: 'Hòa cả sau hiệp phụ', timeup: 'Hết giờ: so sao trước, rồi tới % phá hủy' };
   function showTeamResult(d) {
     const w = d.winner;
     $('rSolo').hidden = true; const box = $('rTeams'); box.hidden = false; box.replaceChildren();
     $('rTitle').textContent = w === 'draw' ? 'HÒA!' : TU(w) + ' THẮNG!';
-    $('rTitle').style.color = w === 'draw' ? '' : TC(w);
+    $('rTitle').className = w === 'draw' ? '' : 't' + w;
     $('rSubT').textContent = REASONS[d.reason] || REASONS.timeup;
     for (const t of ['blue', 'red']) {
       const x = d.teams[t], col = el('div', 'tcolr' + (t === w ? ' win' : '')); col.style.setProperty('--c', TC(t));
       const rs = el('div', 'rs'); starBox().forEach((s, i) => { if (x.stars[i]) s.classList.add('on'); rs.append(s); });
-      const ol = el('ol'); x.top.forEach((p, i) => { const li = el('li'); const sp = el('span', '', (i + 1) + '. ' + p.name); if (p.color) sp.style.color = p.color; li.append(sp, el('b', '', fmt(p.dmg) + (p.frags ? '  (' + p.frags + ' hạ)' : ''))); ol.append(li); });
-      col.append(el('h3', '', 'Đội ' + TN(t)), rs, el('div', 'tpct', x.p + '%'), ol);
+      const ol = el('ol'); x.top.forEach((p, i) => { const li = el('li', i < 3 ? 'top' + (i + 1) : ''); li.append(rankSpan(i, p.name, p.color), el('b', '', fmt(p.dmg) + (p.frags ? '  (' + p.frags + ' hạ)' : ''))); ol.append(li); });
+      col.append(el('h3', '', (t === w ? '👑 ' : '') + 'Đội ' + TN(t)), rs, el('div', 'tpct', x.p + '%'), ol);
       if (x.topPts) col.append(el('div', 'mv', 'Đại gia: ' + x.topPts.name + ' (' + fmt(x.topPts.pts) + ' điểm quà)'));
       box.append(col);
     }
@@ -1589,7 +1614,7 @@
     teamScore = d.teamScore || teamScore; teamInfo = d.teams || teamInfo;
     $('hud').hidden = mode === 'team'; $('hudT').hidden = mode !== 'team'; $('feed').classList.toggle('team', mode === 'team');
     $('hud').classList.toggle('boss', !!boss); $('lvl').textContent = 'Cấp ' + level + (boss ? ' (Boss)' : '');
-    const m = $('mod'); m.hidden = !modLabel; m.firstChild.textContent = modLabel;
+    const m = $('mod'); m.hidden = !modLabel; m.firstChild.textContent = modLabel ? '🎲 ' + modLabel : '';
     hud = { T: {}, tl: d.roundLen || 0, en: false, top: mode === 'team' ? { blue: [], red: [] } : [], bo: null, gd: false, ot: false, lr: false, phase: null, pl: 0 }; tlAt = performance.now();
     topLeaderId = null;
     setLayout(d.layout); $('top').dataset.k = ''; $('ttBlue').dataset.k = ''; $('ttRed').dataset.k = '';
@@ -1666,9 +1691,9 @@
     const left = status === 'playing' ? Math.ceil(localLeft(hud.tl)) : 0, tx = mmss(left);
     if (tx !== timerText) { timerText = tx; $('timer').textContent = tx; $('timer').classList.toggle('low', left <= 15 && left > 0); }
     const on = status === 'playing', cb = T.cb, rg = T.rg;
-    setBadgeNode($('combo'), on && cb && cb.n > 0 && localLeft(cb.l) > 0, cb ? 'Combo ' + cb.n + '  (+' + Math.round((cb.m - 1) * 100) + '% sát thương)' : '', cb ? localLeft(cb.l) / cb.w : 0);
-    setBadgeNode($('rage'), on && rg && localLeft(rg.l) > 0, rg ? 'Cuồng nộ ×' + rg.m + '  ' + Math.ceil(localLeft(rg.l)) + 's' : '', rg ? localLeft(rg.l) / 15 : 0);
-    setBadgeNode($('freeze'), on && localLeft(T.fz) > 0, 'Đóng băng phòng thủ  ' + Math.ceil(localLeft(T.fz)) + 's', localLeft(T.fz) / 8);
+    setBadgeNode($('combo'), on && cb && cb.n > 0 && localLeft(cb.l) > 0, cb ? '⚡ Combo ' + cb.n + '  (+' + Math.round((cb.m - 1) * 100) + '% sát thương)' : '', cb ? localLeft(cb.l) / cb.w : 0);
+    setBadgeNode($('rage'), on && rg && localLeft(rg.l) > 0, rg ? '🔥 Cuồng nộ ×' + rg.m + '  ' + Math.ceil(localLeft(rg.l)) + 's' : '', rg ? localLeft(rg.l) / 15 : 0);
+    setBadgeNode($('freeze'), on && localLeft(T.fz) > 0, '❄️ Đóng băng phòng thủ  ' + Math.ceil(localLeft(T.fz)) + 's', localLeft(T.fz) / 8);
     $('enrage').hidden = !(on && hud.en);
     $('rush').hidden = !(on && hud.lr && !hud.en);
     syncHudHeight();
@@ -1703,14 +1728,14 @@
       $('tm' + B).style.width = (mOn ? Math.min(100, localLeft(T.mb) / ((cfg.team.cheer && cfg.team.cheer.buffSec) || 12) * 100) : (T.mo || 0)) + '%';
       $('tmT' + B).textContent = mOn ? 'HÔ HÀO ×' + ((cfg.team.cheer && cfg.team.cheer.buffMult) || 1.3) + '  ' + Math.ceil(localLeft(T.mb)) + 's' : 'TINH THẦN ' + (T.mo || 0) + '%';
       const cb = T.cb, rg = T.rg, bd = tBadge[t], en = enemyOf(t);
-      setBadgeNode(bd.combo, on && cb && cb.n > 0 && localLeft(cb.l) > 0, cb ? 'Combo ' + cb.n + ' (+' + Math.round((cb.m - 1) * 100) + '%)' : '', cb ? localLeft(cb.l) / cb.w : 0);
-      setBadgeNode(bd.rage, on && rg && localLeft(rg.l) > 0, rg ? 'Cuồng nộ ×' + rg.m + ' ' + Math.ceil(localLeft(rg.l)) + 's' : '', rg ? localLeft(rg.l) / 15 : 0);
-      setBadgeNode(bd.fz, on && localLeft(T.fz) > 0, 'Đóng băng địch ' + Math.ceil(localLeft(T.fz)) + 's', localLeft(T.fz) / 8);
-      setBadgeNode(bd.ps, on && localLeft(T.ps) > 0, 'Độc địch ' + Math.ceil(localLeft(T.ps)) + 's', localLeft(T.ps) / 10);
-      setBadgeNode(bd.sh, on && localLeft(T.sh) > 0, 'Khiên ' + Math.ceil(localLeft(T.sh)) + 's', localLeft(T.sh) / 8);
-      setBadgeNode(bd.bf, on && localLeft(T.bf) > 0, 'Buff Rồng ×' + ((cfg.team.guardian && cfg.team.guardian.buffMult) || 1.5) + ' ' + Math.ceil(localLeft(T.bf)) + 's', localLeft(T.bf) / 20);
+      setBadgeNode(bd.combo, on && cb && cb.n > 0 && localLeft(cb.l) > 0, cb ? '⚡ Combo ' + cb.n + ' (+' + Math.round((cb.m - 1) * 100) + '%)' : '', cb ? localLeft(cb.l) / cb.w : 0);
+      setBadgeNode(bd.rage, on && rg && localLeft(rg.l) > 0, rg ? '🔥 Cuồng nộ ×' + rg.m + ' ' + Math.ceil(localLeft(rg.l)) + 's' : '', rg ? localLeft(rg.l) / 15 : 0);
+      setBadgeNode(bd.fz, on && localLeft(T.fz) > 0, '❄️ Đóng băng địch ' + Math.ceil(localLeft(T.fz)) + 's', localLeft(T.fz) / 8);
+      setBadgeNode(bd.ps, on && localLeft(T.ps) > 0, '☠️ Độc địch ' + Math.ceil(localLeft(T.ps)) + 's', localLeft(T.ps) / 10);
+      setBadgeNode(bd.sh, on && localLeft(T.sh) > 0, '🛡️ Khiên ' + Math.ceil(localLeft(T.sh)) + 's', localLeft(T.sh) / 8);
+      setBadgeNode(bd.bf, on && localLeft(T.bf) > 0, '🐉 Buff Rồng ×' + ((cfg.team.guardian && cfg.team.guardian.buffMult) || 1.5) + ' ' + Math.ceil(localLeft(T.bf)) + 's', localLeft(T.bf) / 20);
       setBadgeNode(bd.mb, false, '', 0);
-      setBadgeNode(bd.cu, on && T.cu, 'Bám đuổi +' + Math.round((((cfg.team.catchUp && cfg.team.catchUp.bonus) || .2)) * 100) + '%', 1);
+      setBadgeNode(bd.cu, on && T.cu, '🏃 Bám đuổi +' + Math.round((((cfg.team.catchUp && cfg.team.catchUp.bonus) || .2)) * 100) + '%', 1);
     }
     syncHudHeight();
   }
