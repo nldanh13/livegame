@@ -694,7 +694,7 @@
 
   /* ================== Vẽ nền chiến trường ================== */
   const BS = () => (mode === 'team' ? 1.3 : 1.22); // hệ số phóng to công trình
-  const PLAZAS = () => (mode === 'team' ? [{ x: arena.cx - (arena.bx || 0), y: arena.cy, r: 31, t: 'blue' }, { x: arena.cx + (arena.bx || 0), y: arena.h - arena.cy, r: 31, t: 'red' }] : [{ x: arena.cx, y: arena.cy, r: 33, t: null }]);
+  const PLAZAS = () => (mode === 'team' ? [{ x: arena.cx - (arena.bx || 0), y: arena.cy, r: 35, t: 'blue' }, { x: arena.cx + (arena.bx || 0), y: arena.h - arena.cy, r: 35, t: 'red' }] : [{ x: arena.cx, y: arena.cy, r: 33, t: null }]);
 
   function plaza(cx, cy, rad, team) { // sân đá lát cuội có viền khối đá
     const x = PX(cx), y = PY(cy), R = rad * k, rnd = mulberry(Math.round(cx * 7 + cy * 13 + rad));

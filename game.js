@@ -106,7 +106,7 @@ class Game {
     const hpScale = this.difficulty * (1 + lv * d.perLevelHp) * (this.mod && this.mod.hp ? this.mod.hp : 1) * (this.boss ? c.town.bossHpMultiplier || 1 : 1) * (team ? c.team.hpMult || 1 : 1);
     const dpsScale = (0.6 + 0.4 * this.difficulty) * (1 + lv * d.perLevelDps) * (this.mod && this.mod.defDps ? this.mod.defDps : 1);
     const rScale = team ? c.team.baseScale || 1 : 1;
-    const ringIn = team ? 12 : 14, ringOut = team ? 25 : 29;
+    const ringIn = 14, ringOut = 29; // rộng hơn cho công trình có chỗ dàn ra, đỡ chật
 
     const types = [];
     for (const e of c.layout) {
