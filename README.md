@@ -43,6 +43,23 @@ Không đặt `TIKTOK_USER` thì chạy ở **chế độ thử** (không kết 
 2. Bỏ CSS mặc định của OBS nếu có. Tick "Control audio via OBS" nếu muốn có tiếng.
 3. Tham số URL hữu ích: `?safeTop=9&safeBottom=16` (tránh giao diện TikTok), `?calm=1` (giảm nháy), `?mute=1`, `?music=1`, `?assets=0` (tắt sprite), `?ground=0` (bỏ nền).
 
+## Cập nhật code khi đang live
+Không cần dừng server để lấy code mới. Mở terminal khác (đừng đóng cửa sổ đang chạy `npm start`), vào thư mục dự án rồi chạy:
+```bash
+# Windows: bấm đúp update.bat, hoặc
+update.bat
+
+# macOS / Linux
+./update.sh
+```
+Script tự `git pull`, và nếu bạn có chỉnh cân bằng qua trang admin (ghi thẳng vào `config.json`) thì tự tạm cất lại trước khi tải, tránh mất khi có xung đột.
+
+Server đang chạy tự áp dụng thay đổi:
+- `config.json` → gần như ngay lập tức.
+- `game.js` (luật chơi) → khi ván hiện tại kết thúc, không ảnh hưởng ván đang chơi.
+- `public/index.html` (giao diện) → trình duyệt OBS tự tải lại đúng lúc ván mới bắt đầu.
+- `server.js` → cần tự dừng (`Ctrl+C`) rồi `npm start` lại, vì đang giữ kết nối TikTok Live.
+
 ## Cấu hình
 Mọi thông số nằm trong [`config.json`](config.json): lính, phép, công trình, quà, cân bằng, lọc tên, trình diễn. Sửa file rồi lưu, game tự nạp lại. Bảng gán quà và thanh kéo cân bằng nằm trong trang admin.
 Tên quà TikTok khác nhau theo khu vực, hãy dùng bảng "Gán quà" trong admin để chọn theo tên thật.
