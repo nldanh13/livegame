@@ -1,7 +1,9 @@
 {
   "arena": {
-    "cx": 50,
-    "cy": 46
+    "w": 96,
+    "h": 156,
+    "cx": 48,
+    "cy": 36
   },
   "town": {
     "bossEvery": 5,
@@ -524,9 +526,9 @@
     "baseScale": 0.85,
     "baseOffsetX": 0.16,
     "arena": {
-      "w": 100,
-      "h": 140,
-      "cy": 36
+      "w": 96,
+      "h": 180,
+      "cy": 28
     },
     "names": {
       "blue": "Xanh",

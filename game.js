@@ -76,8 +76,11 @@ class Game {
       if (this.boss) this.mod = c.bossModifier || null;
       else if (level >= 2 && c.modifiers && c.modifiers.length) this.mod = c.modifiers[Math.floor(this.rng() * c.modifiers.length)];
     }
-    const ta = (c.team && c.team.arena) || { w: 100, h: 140, cy: 36 };
-    this.arena = team ? { w: ta.w, h: ta.h, cx: ta.w / 2, cy: ta.cy } : { w: 100, h: 100, cx: c.arena.cx, cy: c.arena.cy };
+    const ta = (c.team && c.team.arena) || { w: 96, h: 180, cy: 28 };
+    const sa = c.arena || { w: 96, h: 156, cx: 48, cy: 36 };
+    this.arena = team
+      ? { w: ta.w || 96, h: ta.h || 180, cx: (ta.w || 96) / 2, cy: ta.cy || 28 }
+      : { w: sa.w || 96, h: sa.h || 156, cx: sa.cx || 48, cy: sa.cy || 36 };
     // 2 căn cứ đặt chéo góc nhau (xéo xéo nhau) chuẩn góc nhìn isometric Clash of Clans
     if (team) this.arena.bx = (c.team.baseOffsetX != null ? c.team.baseOffsetX : 0.16) * this.arena.w;
 
@@ -242,20 +245,21 @@ class Game {
       const bx = A.bx != null ? A.bx : A.w * 0.16;
       if (team === 'blue') {
         const s = Math.floor(r() * 3);
-        if (s === 0) return [-3, 8 + r() * (A.h * 0.38)];       // mép trái phía trên gần căn cứ Xanh
+        if (s === 0) return [-3, 6 + r() * (A.h * 0.24)];       // mép trái phía trên gần căn cứ Xanh
         if (s === 1) return [4 + r() * (A.w * 0.52), -3];        // mép trên phía trái
-        return [r() * (A.cx - bx * 0.3), 10 + r() * 40];         // sườn góc trên-trái
+        return [r() * (A.cx - bx * 0.3), 8 + r() * (A.h * 0.22)]; // sườn góc trên-trái
       } else {
         const s = Math.floor(r() * 3);
-        if (s === 0) return [A.w + 3, A.h - (8 + r() * (A.h * 0.38))];  // mép phải phía dưới gần căn cứ Đỏ
+        if (s === 0) return [A.w + 3, A.h - (6 + r() * (A.h * 0.24))];  // mép phải phía dưới gần căn cứ Đỏ
         if (s === 1) return [A.w - (4 + r() * (A.w * 0.52)), A.h + 3];  // mép dưới phía phải
-        return [A.w - r() * (A.cx - bx * 0.3), A.h - (10 + r() * 40)];  // sườn góc dưới-phải
+        return [A.w - r() * (A.cx - bx * 0.3), A.h - (8 + r() * (A.h * 0.22))];  // sườn góc dưới-phải
       }
     }
-    const s = Math.floor(r() * 3);
-    if (s === 0) return [-3, 45 + r() * 50];
-    if (s === 1) return [A.w + 3, 45 + r() * 50];
-    return [10 + r() * 80, A.h + 3];
+    // Solo: Thành trì ở phía trên (cy = 36). Lính hành quân từ bờ dưới và 2 bên sườn lên thành trì!
+    const s = Math.floor(r() * 5);
+    if (s === 0) return [-3, A.h * 0.62 + r() * (A.h * 0.32)];   // sườn trái phía dưới
+    if (s === 1) return [A.w + 3, A.h * 0.62 + r() * (A.h * 0.32)]; // sườn phải phía dưới
+    return [A.w * 0.08 + r() * (A.w * 0.84), A.h + 2];           // vạch xuất kích chính ở bờ dưới
   }
 
   spawn(user, key, count, source = 'gift', rank = null, team = null, points = 0) {

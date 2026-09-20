@@ -27,16 +27,21 @@
   .rim { box-shadow: inset 0 2px 0 rgba(255,255,255,.16), 0 0 0 3px var(--rim), 0 0 0 5px var(--deep), 0 6px 0 5px rgba(0,0,0,.35); }
 
   /* ---------- HUD solo ---------- */
-  #hud { position: fixed; top: 1.2vh; left: 50%; transform: translateX(-50%); width: min(92vw, 680px); }
-  .meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: .4vh; }
-  #lvl { font-weight: 800; font-size: clamp(13px, 1.8vh, 22px); padding: .02em .7em; border-radius: 8px; background: linear-gradient(#6a3fa0, #43276e); border: 2px solid var(--rim); box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 0 0 2px var(--deep), 0 2px 0 rgba(0,0,0,.4); text-shadow: var(--out); }
+  #hud { position: fixed; top: 1.2vh; left: 50%; transform: translateX(-50%); width: min(92vw, 560px);
+    padding: .35vh .65vh .4vh; border-radius: 14px;
+    background: linear-gradient(180deg, rgba(34, 18, 54, 0.82), rgba(18, 9, 30, 0.9));
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border: 1.5px solid rgba(255, 207, 74, 0.32);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.52), inset 0 1px 0 rgba(255, 255, 255, 0.14); }
+  .meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: .3vh; }
+  #lvl { font-weight: 800; font-size: clamp(12px, 1.7vh, 20px); padding: .04em .65em; border-radius: 8px; background: linear-gradient(135deg, rgba(106, 63, 160, 0.82), rgba(67, 39, 110, 0.88)); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); border: 1.5px solid var(--rim); box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 2px 0 rgba(0,0,0,.4); text-shadow: var(--out); }
   #hud.boss #lvl { background: linear-gradient(#c23a4a, #7c1826); }
-  #timer, #tTimer { font-weight: 800; font-size: clamp(14px, 2.2vh, 24px); font-variant-numeric: tabular-nums; padding: .0em .7em; border-radius: 999px; background: linear-gradient(#2b1a42, #170c28); border: 2px solid var(--rim); box-shadow: 0 0 0 2px var(--deep), 0 3px 0 2px rgba(0,0,0,.35); text-shadow: var(--out); }
+  #timer, #tTimer { font-weight: 800; font-size: clamp(13px, 2vh, 22px); font-variant-numeric: tabular-nums; padding: .02em .65em; border-radius: 999px; background: linear-gradient(135deg, rgba(43, 26, 66, 0.82), rgba(23, 12, 40, 0.88)); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); border: 1.5px solid var(--rim); box-shadow: 0 2px 0 rgba(0,0,0,.35); text-shadow: var(--out); }
   #timer.low, #tTimer.low { color: #ff6b5e; animation: throb .5s infinite alternate; }
   #tTimer.gold { color: var(--gold); box-shadow: 0 0 0 2px var(--deep), 0 0 14px 3px rgba(255, 200, 60, .75); }
   @keyframes throb { to { transform: scale(1.08); } }
 
-  .bar { position: relative; height: clamp(18px, 2.6vh, 28px); background: linear-gradient(#150a22, #2a1740); border: 2px solid var(--deep); border-radius: 999px; overflow: hidden;
+  .bar { position: relative; height: clamp(18px, 2.6vh, 28px); background: linear-gradient(135deg, rgba(21, 10, 34, 0.9), rgba(42, 23, 64, 0.9)); border: 2px solid var(--deep); border-radius: 999px; overflow: hidden;
     box-shadow: 0 0 0 2px var(--rim), 0 0 0 3px var(--deep), 0 4px 0 3px rgba(0,0,0,.35); }
   #hud.boss .bar { box-shadow: 0 0 0 2px #ff6b7a, 0 0 0 4px var(--deep), 0 0 18px 3px rgba(255, 60, 90, .6); }
   #pGhost { position: absolute; inset: 0 auto 0 0; background: #f6e7b0; width: 0; opacity: .55; }
@@ -48,7 +53,7 @@
   #pMark { position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; background: rgba(18, 8, 28, .75); z-index: 2; }
   #pText, .barText { position: absolute; inset: 0; display: grid; place-items: center; font-weight: 800; font-size: clamp(11px, 1.6vh, 17px); text-shadow: var(--out); font-variant-numeric: tabular-nums; z-index: 3; }
 
-  #stars { display: flex; justify-content: center; gap: 1.4vh; margin-top: .5vh; }
+  #stars { display: flex; justify-content: center; gap: 1.4vh; margin-top: .4vh; }
   .st { display: flex; flex-direction: column; align-items: center; line-height: 1; }
   .st svg { width: clamp(20px, 3vh, 36px); height: auto; overflow: visible; filter: drop-shadow(0 2px 0 rgba(0,0,0,.45)); }
   .st svg path { fill: url(#gStarOff); stroke: #12081c; stroke-width: 1.4; stroke-linejoin: round; }
@@ -58,50 +63,60 @@
   .st.on span { opacity: 1; color: var(--gold); }
   @keyframes pop { 0% { transform: scale(.3) rotate(-30deg); } 100% { transform: scale(1) rotate(0); } }
 
-  #top { display: flex; justify-content: center; gap: .5vh; margin-top: .5vh; flex-wrap: wrap; }
-  .chip { display: flex; align-items: center; gap: .35em; font-size: clamp(10px, 1.4vh, 15px); max-width: 28vw; padding: .06em .6em .06em .25em; border-radius: 999px; background: linear-gradient(#3d2a55, #241537); border: 2px solid var(--deep); box-shadow: inset 0 1px 0 rgba(255,255,255,.18), 0 2px 0 rgba(0,0,0,.35); }
+  #top { display: flex; justify-content: center; gap: .5vh; margin-top: .4vh; flex-wrap: wrap; }
+  .chip { display: flex; align-items: center; gap: .35em; font-size: clamp(10px, 1.4vh, 15px); max-width: 28vw; padding: .06em .6em .06em .25em; border-radius: 999px;
+    background: linear-gradient(135deg, rgba(61, 42, 85, 0.8), rgba(36, 21, 55, 0.86)); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    border: 1.5px solid rgba(255,255,255,.16); box-shadow: inset 0 1px 0 rgba(255,255,255,.18), 0 4px 12px rgba(0,0,0,.35); }
   .chip img, .chip i, .ev img, .ev i { border-radius: 50%; object-fit: cover; background: var(--dim); flex: none; border: 1.5px solid var(--c, #fff4e0); }
   .chip img, .chip i { width: 1.5em; height: 1.5em; }
   .chip span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .chip b { color: var(--ember); font-weight: 800; }
-  .chip.bounty { border-color: #ff4a5e; box-shadow: 0 0 8px rgba(255, 60, 80, .75), 0 2px 0 rgba(0,0,0,.35); }
-  .chip.lead { border-color: var(--gold); box-shadow: 0 0 10px rgba(255, 207, 74, .85), 0 2px 0 rgba(0,0,0,.35); }
+  .chip.bounty { border-color: #ff4a5e; box-shadow: 0 0 10px rgba(255, 60, 80, .75), 0 4px 12px rgba(0,0,0,.35); }
+  .chip.lead { border-color: var(--gold); box-shadow: 0 0 12px rgba(255, 207, 74, .85), 0 4px 12px rgba(0,0,0,.35); }
   .chip.lead b { color: var(--gold); }
 
-  #badges { display: flex; justify-content: center; gap: .5vh; margin-top: .4vh; flex-wrap: wrap; }
-  .badge { position: relative; overflow: hidden; border-radius: 8px; padding: .03em .6em; font-weight: 800; font-size: clamp(10px, 1.4vh, 15px); background: linear-gradient(#2e1d45, #1a0e2b); border: 2px solid var(--c); box-shadow: 0 2px 0 rgba(0,0,0,.4); text-shadow: var(--outs); }
+  #badges { display: flex; justify-content: center; gap: .5vh; margin-top: .35vh; flex-wrap: wrap; }
+  .badge { position: relative; overflow: hidden; border-radius: 8px; padding: .03em .6em; font-weight: 800; font-size: clamp(10px, 1.4vh, 15px);
+    background: linear-gradient(135deg, rgba(46, 29, 69, 0.8), rgba(26, 14, 43, 0.86)); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    border: 1.5px solid var(--c); box-shadow: 0 4px 12px rgba(0,0,0,.35); text-shadow: var(--outs); }
   .badge i { position: absolute; left: 0; bottom: 0; height: 3px; background: var(--c); transition: width .2s linear; }
   #combo { --c: var(--ember); } #rage { --c: #b56cff; color: #e6ceff; } #freeze { --c: #a8e6ff; color: #d8f4ff; } #enrage { --c: #ff4a5e; color: #ffb0b8; } #rush { --c: #ff8a3d; color: #ffd9b0; } #mod { --c: #ffcf4a; font-weight: 600; }
 
-  /* ---------- Feed ---------- */
-  #feed { position: fixed; left: 2.5vw; bottom: 20vh; width: min(66vw, 460px); display: flex; flex-direction: column; gap: .7vh; }
-  .ev { display: flex; align-items: center; gap: .6em; border-left: 6px solid var(--c, var(--ember)); border-radius: 12px; padding: .25em .7em .25em .3em; font-size: clamp(13px, 2.1vh, 22px);
-    background: linear-gradient(90deg, rgba(60, 38, 88, .94), rgba(30, 16, 46, .9)); box-shadow: inset 0 1px 0 rgba(255,255,255,.14), 0 3px 0 rgba(0,0,0,.35); animation: slide .3s ease-out; }
+  /* ---------- Feed thẻ nổi với nền mờ ---------- */
+  #feed { position: fixed; left: 2.5vw; bottom: calc(var(--safeBottom, 16vh) + 5.5vh); width: min(42vw, 220px); display: flex; flex-direction: column; gap: .5vh; z-index: 12; pointer-events: none; }
+  .ev { display: flex; align-items: center; gap: .45em; border-left: 4px solid var(--c, var(--ember)); border-radius: 12px; padding: .2em .6em .2em .3em; font-size: clamp(12px, 1.8vh, 18px);
+    background: linear-gradient(135deg, rgba(55, 32, 82, 0.8), rgba(26, 12, 42, 0.86)); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255,255,255,.16); border-right: 1px solid rgba(255,255,255,.12); border-bottom: 1px solid rgba(0,0,0,.4);
+    box-shadow: 0 6px 18px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.14); animation: slide .3s ease-out; }
   .ev.out { opacity: 0; transition: opacity .5s; }
-  .ev img, .ev i { width: 2.1em; height: 2.1em; }
+  .ev img, .ev i { width: 1.8em; height: 1.8em; }
   .ev .t { min-width: 0; line-height: 1.15; }
   .ev .t div { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .ev .t div + div { opacity: .88; font-size: .9em; }
+  .ev .t div + div { opacity: .88; font-size: .88em; }
   .ev .d { margin-left: auto; font-weight: 800; color: var(--ember); font-variant-numeric: tabular-nums; }
-  .ev.kill { background: linear-gradient(90deg, rgba(110, 22, 34, .94), rgba(50, 12, 24, .9)); padding-left: .7em; }
+  .ev.kill { background: linear-gradient(135deg, rgba(105, 20, 32, 0.82), rgba(46, 10, 22, 0.88)); border-top-color: rgba(255, 120, 140, 0.25); padding-left: .6em; }
   .ev.kill .t div:first-child { font-weight: 800; }
-  .ev.big { background: linear-gradient(90deg, rgba(150, 100, 20, .95), rgba(70, 42, 10, .92)); }
+  .ev.big { background: linear-gradient(135deg, rgba(140, 92, 18, 0.84), rgba(64, 38, 8, 0.9)); border-top-color: rgba(255, 220, 100, 0.35); }
   @keyframes slide { from { transform: translateX(-30px); opacity: 0; } to { transform: none; opacity: 1; } }
 
-  /* ---------- Banner ---------- */
-  #banner { position: fixed; left: 0; right: 0; top: 30vh; text-align: center; pointer-events: none; font-weight: 800; font-size: clamp(34px, 9vh, 100px); letter-spacing: .02em; opacity: 0; line-height: 1.05;
-    background: linear-gradient(#fff6c8, #ffcf4a 55%, #f08a1a); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 4px 0 #14081e) drop-shadow(0 0 22px rgba(255, 140, 40, .7)); }
-  #banner.boss { background: linear-gradient(#ffd0d6, #ff5a6a 55%, #b01830); -webkit-background-clip: text; background-clip: text; filter: drop-shadow(0 4px 0 #14081e) drop-shadow(0 0 26px rgba(255, 40, 80, .85)); }
-  #banner.tblue { background: linear-gradient(#e4f3ff, #6cb8ff 55%, #2469d0); -webkit-background-clip: text; background-clip: text; filter: drop-shadow(0 4px 0 #14081e) drop-shadow(0 0 22px rgba(60, 150, 255, .8)); }
-  #banner.tred { background: linear-gradient(#ffe0dc, #ff7d70 55%, #d02c2c); -webkit-background-clip: text; background-clip: text; filter: drop-shadow(0 4px 0 #14081e) drop-shadow(0 0 22px rgba(255, 70, 70, .8)); }
-  #banner.small { font-size: clamp(24px, 6vh, 64px); }
-  #banner.show { animation: banner 2.4s ease-out; }
-  @keyframes banner { 0% { opacity: 0; transform: scale(2.2); } 14% { opacity: 1; transform: scale(1); } 78% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(.96); } }
+  /* ---------- Banner thẻ nổi mờ ---------- */
+  #banner { position: fixed; left: 50%; transform: translateX(-50%); top: 23vh; text-align: center; pointer-events: none; font-weight: 800; font-size: clamp(20px, 4.2vh, 48px); letter-spacing: .02em; opacity: 0; line-height: 1.15; white-space: nowrap; max-width: 90vw;
+    padding: .22em .85em; border-radius: 999px;
+    background: linear-gradient(135deg, rgba(32, 16, 50, 0.86), rgba(16, 7, 26, 0.92)); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border: 2px solid var(--gold); box-shadow: 0 8px 28px rgba(0, 0, 0, 0.55), 0 0 20px rgba(255, 207, 74, 0.35);
+    color: #ffd858; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8), 0 0 12px rgba(255, 207, 74, 0.6); z-index: 25; }
+  #banner.boss { border-color: #ff5a6a; color: #ff8a96; box-shadow: 0 8px 28px rgba(0, 0, 0, 0.55), 0 0 22px rgba(255, 60, 90, 0.45); text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8), 0 0 12px rgba(255, 80, 100, 0.6); }
+  #banner.tblue { border-color: #4aa6ff; color: #8ed0ff; box-shadow: 0 8px 28px rgba(0, 0, 0, 0.55), 0 0 22px rgba(60, 150, 255, 0.45); text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8), 0 0 12px rgba(70, 160, 255, 0.6); }
+  #banner.tred { border-color: #ff5a5a; color: #ffa096; box-shadow: 0 8px 28px rgba(0, 0, 0, 0.55), 0 0 22px rgba(255, 70, 70, 0.45); text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8), 0 0 12px rgba(255, 80, 80, 0.6); }
+  #banner.small { font-size: clamp(16px, 3vh, 32px); padding: .18em .7em; }
+  #banner.show { animation: bannerFloat 2.4s ease-out; }
+  @keyframes bannerFloat { 0% { opacity: 0; transform: translate(-50%, -12px) scale(.88); } 12% { opacity: 1; transform: translate(-50%, 0) scale(1); } 78% { opacity: 1; transform: translate(-50%, 0) scale(1); } 100% { opacity: 0; transform: translate(-50%, -8px) scale(.95); } }
 
-  /* ---------- Thẻ quà khủng: dành riêng cho quà giá trị lớn, xứng đáng với số tiền bỏ ra ---------- */
+  /* ---------- Thẻ quà khủng: dành riêng cho quà giá trị lớn ---------- */
   #epicCard { position: fixed; left: 50%; top: 44%; z-index: 40; width: min(78vw, 460px); padding: .9em 1.2em 1em; border-radius: 22px; text-align: center;
     opacity: 0; pointer-events: none; transform: translate(-50%, -50%) scale(.5);
-    background: linear-gradient(#3d2a55, #1c0f30); border: 3px solid var(--gold); box-shadow: 0 0 0 4px var(--deep), 0 0 40px 10px rgba(255, 207, 74, .65), 0 8px 0 rgba(0,0,0,.4); }
+    background: linear-gradient(135deg, rgba(61, 42, 85, 0.88), rgba(28, 15, 48, 0.94)); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border: 3px solid var(--gold); box-shadow: 0 0 0 4px var(--deep), 0 0 40px 10px rgba(255, 207, 74, .65), 0 8px 0 rgba(0,0,0,.4); }
   #epicCard.legend { border-color: #ff6bd6; box-shadow: 0 0 0 4px var(--deep), 0 0 55px 14px rgba(255, 107, 214, .75), 0 8px 0 rgba(0,0,0,.4); }
   #epicCard img, #epicCard i { width: 4.4em; height: 4.4em; border-radius: 50%; border: 3px solid var(--gold); object-fit: cover; background: var(--dim); }
   #epicCard.legend img, #epicCard.legend i { border-color: #ff6bd6; }
@@ -119,7 +134,14 @@
   }
 
   /* ---------- Kết quả ---------- */
-  #result { position: fixed; inset: 0; display: grid; place-items: center; text-align: center; background: radial-gradient(rgba(30, 10, 46, .55), rgba(12, 4, 22, .85)); animation: fade .4s ease-out; overflow: hidden; }
+  #result { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; text-align: center; background: radial-gradient(rgba(30, 10, 46, .82), rgba(12, 4, 22, .95)); animation: fade .4s ease-out; overflow: hidden; }
+  body.result-open #demoTag,
+  body.result-open #guide,
+  body.result-open .tty,
+  body.result-open #feed,
+  #result:not([hidden]) ~ #demoTag,
+  #result:not([hidden]) ~ #guide,
+  #result:not([hidden]) ~ .tty { display: none !important; }
   #result::before { content: ''; position: absolute; inset: -30%; z-index: -1; pointer-events: none;
     background: repeating-conic-gradient(rgba(255, 222, 130, .09) 0deg 7deg, transparent 7deg 18deg); animation: rays 50s linear infinite; }
   @keyframes rays { to { transform: rotate(360deg); } }
@@ -152,44 +174,68 @@
   .tcolr ol { width: auto !important; font-size: clamp(12px, 2vh, 20px) !important; }
   .tcolr .mv { font-size: clamp(11px, 1.7vh, 18px); opacity: .9; margin-top: .4vh; }
 
-  /* ---------- HUD chế độ đội ---------- */
-  #hudT { position: fixed; top: 1.2vh; left: 50%; transform: translateX(-50%); width: min(94vw, 720px); }
-  #tScore { font-weight: 800; font-size: clamp(11px, 1.6vh, 18px); padding: .03em .6em; border-radius: 8px; background: linear-gradient(#3d2a55, #241537); border: 2px solid var(--deep); text-shadow: var(--outs); box-shadow: 0 2px 0 rgba(0,0,0,.4); }
-  #tPhase { font-weight: 800; font-size: clamp(10px, 1.4vh, 16px); padding: .03em .6em; border-radius: 8px; background: linear-gradient(#3d2a55, #241537); border: 2px solid var(--deep); text-shadow: var(--outs); min-height: 1.3em; box-shadow: 0 2px 0 rgba(0,0,0,.4); }
+  /* ---------- HUD chế độ đội (thiết kế gọn gàng, thẻ nổi mờ) ---------- */
+  #hudT { position: fixed; top: 1.2vh; left: 50%; transform: translateX(-50%); width: min(94vw, 680px);
+    padding: .35vh .65vh .4vh; border-radius: 14px;
+    background: linear-gradient(180deg, rgba(34, 18, 54, 0.82), rgba(18, 9, 30, 0.9));
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border: 1.5px solid rgba(255, 207, 74, 0.32);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.52), inset 0 1px 0 rgba(255, 255, 255, 0.14); }
+  .t-top-row { display: flex; align-items: center; justify-content: space-between; gap: .4vh; margin-bottom: .25vh; }
+  .t-side-meta { display: flex; align-items: center; gap: .4vh; min-width: 0; }
+  .t-side-meta.r { justify-content: flex-end; }
+  .t-center-meta { display: flex; align-items: center; justify-content: center; gap: .4vh; flex-wrap: nowrap; }
+  #tScore { font-weight: 800; font-size: clamp(10px, 1.4vh, 16px); padding: .04em .55em; border-radius: 8px;
+    background: linear-gradient(135deg, rgba(61, 42, 85, 0.82), rgba(36, 21, 55, 0.88)); border: 1.5px solid var(--deep); text-shadow: var(--outs); box-shadow: 0 2px 0 rgba(0,0,0,.35); white-space: nowrap; }
+  #tPhase { font-weight: 800; font-size: clamp(9px, 1.2vh, 14px); padding: .04em .55em; border-radius: 8px;
+    background: linear-gradient(135deg, rgba(61, 42, 85, 0.82), rgba(36, 21, 55, 0.88)); border: 1.5px solid var(--deep); text-shadow: var(--outs); box-shadow: 0 2px 0 rgba(0,0,0,.35); white-space: nowrap; }
+  #tPhase:empty { display: none; }
   #tPhase.golden { border-color: var(--gold); color: var(--gold); box-shadow: 0 0 10px rgba(255,200,60,.7), 0 2px 0 rgba(0,0,0,.4); }
   #tPhase.ot { border-color: #ff4a5e; color: #ff8a96; animation: throb .5s infinite alternate; }
-  .tbars { display: flex; gap: .8vh; }
-  .tb { position: relative; flex: 1; height: clamp(20px, 2.8vh, 32px); background: linear-gradient(#150a22, #2a1740); border: 2px solid var(--deep); border-radius: 999px; overflow: hidden; box-shadow: 0 0 0 2px var(--tc), 0 0 0 4px var(--deep), 0 3px 0 4px rgba(0,0,0,.35); }
+
+  .tbars { display: flex; gap: .6vh; }
+  .tb { position: relative; flex: 1; height: clamp(16px, 2.3vh, 26px); background: linear-gradient(135deg, rgba(21, 10, 34, 0.9), rgba(42, 23, 64, 0.9)); border: 1.5px solid var(--deep); border-radius: 999px; overflow: hidden; box-shadow: 0 0 0 1.5px var(--tc), 0 2px 0 rgba(0,0,0,.35); }
   .tb.blue { --tc: #4aa6ff; } .tb.red { --tc: #ff6060; }
   .tb .fill { width: 0; }
   .tb.blue .fill { left: 0; background: linear-gradient(90deg, #2a6fe0, #63b6ff); }
   .tb.red .fill { right: 0; background: linear-gradient(270deg, #e03a3a, #ff8a70); }
-  .tb span { position: absolute; inset: 0; display: grid; place-items: center; font-weight: 800; font-size: clamp(11px, 1.6vh, 18px); text-shadow: var(--out); font-variant-numeric: tabular-nums; z-index: 3; }
-  #tug { position: relative; height: clamp(8px, 1.1vh, 12px); margin: .7vh 0 .1vh; border-radius: 999px; border: 1.5px solid var(--deep); background: linear-gradient(90deg, #2a6fe0, #63b6ff 42%, #ddd 50%, #ff8a70 58%, #e03a3a); box-shadow: 0 2px 0 rgba(0,0,0,.35); }
-  #tugMark { position: absolute; top: -50%; bottom: -50%; width: 8px; margin-left: -4px; border-radius: 3px; background: linear-gradient(#fff, #ffd76a); border: 1.5px solid var(--deep); left: 50%; transition: left .35s ease-out; }
-  #tugTxt { text-align: center; font-weight: 800; font-size: clamp(9px, 1.2vh, 14px); margin-top: .2vh; text-shadow: var(--outs); min-height: 1.1em; }
-  .trow { display: flex; gap: .8vh; margin-top: .4vh; }
-  .trow > div { flex: 1; display: flex; flex-wrap: wrap; gap: .4vh; align-items: center; min-width: 0; }
-  .trow > div.r { justify-content: flex-end; }
-  .tstars .st svg { width: clamp(18px, 2.6vh, 30px); }
-  .tstars .st span { display: none; }
-  .tpanel { display: flex !important; flex-direction: column; align-items: stretch !important; gap: .2vh !important; flex-wrap: nowrap !important; padding: .2vh .6vh; border-radius: 8px; background: linear-gradient(rgba(64, 41, 90, .92), rgba(36, 21, 58, .92)); border: 1.5px solid var(--deep); border-top: 3px solid var(--tc); box-shadow: 0 2px 0 rgba(0,0,0,.35); }
-  .tpanel.blue { --tc: #4aa6ff; } .tpanel.red { --tc: #ff6060; }
-  .tcount { font-size: clamp(10px, 1.4vh, 15px); font-weight: 800; text-shadow: var(--outs); }
-  .mini { position: relative; height: clamp(12px, 1.8vh, 18px); border-radius: 999px; overflow: hidden; background: #150a22; border: 1.5px solid var(--deep); }
-  .mini .fill { left: 0; }
-  .mini.fund .fill { background: linear-gradient(90deg, #d8961a, #ffe27a); }
-  .mini.mor .fill { background: linear-gradient(90deg, #d0428a, #ff9ad0); }
-  .mini.mor.on .fill { background: linear-gradient(90deg, #ffb020, #fff08a); }
-  .mini span { position: absolute; inset: 0; display: grid; place-items: center; font-size: clamp(8px, 1.1vh, 12px); font-weight: 800; text-shadow: var(--outs); z-index: 3; white-space: nowrap; }
-  #tHint { text-align: center; margin-top: .4vh; font-size: clamp(9px, 1.2vh, 14px); opacity: .9; text-shadow: var(--outs); }
+  .tb span { position: absolute; inset: 0; display: grid; place-items: center; font-weight: 800; font-size: clamp(10px, 1.4vh, 15px); text-shadow: var(--out); font-variant-numeric: tabular-nums; z-index: 3; }
 
-  #guide { position: fixed; right: 2vw; bottom: 18vh; width: min(26vw, 280px); padding: .35em .7em; border-radius: 10px; font-size: clamp(10px, 1.4vh, 15px); line-height: 1.2; opacity: 0; transition: opacity .5s; pointer-events: none;
-    background: linear-gradient(rgba(64, 41, 90, .92), rgba(36, 21, 58, .92)); border: 1.5px solid var(--rim); box-shadow: 0 2px 0 rgba(0,0,0,.4); text-shadow: var(--outs); }
+  .t-tug-wrap { position: relative; margin: .2vh 0 .15vh; }
+  #tug { position: relative; height: clamp(5px, .8vh, 8px); border-radius: 999px; border: 1px solid var(--deep); background: linear-gradient(90deg, #2a6fe0, #63b6ff 42%, #ddd 50%, #ff8a70 58%, #e03a3a); box-shadow: 0 1px 0 rgba(0,0,0,.3); }
+  #tugMark { position: absolute; top: -3px; bottom: -3px; width: 6px; margin-left: -3px; border-radius: 2px; background: linear-gradient(#fff, #ffd76a); border: 1px solid var(--deep); left: 50%; transition: left .35s ease-out; box-shadow: 0 0 4px rgba(255, 207, 74, .85); }
+  #tugTxt { text-align: center; font-weight: 800; font-size: clamp(8px, 1.1vh, 12px); margin-top: .1vh; text-shadow: var(--outs); min-height: 1.1em; line-height: 1.1; }
+
+  .tstars { display: inline-flex; align-items: center; gap: 2px; }
+  .tstars .st { flex-direction: row; }
+  .tstars .st svg { width: clamp(12px, 1.8vh, 18px); }
+  .tstars .st span { display: none; }
+  .tcount { font-size: clamp(9px, 1.3vh, 14px); font-weight: 800; text-shadow: var(--outs); white-space: nowrap; }
+  .t-side-meta.blue .tcount { color: #8ed0ff; }
+  .t-side-meta.red .tcount { color: #ffa096; }
+
+  .trow { display: flex; gap: .6vh; margin-top: .25vh; }
+  .trow > div { flex: 1; display: flex; flex-wrap: wrap; gap: .3vh; align-items: center; min-width: 0; }
+  .trow > div.r { justify-content: flex-end; }
+  .trow > div:empty { display: none; }
+  .trow.t-gauges { margin-top: .15vh; }
+  .tpanel-inline { display: flex !important; flex: 1; gap: .3vh !important; align-items: center; min-width: 0; }
+  .tpanel-inline.r { justify-content: flex-end; }
+  .tpanel-inline .mini { flex: 1; min-width: 0; height: clamp(11px, 1.5vh, 16px); border-radius: 999px; overflow: hidden; background: #150a22; border: 1.2px solid var(--deep); position: relative; }
+  .tpanel-inline .mini .fill { left: 0; }
+  .tpanel-inline .mini.fund .fill { background: linear-gradient(90deg, #d8961a, #ffe27a); }
+  .tpanel-inline .mini.mor .fill { background: linear-gradient(90deg, #d0428a, #ff9ad0); }
+  .tpanel-inline .mini.mor.on .fill { background: linear-gradient(90deg, #ffb020, #fff08a); }
+  .tpanel-inline .mini span { position: absolute; inset: 0; display: grid; place-items: center; font-size: clamp(7.5px, 1.05vh, 11px); font-weight: 800; text-shadow: var(--outs); z-index: 3; white-space: nowrap; }
+
+  #tHint { display: table; margin: .2vh auto 0; padding: .08em .65em; border-radius: 999px; background: rgba(26, 14, 42, .75); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); border: 1px solid rgba(255, 207, 74, .25); box-shadow: 0 2px 4px rgba(0,0,0,.35); font-size: clamp(8px, 1.1vh, 12px); color: var(--cream); text-shadow: var(--outs); }
+
+  #guide { position: fixed; right: 2vw; bottom: 18vh; width: min(26vw, 280px); padding: .35em .7em; border-radius: 12px; font-size: clamp(10px, 1.4vh, 15px); line-height: 1.2; opacity: 0; transition: opacity .5s; pointer-events: none;
+    background: linear-gradient(135deg, rgba(54, 32, 80, 0.82), rgba(28, 14, 46, 0.88)); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1.5px solid var(--rim); box-shadow: 0 4px 16px rgba(0,0,0,.45); text-shadow: var(--outs); }
   #guide.show { opacity: 1; }
   #guide b { color: var(--gold); }
-  #demoTag { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(var(--safeBottom, 16vh) + 21vh); padding: .2em .8em; border-radius: 999px; font-size: clamp(10px, 1.4vh, 15px); font-weight: 800; white-space: nowrap; pointer-events: none;
-    background: linear-gradient(rgba(64, 41, 90, .88), rgba(36, 21, 58, .88)); border: 1.5px solid var(--gold); color: var(--gold); text-shadow: var(--outs); }
+  #demoTag { position: fixed; left: 50%; transform: translateX(-50%); top: calc(var(--safeTop, 8vh) + 17vh); padding: .2em .8em; border-radius: 999px; font-size: clamp(10px, 1.4vh, 15px); font-weight: 800; white-space: nowrap; pointer-events: none; z-index: 18;
+    background: linear-gradient(135deg, rgba(54, 32, 80, 0.82), rgba(28, 14, 46, 0.88)); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1.5px solid var(--gold); color: var(--gold); text-shadow: var(--outs); box-shadow: 0 4px 16px rgba(0,0,0,.4); }
   .calm .fill::after, .calm .ev, .calm .st.on svg, .calm #tPhase.ot, .calm #tTimer.low, .calm #timer.low { animation: none !important; }
   .calm #banner.show { animation: bannerCalm 2.4s ease-out; }
   @keyframes bannerCalm { 0% { opacity: 0; } 10% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; } }
@@ -202,7 +248,7 @@
   /* ---------- Cột số lượng lính theo loại (chế độ Đội): tổng lính mỗi loại đã tặng trong trận ---------- */
   .tty { display: none; position: fixed; top: 20%; flex-direction: column; gap: .4vh; z-index: 5; pointer-events: none; max-height: 32vh; overflow: hidden; }
   .tty .row { display: flex; align-items: center; gap: .3em; padding: .1em .5em .1em .25em; border-radius: 999px; font-weight: 800; font-size: clamp(9px, 1.3vh, 13px);
-    background: linear-gradient(#3d2a55, #241537); border: 1.5px solid var(--deep); box-shadow: inset 0 1px 0 rgba(255,255,255,.14), 0 2px 0 rgba(0,0,0,.35); text-shadow: var(--outs); white-space: nowrap; }
+    background: linear-gradient(135deg, rgba(61, 42, 85, 0.82), rgba(36, 21, 55, 0.88)); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1.5px solid var(--deep); box-shadow: inset 0 1px 0 rgba(255,255,255,.14), 0 3px 10px rgba(0,0,0,.35); text-shadow: var(--outs); white-space: nowrap; }
   .tty .dot { width: 1.1em; height: 1.1em; border-radius: 50%; background: var(--c); border: 1.5px solid rgba(255,255,255,.5); flex: none; }
   .tty b { color: var(--gold); }
   #ttyBlue { left: 1.5vw; }
@@ -212,23 +258,26 @@
   /* ---------- Khung dọc 9:16 (live điện thoại): chữ theo vw, tránh vùng giao diện TikTok ---------- */
   @media (max-aspect-ratio: 124/100) {
     /* TikTok đặt cột nút tim/bình luận/chia sẻ/quà dọc theo mép phải -> HUD lệch trái, chừa mép phải trống thay vì căn giữa sát 2 mép */
-    #hud, #hudT { top: var(--safeTop, 8vh); left: 2vw; right: var(--safeRight, 12vw); width: auto; transform: none; }
+    #hud, #hudT { top: var(--safeTop, 8vh); left: 2vw; right: var(--safeRight, 12vw); width: auto; transform: none; padding: .3vh .5vh; border-radius: 12px; }
     .tty.show { display: flex; }
-    .tty .row { font-size: 2.5vw; } .tty .dot { width: 3.2vw; height: 3.2vw; }
-    .meta { line-height: 1.1; margin-bottom: .3vh; }
-    #lvl { font-size: 3.4vw; } #timer { font-size: 4.2vw; } #tScore { font-size: 2.8vw; } #tPhase { font-size: 2.5vw; }
-    .bar { height: 5.2vw; } #pText { font-size: 3vw; }
-    .st svg { width: 5.6vw; } .st span { font-size: 2.2vw; }
-    .tb { height: 4.8vw; } .tb span { font-size: 2.8vw; }
-    .tstars .st svg { width: 4.2vw; }
-    .tcount { font-size: 2.5vw; } .mini { height: 2.6vw; } .mini span { font-size: 2vw; } #tHint { font-size: 2.2vw; } #tugTxt { font-size: 2.3vw; } #tug { height: 1.8vw; }
-    .chip { font-size: 2.6vw; max-width: 40vw; } .badge { font-size: 2.4vw; }
-    #feed { left: 2vw; width: 54vw; bottom: calc(var(--safeBottom, 16vh) + 1vh); }
-    #demoTag { font-size: 2.4vw; }
-    /* Giữa màn hình, tránh cả bình luận (trái) lẫn cột nút TikTok (phải) */
-    #guide { left: 50%; right: auto; transform: translateX(-50%); width: 68vw; bottom: calc(var(--safeBottom, 16vh) + 1vh); font-size: 2.3vw; text-align: center; }
-    .ev { font-size: 2.8vw; }
-    #banner { font-size: 9.5vw; top: 36vh; } #banner.small { font-size: 6vw; }
+    .tty .row { font-size: 2.3vw; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); } .tty .dot { width: 3vw; height: 3vw; }
+    .meta { line-height: 1.1; margin-bottom: .2vh; }
+    #lvl { font-size: 2.8vw; } #timer { font-size: 3.6vw; } #tScore { font-size: 2.5vw; } #tPhase { font-size: 2.2vw; } #tTimer { font-size: 3.2vw; }
+    .bar { height: 4.4vw; } #pText { font-size: 2.6vw; }
+    .st svg { width: 4.8vw; } .st span { font-size: 2vw; }
+    .tb { height: 3.8vw; } .tb span { font-size: 2.4vw; }
+    .tstars .st svg { width: 3.2vw; }
+    .tcount { font-size: 2.2vw; } .mini { height: 2.2vw; } .mini span { font-size: 1.7vw; } #tHint { font-size: 1.9vw; } #tugTxt { font-size: 2vw; } #tug { height: 1.2vw; }
+    .chip { font-size: 2.4vw; max-width: 40vw; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+    .badge { font-size: 2.2vw; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+    /* Khung feed giới hạn độ rộng trong góc trái dưới, không lấn sang căn cứ Đỏ bên phải */
+    #feed { left: 2vw; width: min(40vw, 185px); bottom: calc(var(--safeBottom, 16vh) + 5.2vh); gap: .4vh; }
+    #demoTag { font-size: 2.3vw; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+    /* Hướng dẫn đặt ngay dưới cùng sát thanh chat, không đè lên feed */
+    #guide { left: 50%; right: auto; transform: translateX(-50%); width: min(84vw, 360px); bottom: calc(var(--safeBottom, 16vh) + 0.6vh); font-size: 2.2vw; text-align: center; z-index: 15; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+    .ev { font-size: 2.2vw; padding: .16em .45em .16em .25em; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+    .ev img, .ev i { width: 1.5em; height: 1.5em; }
+    #banner { font-size: 5.5vw; top: 23vh; padding: .2em .7em; } #banner.small { font-size: 4vw; }
     #result h1 { font-size: 8.5vw; } #result h2 { font-size: 3.8vw; } #result .sub { font-size: 3.4vw; } #result p { font-size: 3vw; }
     #result ol { font-size: 3.2vw; width: 88vw; }
     #result .rs .st svg { width: 10vw; }
@@ -246,11 +295,11 @@
     #hud .st svg { width: clamp(18px, 2.8vh, 30px); }
     #hud #top { margin-top: .4vh; }
     #feed { left: auto; right: 1.5vw; bottom: 3vh; width: min(19vw, 320px); }
-    #demoTag { left: 1.5vw; transform: none; bottom: 6vh; }
+    #demoTag { left: 1.5vw; transform: none; bottom: 6vh; top: auto; }
     #guide { right: auto; left: 1.5vw; bottom: 1.5vh; width: min(25vw, 340px); }
   }
-  #modeBtn { position: fixed; top: 1.5vh; right: 1.5vw; z-index: 50; padding: .35em .9em; border-radius: 999px; font-weight: 800; font-size: clamp(12px, 1.8vh, 16px);
-    background: linear-gradient(#4a2b6e, #26133f); border: 2px solid var(--rim); color: var(--gold); box-shadow: 0 3px 0 rgba(0,0,0,.4); cursor: pointer; text-shadow: var(--outs); transition: transform .15s; }
+  #modeBtn { position: fixed; top: 1.2vh; right: 1.5vw; z-index: 50; padding: .25em .8em; border-radius: 999px; font-weight: 800; font-size: clamp(11px, 1.5vh, 15px);
+    background: linear-gradient(135deg, rgba(74, 43, 110, 0.82), rgba(38, 19, 63, 0.88)); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1.5px solid var(--rim); color: var(--gold); box-shadow: 0 4px 12px rgba(0,0,0,.4); cursor: pointer; text-shadow: var(--outs); transition: transform .15s; }
   #modeBtn:hover { transform: scale(1.05); }
   #modeBtn:active { transform: scale(.95); }
   @media (prefers-reduced-motion: reduce) { .ev, .st.on svg, #result, #banner.show, #epicCard.show, .fill::after, #tTimer.low, #timer.low, #tPhase.ot { animation: none; } }
@@ -281,24 +330,41 @@
 </div>
 
 <div id="hudT" hidden>
-  <div class="meta"><span id="tScore"></span><span id="tTimer" class="timerT">4:00</span><span id="tPhase"></span></div>
+  <div class="t-top-row">
+    <div class="t-side-meta blue">
+      <div class="tstars" id="tsBlue"></div>
+      <div class="tcount" id="tcBlue"></div>
+    </div>
+    <div class="t-center-meta">
+      <span id="tScore"></span>
+      <span id="tTimer" class="timerT">4:00</span>
+      <span id="tPhase"></span>
+    </div>
+    <div class="t-side-meta red r">
+      <div class="tcount" id="tcRed"></div>
+      <div class="tstars r" id="tsRed"></div>
+    </div>
+  </div>
   <div class="tbars">
     <div class="tb blue"><div class="fill" id="tfBlue"></div><span id="tpBlue"></span></div>
     <div class="tb red"><div class="fill" id="tfRed"></div><span id="tpRed"></span></div>
   </div>
-  <div id="tug"><div id="tugMark"></div></div>
-  <div id="tugTxt"></div>
-  <div class="trow"><div class="tstars" id="tsBlue"></div><div class="tstars r" id="tsRed"></div></div>
-  <div class="trow">
-    <div class="tpanel blue"><div class="tcount" id="tcBlue"></div>
-      <div class="mini fund"><div class="fill" id="tuBlue"></div><span id="tuTBlue"></span></div>
-      <div class="mini mor" id="tmWBlue"><div class="fill" id="tmBlue"></div><span id="tmTBlue"></span></div></div>
-    <div class="tpanel red r"><div class="tcount" id="tcRed"></div>
-      <div class="mini fund"><div class="fill" id="tuRed"></div><span id="tuTRed"></span></div>
-      <div class="mini mor" id="tmWRed"><div class="fill" id="tmRed"></div><span id="tmTRed"></span></div></div>
+  <div class="t-tug-wrap">
+    <div id="tug"><div id="tugMark"></div></div>
+    <div id="tugTxt"></div>
   </div>
-  <div class="trow"><div id="ttBlue"></div><div class="r" id="ttRed"></div></div>
-  <div class="trow"><div id="tbBlue"></div><div class="r" id="tbRed"></div></div>
+  <div class="trow t-gauges">
+    <div class="tpanel-inline blue">
+      <div class="mini fund"><div class="fill" id="tuBlue"></div><span id="tuTBlue"></span></div>
+      <div class="mini mor" id="tmWBlue"><div class="fill" id="tmBlue"></div><span id="tmTBlue"></span></div>
+    </div>
+    <div class="tpanel-inline red r">
+      <div class="mini mor" id="tmWRed"><div class="fill" id="tmRed"></div><span id="tmTRed"></span></div>
+      <div class="mini fund"><div class="fill" id="tuRed"></div><span id="tuTRed"></span></div>
+    </div>
+  </div>
+  <div class="trow t-sub"><div id="ttBlue"></div><div class="r" id="ttRed"></div></div>
+  <div class="trow t-badges"><div id="tbBlue"></div><div class="r" id="tbRed"></div></div>
   <div id="tHint"></div>
 </div>
 
@@ -464,16 +530,27 @@
       k = Math.min(availW / arena.w, H * .96 / arena.h);
       AWk = arena.w * k; ax = (W * .52) - AWk / 2; ay = H * .5 - arena.h * k / 2;
       demoTag.style.top = ''; demoTag.style.bottom = ''; demoTag.style.transform = '';
-    } else { // màn dọc (live điện thoại 9:16): mở rộng sàn chiến trường tối đa, giảm khoảng đệm thừa
+    } else { // màn dọc (live điện thoại 9:16): mở rộng sàn chiến trường tối đa, chừa khoảng trống an toàn không che khuất
       const hudEl = $(team ? 'hudT' : 'hud'), hudH = hudEl ? hudEl.getBoundingClientRect().height : 0;
-      const top = Math.max(H * 0.04, H * (SAFE_TOP / 100) + hudH + 4), bottom = H * (1 - (SAFE_BOTTOM * 0.6) / 100);
-      const hw = (arena.w * 0.49), c0 = arena.cy - (PLAZA_R + 1), c1 = (team ? arena.h - arena.cy : arena.cy) + (PLAZA_R + 1);
-      k = Math.max(0.1, Math.min(W * 1.0 / (2 * hw), (bottom - top) / (c1 - c0))); // mở rộng trọn vẹn cả 2 căn cứ chéo góc
-      ax = W / 2 - arena.cx * k; ay = top + ((bottom - top) - (c1 - c0) * k) / 2 - c0 * k; AWk = arena.w * k;
+      const top = Math.max(H * 0.02, H * (SAFE_TOP / 100) + hudH + 4);
+      const safeB = H * (SAFE_BOTTOM / 100);
+      // Đảm bảo đáy sàn đấu (căn cứ Đỏ / vạch xuất kích) kết thúc trước thanh gợi ý quà (#guide)
+      const bottom = H - safeB - (team ? 48 : 38);
+      const spanX = arena.w - 4;
+      const spanY = arena.h - 4;
+      k = Math.max(0.1, Math.min(W * 0.96 / spanX, (bottom - top) / spanY));
+      ax = W / 2 - arena.cx * k;
+      ay = top + ((bottom - top) - spanY * k) / 2;
+      AWk = arena.w * k;
       if (team) { // 2 thành trì xếp dọc cân đối: đặt banner trình diễn đúng khe hở giữa hai sàn
         demoTag.style.top = (ay + arena.h / 2 * k) + 'px'; demoTag.style.bottom = 'auto'; demoTag.style.transform = 'translate(-50%, -50%)';
         const tyY = top + (bottom - top) * .12; $('ttyBlue').style.top = tyY + 'px'; $('ttyRed').style.top = tyY + 'px';
-      } else { demoTag.style.top = ''; demoTag.style.bottom = ''; demoTag.style.transform = ''; }
+      } else {
+        // Chế độ Solo: đặt thẻ trình diễn ở phần bãi cỏ phía trên
+        demoTag.style.top = Math.max(top + 8, ay + 6 * k) + 'px';
+        demoTag.style.bottom = 'auto';
+        demoTag.style.transform = 'translate(-50%, -50%)';
+      }
     }
     // Thẻ "quà khủng": căn giữa theo SÀN ĐẤU, không phải theo cả trang
     const epicCard = $('epicCard'); epicCard.style.left = (ax + AWk / 2) + 'px'; epicCard.style.top = (ay + (team ? arena.h / 2 : arena.cy) * k) + 'px';
@@ -554,9 +631,9 @@
   // Đảo chiến trường chuẩn Clash of Clans: thảm cỏ chữ nhật bo góc, tràn ra 2 bên
   function mapRect() {
     const team = mode === 'team';
-    const cx = arena.cx, cy = team ? arena.h / 2 : arena.cy;
-    // Mở rộng bề ngang để đảo chiến trường tràn đầy sang 2 bên
-    const w = team ? 88 : 94, h = team ? (arena.h - 8) : 88;
+    const cx = arena.cx, cy = arena.h / 2;
+    // Mở rộng bề ngang và bề dọc để đảo chiến trường bao trọn sàn đấu mới
+    const w = Math.max(88, arena.w - 6), h = Math.max(88, arena.h - 8);
     return { cx, cy, w, h, x0: cx - w / 2, x1: cx + w / 2, y0: cy - h / 2, y1: cy + h / 2 };
   }
   const inMap = (x, y, M) => x >= M.x0 && x <= M.x1 && y >= M.y0 && y <= M.y1;
@@ -565,7 +642,7 @@
     const rnd = mulberry(4321 + Math.round(arena.h)), G = groundRect(), team = mode === 'team', M = mapRect();
     const bx = arena.bx != null ? arena.bx : (arena.w * 0.16);
     const free = (x, y) => {
-      if (!team) return Math.hypot(x - arena.cx, y - arena.cy) > PLAZA_R + 2;
+      if (!team) return Math.hypot(x - arena.cx, y - arena.cy) > PLAZA_R + 2 && (y < arena.h - 22 || y > arena.h - 10);
       const p1x = arena.cx - bx, p1y = arena.cy;
       const p2x = arena.cx + bx, p2y = arena.h - arena.cy;
       return Math.hypot(x - p1x, y - p1y) > PLAZA_R + 2 &&
@@ -582,7 +659,7 @@
         decor.push({ t, x, y, s: .75 + rnd() * .6, v: rnd() }); n--;
       }
     };
-    add('tree', team ? 90 : 60, 'out'); add('rock', 36, 'out'); add('tuft', 130, 'in'); add('flower', 50, 'in');
+    add('tree', team ? 100 : 75, 'out'); add('rock', 40, 'out'); add('tuft', team ? 180 : 150, 'in'); add('flower', team ? 70 : 60, 'in');
   }
 
   function setLayout(layout) {
@@ -788,6 +865,9 @@
     ctx.fillStyle = rgr(dx, dy, mW * .3, mW * .9, [[0, 'rgba(10,50,10,0)'], [1, 'rgba(10,50,10,.32)']]); ctx.fillRect(mx0, my0, mW, mH);
     // Ánh sáng màu đội tỏa xéo góc theo 2 căn cứ: Xanh góc trên-trái, Đỏ góc dưới-phải
     if (team) { ctx.fillStyle = lgr(mx0, my0, mx0 + mW, my0 + mH, [[0, 'rgba(50,130,255,.26)'], [.38, 'rgba(50,130,255,0)'], [.62, 'rgba(255,70,70,0)'], [1, 'rgba(255,70,70,.26)']]); ctx.fillRect(mx0, my0, mW, mH); }
+
+    // Chi tiết địa hình trung lộ: lối mòn hành quân, lạch nước và cầu đá vòm 2.5D
+    drawTacticalGroundDetails(mx0, my0, mW, mH, dx, dy, team, t);
     ctx.restore();
 
     for (const d of decor) {
@@ -804,6 +884,145 @@
     ctx.lineWidth = 2; ctx.strokeStyle = 'rgba(255,255,255,.3)'; rr(x0 + k * .8, y0 + k * .8, w - k * 1.6, h - k * 1.6, rad - k * .6); ctx.stroke();
   }
 
+  // Chi tiết địa hình trung lộ: Lối mòn hành quân, lạch nước và cầu đá vòm 2.5D
+  function drawTacticalGroundDetails(mx0, my0, mW, mH, dx, dy, team, t) {
+    if (team) {
+      // 1. Dòng lạch nước uốn lượn chạy ngang giữa bản đồ ngăn cách 2 phe
+      const cy = PY(arena.h / 2);
+      const rH = 8.5 * k;
+      // Bờ đất và sỏi đá ven sông
+      ctx.fillStyle = '#2d5122';
+      ctx.fillRect(mx0, cy - rH * 0.65, mW, rH * 1.3);
+      ctx.fillStyle = '#406b2f';
+      ctx.fillRect(mx0, cy - rH * 0.52, mW, rH * 1.04);
+      // Dòng nước trong xanh ngọc bích
+      const waterGrad = lgr(0, cy - rH * 0.45, 0, cy + rH * 0.45, [
+        [0, '#195570'], [0.25, '#2b84a0'], [0.5, '#3ba8c8'], [0.75, '#267b96'], [1, '#174d64']
+      ]);
+      ctx.fillStyle = waterGrad;
+      ctx.fillRect(mx0, cy - rH * 0.45, mW, rH * 0.9);
+      
+      // Sóng nước nhấp nhô chuyển động nhẹ
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.28)';
+      ctx.lineWidth = Math.max(1, k * 0.12);
+      for (let i = 0; i < 6; i++) {
+        const sx = mx0 + (i * 0.17 + (t * 0.0003) % 0.18) * mW;
+        const sy = cy - rH * 0.25 + (i % 3) * rH * 0.22;
+        ctx.beginPath();
+        ctx.moveTo(sx, sy);
+        ctx.quadraticCurveTo(sx + 8 * k, sy - 2 * k, sx + 16 * k, sy);
+        ctx.stroke();
+      }
+
+      // Sỏi đá cuội tự nhiên ven bờ lạch nước
+      const pebbles = [-0.42, -0.32, -0.22, 0.24, 0.35, 0.44];
+      pebbles.forEach((pos, idx) => {
+        const px = dx + pos * mW, py = cy + (idx % 2 === 0 ? -rH * 0.48 : rH * 0.48);
+        ctx.fillStyle = 'rgba(0,0,0,0.2)'; ell(px + 2, py + 2, 2.4 * k, 1.2 * k); ctx.fill();
+        ctx.fillStyle = idx % 2 === 0 ? '#6a6874' : '#888594'; ell(px, py, 2.2 * k, 1.1 * k); ctx.fill();
+      });
+
+      // 2. Cầu đá vòm 2.5D (Stone Arch Bridge) bắc ngang qua sông ngay trung lộ
+      const bW = 28 * k, bH = 13.5 * k, bx0 = dx - bW / 2, by0 = cy - bH / 2;
+      // Đổ bóng thân cầu xuống mặt nước
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.45)';
+      ctx.fillRect(bx0, cy - rH * 0.3, bW, rH * 0.7);
+
+      // Mố cầu đá và mặt cầu
+      ctx.fillStyle = lgr(0, by0, 0, by0 + bH, [[0, '#75707c'], [0.5, '#5d5865'], [1, '#443f4c']]);
+      rr(bx0, by0, bW, bH, 4 * k); ctx.fill();
+      
+      // Mặt cầu lát đá vuông phối cảnh 2.5D
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+      ctx.lineWidth = Math.max(1, k * 0.14);
+      for (let x = bx0 + 3 * k; x < bx0 + bW - 2 * k; x += 4 * k) {
+        ctx.beginPath(); ctx.moveTo(x, by0 + 1.5 * k); ctx.lineTo(x, by0 + bH - 1.5 * k); ctx.stroke();
+      }
+      ctx.strokeRect(bx0 + 2 * k, by0 + 2 * k, bW - 4 * k, bH - 4 * k);
+
+      // Lan can cầu gỗ và đá hai bên mạn cầu
+      [-1, 1].forEach((dir) => {
+        const railY = cy + dir * (bH * 0.46);
+        ctx.fillStyle = '#3a2012';
+        rr(bx0 - 1 * k, railY - 1.2 * k, bW + 2 * k, 2.4 * k, 1.5); ctx.fill();
+        ctx.fillStyle = '#6b4324';
+        rr(bx0, railY - 1 * k, bW, 1.8 * k, 1); ctx.fill();
+      });
+
+      // 4 trụ đá đèn lồng ở 4 góc cầu
+      [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach(([sx, sy], idx) => {
+        const cpx = dx + sx * (bW * 0.46), cpy = cy + sy * (bH * 0.44);
+        ctx.fillStyle = 'rgba(0,0,0,0.3)'; ell(cpx, cpy + 2 * k, 2 * k, 1 * k); ctx.fill();
+        ctx.fillStyle = lgr(0, cpy - 2.5 * k, 0, cpy + 1.5 * k, [[0, '#8e8a96'], [1, '#4a4652']]);
+        rr(cpx - 1.6 * k, cpy - 2.2 * k, 3.2 * k, 3.8 * k, 1); ctx.fill();
+        // Ngọn lửa nhỏ phát sáng
+        flame(cpx, cpy - 2.8 * k, 0.45 * k, t, 50 + idx);
+      });
+
+      // 3. Đường mòn đất kết nối 2 căn cứ với cầu đá trung lộ
+      const roadW = 14 * k;
+      const roadGrad = lgr(0, my0, 0, my0 + mH, [
+        [0, 'rgba(165, 130, 85, 0)'], [0.15, 'rgba(165, 130, 85, 0.28)'], [0.4, 'rgba(165, 130, 85, 0.35)'],
+        [0.6, 'rgba(165, 130, 85, 0.35)'], [0.85, 'rgba(165, 130, 85, 0.28)'], [1, 'rgba(165, 130, 85, 0)']
+      ]);
+      ctx.fillStyle = roadGrad;
+      // Đường từ Xanh tới cầu
+      ctx.beginPath();
+      ctx.moveTo(PX(arena.cx - (arena.bx || 12)) - roadW * 0.4, PY(arena.cy + 8));
+      ctx.lineTo(PX(arena.cx - (arena.bx || 12)) + roadW * 0.4, PY(arena.cy + 8));
+      ctx.lineTo(dx + roadW * 0.5, by0);
+      ctx.lineTo(dx - roadW * 0.5, by0);
+      ctx.closePath(); ctx.fill();
+      // Đường từ Đỏ tới cầu
+      ctx.beginPath();
+      ctx.moveTo(dx - roadW * 0.5, by0 + bH);
+      ctx.lineTo(dx + roadW * 0.5, by0 + bH);
+      ctx.lineTo(PX(arena.cx + (arena.bx || 12)) + roadW * 0.4, PY(arena.h - arena.cy - 8));
+      ctx.lineTo(PX(arena.cx + (arena.bx || 12)) - roadW * 0.4, PY(arena.h - arena.cy - 8));
+      ctx.closePath(); ctx.fill();
+
+    } else {
+      // Chế độ Solo: Lối mòn hành quân lát sỏi dã chiến từ Vạch xuất kích lên Nhà chính
+      const pTop = PY(arena.cy + 12), pBot = PY(arena.h - 18), roadW = 16 * k;
+      ctx.save();
+      const dirtGrad = lgr(0, pTop, 0, pBot, [
+        [0, 'rgba(165, 130, 85, 0.12)'], [0.3, 'rgba(165, 130, 85, 0.32)'],
+        [0.85, 'rgba(165, 130, 85, 0.4)'], [1, 'rgba(165, 130, 85, 0.18)']
+      ]);
+      ctx.fillStyle = dirtGrad;
+      ctx.beginPath();
+      ctx.moveTo(dx - roadW * 0.35, pTop);
+      ctx.bezierCurveTo(dx - roadW * 0.55, (pTop + pBot) * 0.5, dx - roadW * 0.45, (pTop + pBot) * 0.7, dx - roadW * 0.5, pBot);
+      ctx.lineTo(dx + roadW * 0.5, pBot);
+      ctx.bezierCurveTo(dx + roadW * 0.45, (pTop + pBot) * 0.7, dx + roadW * 0.55, (pTop + pBot) * 0.5, dx + roadW * 0.35, pTop);
+      ctx.closePath();
+      ctx.fill();
+
+      // Đá tảng lát đường dã chiến
+      const stones = [
+        [0, 0.2], [-3, 0.32], [2.5, 0.45], [-2, 0.58], [3, 0.7], [0, 0.82]
+      ];
+      stones.forEach(([ox, fy]) => {
+        const sx = dx + ox * k, sy = pTop + fy * (pBot - pTop);
+        ctx.fillStyle = 'rgba(0,0,0,0.18)'; ell(sx + 1, sy + 1, 2.5 * k, 1.4 * k); ctx.fill();
+        ctx.fillStyle = 'rgba(215, 195, 160, 0.42)'; ell(sx, sy, 2.3 * k, 1.3 * k); ctx.fill();
+      });
+
+      // Thùng gỗ quân lương & hòm tiếp tế dã chiến ven đường
+      [-1, 1].forEach((side) => {
+        const cxp = dx + side * (roadW * 0.65), cyp = (pTop + pBot) * 0.58;
+        // Đổ bóng
+        ctx.fillStyle = 'rgba(0,0,0,0.25)'; ell(cxp, cyp + 2 * k, 2.8 * k, 1.2 * k); ctx.fill();
+        // Thùng gỗ
+        ctx.fillStyle = '#6e4424'; rr(cxp - 2 * k, cyp - 3 * k, 4 * k, 4 * k, 1); ctx.fill();
+        ctx.fillStyle = '#4a2c14'; ctx.fillRect(cxp - 2 * k, cyp - 1.8 * k, 4 * k, 0.8 * k);
+        ctx.strokeStyle = '#b88648'; ctx.lineWidth = Math.max(1, k * 0.1);
+        ctx.strokeRect(cxp - 1.8 * k, cyp - 2.8 * k, 3.6 * k, 3.6 * k);
+      });
+      ctx.restore();
+    }
+  }
+
   /* ---- lớp không khí (vẽ mỗi khung hình): bóng mây, đuốc cháy, bướm ---- */
   function torch(x, y, t, i) {
     const s = k, fl = 1 + .18 * Math.sin(t * .015 + i * 2.3);
@@ -813,6 +1032,231 @@
     ctx.fillStyle = rgr(x, y - s * 3, 0, s * 4.2, [[0, 'rgba(255,200,110,.30)'], [1, 'rgba(255,170,60,0)']]); circle(x, y - s * 3, s * 4.2); ctx.fill();
     flame(x, y - s * 2.9, s * .7 * fl, t, i);
   }
+
+  // Tường thành đá phòng ngự 2.5D Isometric hình chữ V (bastion rampart) bảo vệ hậu phương căn cứ
+  function drawFortressWall(cx, cy, w, color, label, inverted = false) {
+    const hw = w * 0.44;
+    const slope = inverted ? -0.26 : 0.26;
+    
+    // Tọa độ 3 mấu chốt trong không gian game: Trụ trái, Đỉnh trung tâm, Trụ phải
+    const p0 = { x: PX(cx), y: PY(cy) };
+    const pL = { x: PX(cx - hw), y: PY(cy + hw * slope) };
+    const pR = { x: PX(cx + hw), y: PY(cy + hw * slope) };
+    
+    const wallH = 5.2 * k; // Chiều cao đứng của mặt tường đá
+    const wallT = 3.2 * k; // Độ dày mặt tường lát đá
+    const bCol = color || '#ffcf4a';
+    
+    ctx.save();
+    
+    // 1. Đổ bóng chân thành trên mặt cỏ
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.32)';
+    ctx.beginPath();
+    ctx.moveTo(pL.x, pL.y + wallH * 0.7);
+    ctx.lineTo(p0.x, p0.y + wallH * 0.7);
+    ctx.lineTo(pR.x, pR.y + wallH * 0.7);
+    ctx.lineTo(pR.x, pR.y + wallH * 1.3);
+    ctx.lineTo(p0.x, p0.y + wallH * 1.3);
+    ctx.lineTo(pL.x, pL.y + wallH * 1.3);
+    ctx.closePath();
+    ctx.fill();
+
+    // Hàm vẽ 1 cánh tường thành (từ A sang B) theo góc phối cảnh 2.5D
+    const drawWing = (a, b) => {
+      // Mặt đứng tường đá (Front vertical face)
+      const gradFace = lgr(0, Math.min(a.y, b.y), 0, Math.max(a.y, b.y) + wallH, [
+        [0, '#66606d'], [0.4, '#4e4854'], [1, '#322d38']
+      ]);
+      ctx.fillStyle = gradFace;
+      ctx.beginPath();
+      ctx.moveTo(a.x, a.y + (inverted ? -wallT * 0.5 : wallT * 0.5));
+      ctx.lineTo(b.x, b.y + (inverted ? -wallT * 0.5 : wallT * 0.5));
+      ctx.lineTo(b.x, b.y + wallH);
+      ctx.lineTo(a.x, a.y + wallH);
+      ctx.closePath();
+      FS(gradFace, Math.max(1.4, k * 0.14));
+
+      // Kẻ vân gạch đá xếp lớp trên mặt đứng
+      ctx.strokeStyle = 'rgba(0, 0, 0, 0.28)';
+      ctx.lineWidth = Math.max(1, k * 0.12);
+      for (let f = 0.3; f < 0.9; f += 0.3) {
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y + wallH * f);
+        ctx.lineTo(b.x, b.y + wallH * f);
+        ctx.stroke();
+      }
+
+      // Mặt trên lối đi lát đá (Top walkway)
+      const gradTop = lgr(0, a.y - wallT, 0, b.y + wallT, [[0, '#8c8695'], [1, '#6b6574']]);
+      ctx.fillStyle = gradTop;
+      ctx.beginPath();
+      ctx.moveTo(a.x, a.y - wallT * 0.5);
+      ctx.lineTo(b.x, b.y - wallT * 0.5);
+      ctx.lineTo(b.x, b.y + wallT * 0.5);
+      ctx.lineTo(a.x, a.y + wallT * 0.5);
+      ctx.closePath();
+      FS(gradTop, Math.max(1.2, k * 0.12));
+
+      // Lỗ châu mai (Crenellations) dọc theo cánh thành
+      const dist = Math.hypot(b.x - a.x, b.y - a.y);
+      const crens = Math.max(3, Math.round(dist / (7 * k)));
+      ctx.fillStyle = lgr(0, a.y - wallH * 0.5, 0, b.y, [[0, '#9e98a7'], [1, '#66606d']]);
+      for (let i = 0; i < crens; i += 2) {
+        const t1 = (i + 0.15) / crens, t2 = (i + 0.85) / crens;
+        const x1 = a.x + (b.x - a.x) * t1, y1 = a.y + (b.y - a.y) * t1;
+        const x2 = a.x + (b.x - a.x) * t2, y2 = a.y + (b.y - a.y) * t2;
+        const crH = 2.4 * k;
+        ctx.beginPath();
+        ctx.moveTo(x1, y1 - wallT * 0.5);
+        ctx.lineTo(x2, y2 - wallT * 0.5);
+        ctx.lineTo(x2, y2 - wallT * 0.5 - crH);
+        ctx.lineTo(x1, y1 - wallT * 0.5 - crH);
+        ctx.closePath();
+        FS(ctx.fillStyle, Math.max(1, k * 0.1));
+      }
+    };
+
+    // Vẽ 2 cánh thành hướng theo góc kim cương
+    drawWing(pL, p0);
+    drawWing(p0, pR);
+
+    // 2. Ba tháp canh đá bát giác 2.5D (Octagonal Bastion Towers) tại 3 điểm mút
+    const towers = [
+      { pt: pL, main: false },
+      { pt: p0, main: true },
+      { pt: pR, main: false }
+    ];
+
+    towers.forEach(({ pt, main }, idx) => {
+      const tRad = (main ? 3.4 : 2.8) * k;
+      const tH = (main ? 7.8 : 6.5) * k;
+
+      // Đổ bóng chân tháp
+      ctx.fillStyle = 'rgba(0,0,0,0.35)';
+      ell(pt.x, pt.y + wallH * 0.9, tRad * 1.5, tRad * 0.75); ctx.fill();
+
+      // Thân tháp đá bát giác kiên cố
+      const tGrad = lgr(pt.x - tRad, 0, pt.x + tRad, 0, [
+        [0, '#4e4854'], [0.35, '#787280'], [0.75, '#5d5764'], [1, '#3b3540']
+      ]);
+      ctx.fillStyle = tGrad;
+      ctx.beginPath();
+      rr(pt.x - tRad, pt.y - tH * 0.5, tRad * 2, tH, 2 * k);
+      FS(tGrad, Math.max(1.5, k * 0.15));
+
+      // Vòng đai đá gia cố và lỗ châu mai đỉnh tháp
+      ctx.fillStyle = lgr(0, pt.y - tH * 0.65, 0, pt.y - tH * 0.45, [[0, '#9e98a7'], [1, '#66606d']]);
+      rr(pt.x - tRad * 1.15, pt.y - tH * 0.65, tRad * 2.3, 2.2 * k, 1.5); ctx.fill();
+      FS(ctx.fillStyle, Math.max(1.2, k * 0.12));
+
+      // Cột cờ gỗ và cờ lụa bay phấp phới
+      const poleX = pt.x + (main ? 0 : (idx === 0 ? -tRad * 0.3 : tRad * 0.3));
+      const poleTop = pt.y - tH * 0.65 - (main ? 8 : 6.5) * k;
+      ctx.strokeStyle = '#3d2516'; ctx.lineWidth = Math.max(2, k * 0.2); ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(poleX, pt.y - tH * 0.5);
+      ctx.lineTo(poleX, poleTop);
+      ctx.stroke();
+
+      // Chóp cọc mạ vàng
+      ctx.fillStyle = '#ffd23a'; circle(poleX, poleTop, Math.max(2.2, k * 0.22)); ctx.fill();
+
+      // Lá cờ lụa màu đội tuyển tung bay
+      const flagW = (main ? 9.5 : 7.5) * k;
+      const flagH = (main ? 5.5 : 4.5) * k;
+      ctx.fillStyle = bCol;
+      ctx.beginPath();
+      ctx.moveTo(poleX, poleTop);
+      ctx.quadraticCurveTo(poleX + flagW * 0.5, poleTop + 1.2 * k, poleX + flagW, poleTop + flagH * 0.35);
+      ctx.lineTo(poleX, poleTop + flagH);
+      ctx.closePath();
+      FS(bCol, Math.max(1.2, k * 0.12));
+
+      // Chậu đuốc rực sáng trên các tháp biên
+      if (!main) {
+        const brazierX = pt.x + (idx === 0 ? tRad * 0.6 : -tRad * 0.6);
+        const brazierY = pt.y - tH * 0.65;
+        ctx.fillStyle = '#4a4852';
+        rr(brazierX - 1.2 * k, brazierY - 1 * k, 2.4 * k, 1.8 * k, 1); ctx.fill();
+        flame(brazierX, brazierY - 1.6 * k, 0.65 * k, performance.now() || 0, 70 + idx);
+      }
+    });
+
+    ctx.restore();
+  }
+
+  // Vạch xuất kích quân đội dã chiến kiểu Clash of Clans ở phần đáy bản đồ
+  function drawDeploymentZone(t) {
+    const my = arena.h - 18;
+    const y = PY(my), cx = PX(arena.cx), w_units = arena.w * 0.8, W_px = w_units * k;
+    const leftX = cx - W_px / 2, rightX = cx + W_px / 2;
+    const pulse = 0.6 + 0.25 * Math.sin(t * 0.005);
+    ctx.save();
+    
+    // 1. Nền bục dã chiến bằng đất nện viền xà gỗ
+    const platH = 5.2 * k;
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.26)';
+    rr(leftX - 1 * k, y + 2, W_px + 2 * k, platH, 3 * k); ctx.fill();
+
+    // Khung gỗ viền bục
+    ctx.fillStyle = lgr(0, y, 0, y + platH, [[0, '#6e4424'], [0.5, '#523319'], [1, '#38200e']]);
+    rr(leftX, y, W_px, platH, 2.5 * k); ctx.fill();
+    ctx.strokeStyle = '#855630'; ctx.lineWidth = Math.max(1.5, k * 0.14);
+    rr(leftX, y, W_px, platH, 2.5 * k); ctx.stroke();
+
+    // 2. Đường vạch xuất trận dạng nét đứt phát sáng vàng cam
+    ctx.strokeStyle = `rgba(255, 207, 74, ${pulse})`;
+    ctx.lineWidth = Math.max(2.4, k * 0.28);
+    ctx.setLineDash([k * 1.8, k * 1.2]);
+    ctx.beginPath();
+    ctx.moveTo(leftX + 3 * k, y + platH * 0.5);
+    ctx.lineTo(rightX - 3 * k, y + platH * 0.5);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    
+    // 3. Rào chắn chông gỗ dã chiến (barricades) ở 2 bên cánh
+    [-1, 1].forEach((dir) => {
+      const sx = dir === -1 ? leftX - k * 3.5 : rightX + k * 1.5;
+      for (let i = 0; i < 3; i++) {
+        const px = sx + dir * i * k * 2.2, py = y + platH * 0.5 + (i % 2 ? k * 0.7 : -k * 0.3);
+        ctx.save(); ctx.translate(px, py); ctx.rotate(dir * (0.2 + i * 0.08));
+        ctx.fillStyle = 'rgba(0,0,0,.25)'; ell(0, k * .5, k * 1.2, k * .3); ctx.fill();
+        ctx.beginPath();
+        ctx.moveTo(-k * .35, k * .6);
+        ctx.lineTo(0, -k * 1.5);
+        ctx.lineTo(k * .35, k * .6);
+        ctx.closePath();
+        FS(lgr(-k * .35, 0, k * .35, 0, [[0, '#85542b'], [.6, '#b0733c'], [1, '#5a3418']]), Math.max(1.4, k * .12));
+        ctx.restore();
+      }
+    });
+
+    // 4. Hai ngọn đuốc tiền tuyến rực sáng ở 2 đầu bục xuất kích
+    torch(leftX - k * 1.2, y + platH * 0.5, t, 11);
+    torch(rightX + k * 1.2, y + platH * 0.5, t, 12);
+    
+    // 5. Thẻ biển báo chiến thuật in sắc nét nổi bật: "⚔️ VẠCH XUẤT KÍCH · THẢ QUÂN ⚔️"
+    const fs = Math.max(10, k * 1.5);
+    ctx.font = `800 ${fs}px 'Baloo 2', sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    const textW = ctx.measureText('⚔️ VẠCH XUẤT KÍCH · THẢ QUÂN ⚔️').width;
+    const badgeW = textW + 24, badgeH = fs * 1.7;
+    const badgeY = y + platH * 0.5;
+    
+    // Khung pill biển báo
+    ctx.fillStyle = 'rgba(22, 12, 34, 0.88)';
+    ctx.strokeStyle = `rgba(255, 207, 74, ${pulse * 0.9})`;
+    ctx.lineWidth = Math.max(1.5, k * 0.16);
+    rr(cx - badgeW / 2, badgeY - badgeH / 2, badgeW, badgeH, 999);
+    ctx.fill(); ctx.stroke();
+    
+    // Chữ vàng rực
+    ctx.fillStyle = `rgba(255, 228, 140, ${pulse * 0.95})`;
+    ctx.fillText('⚔️ VẠCH XUẤT KÍCH · THẢ QUÂN ⚔️', cx, badgeY);
+    ctx.restore();
+  }
+
   function drawAmbient(t) {
     if (!GROUND_ON) return;
     const G = groundRect();
@@ -820,23 +1264,47 @@
       const span = G.x1 - G.x0 + 90, wx = G.x0 - 45 + ((t * .0016 * (.7 + i * .25) + i * 61) % span), wy = G.y0 + (i * .27 + .12) * (G.y1 - G.y0), rx = k * (17 + i * 3);
       ctx.save(); ctx.translate(PX(wx), PY(wy)); ctx.scale(1, .55); ctx.fillStyle = rgr(0, 0, 0, rx, [[0, 'rgba(8,30,8,.16)'], [1, 'rgba(8,30,8,0)']]); circle(0, 0, rx); ctx.fill(); ctx.restore();
     }
+    // Trang trí sống động phần trên đầu và phần dưới chiến trường
+    if (mode === 'solo') {
+      // Phía trên đầu: Tường thành 2.5D bảo vệ hậu phương
+      drawFortressWall(arena.cx, 13, 56, '#ffcf4a', 'HOÀNG THÀNH', false);
+      // Phía dưới: Bục xuất kích dã chiến & Đuốc tiền tuyến
+      drawDeploymentZone(t);
+    } else {
+      // Chế độ Đội: Căn cứ Xanh ở phía trên (chữ V chúc xuống), Căn cứ Đỏ ở phía dưới (chữ V ngửa lên)
+      const bx = arena.bx != null ? arena.bx : (arena.w * 0.16);
+      drawFortressWall(arena.cx - bx, 11, 48, TC('blue'), 'ĐỘI XANH', false);
+      drawFortressWall(arena.cx + bx, arena.h - 11, 48, TC('red'), 'ĐỘI ĐỎ', true);
+    }
   }
   function drawButterflies(t) {
     if (!GROUND_ON) return;
     const cols = ['#ff8fc8', '#ffd23a', '#8fd8ff', '#ffffff'];
     for (let i = 0; i < 5; i++) {
-      const wx = arena.cx + Math.sin(t * .0004 + i * 2.1) * (mode === 'team' ? 46 : 42), wy = (mode === 'team' ? arena.h / 2 : 55) + Math.cos(t * .00031 + i * 3.3) * (mode === 'team' ? 60 : 40);
+      const wx = arena.cx + Math.sin(t * .0004 + i * 2.1) * (mode === 'team' ? 46 : 42);
+      const wy = (arena.h / 2) + Math.cos(t * .00031 + i * 3.3) * (arena.h * 0.38);
       const x = PX(wx), y = PY(wy) - k * 3 + Math.sin(t * .004 + i) * k, f = Math.abs(Math.sin(t * .022 + i)) * .8 + .2, s = k * .55;
       ctx.fillStyle = cols[i % 4]; ell(x - s * .6 * f, y, s * .7 * f, s * .5, -.4); ctx.fill(); ell(x + s * .6 * f, y, s * .7 * f, s * .5, .4); ctx.fill();
       ctx.fillStyle = '#3a2a30'; ell(x, y, s * .13, s * .5); ctx.fill();
     }
   }
 
-  function drawRune(t) { // vòng phù văn nơi Rồng canh kho báu (có hiệu ứng nên vẽ mỗi khung hình)
+  function drawRune(t) { // vòng phù văn nơi Rồng canh kho báu (phối cảnh 2.5D dạng ellipse quả trám)
     const my = arena.h / 2;
     const cx = PX(arena.cx), cy = PY(my), pulse = hud.bo ? 1 + .06 * Math.sin(t * .008) : 1;
-    ctx.strokeStyle = 'rgba(255,214,110,.75)'; ctx.lineWidth = Math.max(2.5, k * .7); circle(cx, cy, 9 * k * pulse); ctx.stroke(); ctx.lineWidth = Math.max(1.5, k * .35); circle(cx, cy, 6.5 * k); ctx.stroke();
-    for (let i = 0; i < 8; i++) { const a = i * Math.PI / 4 + t * .0003; ctx.beginPath(); ctx.moveTo(cx + Math.cos(a) * 6.8 * k, cy + Math.sin(a) * 6.8 * k); ctx.lineTo(cx + Math.cos(a) * 8.8 * k, cy + Math.sin(a) * 8.8 * k); ctx.stroke(); }
+    const rx = 10 * k * pulse, ry = rx * 0.55;
+    ctx.strokeStyle = 'rgba(255,214,110,.7)'; ctx.lineWidth = Math.max(2.2, k * .6);
+    ctx.beginPath(); ctx.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2); ctx.stroke();
+    ctx.lineWidth = Math.max(1.2, k * .3);
+    ctx.beginPath(); ctx.ellipse(cx, cy, rx * 0.72, ry * 0.72, 0, 0, Math.PI * 2); ctx.stroke();
+    for (let i = 0; i < 8; i++) {
+      const a = i * Math.PI / 4 + t * .0003;
+      const cos = Math.cos(a), sin = Math.sin(a);
+      ctx.beginPath();
+      ctx.moveTo(cx + cos * rx * 0.74, cy + sin * ry * 0.74);
+      ctx.lineTo(cx + cos * rx * 0.98, cy + sin * ry * 0.98);
+      ctx.stroke();
+    }
   }
 
   // Nền cỏ, sân đá, hoa cỏ không đổi nên chỉ vẽ MỘT lần vào canvas phụ rồi dán lại mỗi khung hình: nhẹ hơn nhiều cho OBS
@@ -887,78 +1355,113 @@
   ];
 
   function plinth(R, b) {
-    // Mỗi công trình được đặt trên nền các ô vuông chuẩn lưới Clash of Clans tương ứng kích thước công trình
+    // Nền móng công trình dạng quả trám 2.5D isometric chuẩn Clash of Clans
     const n = (b.type === 'townHall') ? 4 : (b.radius >= 4 ? 3 : 2); // số ô lưới (2x2, 3x3, 4x4)
-    const tw = (R * 2.3) / n; // độ rộng mỗi ô vuông theo trục X
-    const th = tw * 0.54;     // độ cao mỗi ô vuông theo trục Y tạo góc nghiêng 3D isometric
-    const halfW = (n * tw) / 2, halfH = (n * th) / 2;
-    const baseY = R * 0.48;   // đặt ở chân móng công trình
+    const hw = R * 1.34;      // bán trục ngang của khối quả trám
+    const hh = hw * 0.55;     // bán trục đứng theo góc nghiêng phối cảnh 2.5D isometric
+    const baseY = R * 0.44;   // chân móng công trình
+    const depth = Math.max(3.2, R * 0.13); // độ dày khối đá vát xuống đất
     const teamCol = (mode === 'team' && b.team !== 'def') ? TC(b.team) : null;
 
     ctx.save();
-    // 1. Bóng đổ nghiêng 3D của cả khối móng công trình
-    ctx.fillStyle = 'rgba(10, 26, 12, 0.42)';
+    // 1. Bóng đổ nghiêng mềm trên mặt cỏ
+    ctx.fillStyle = 'rgba(8, 22, 10, 0.44)';
     ctx.beginPath();
-    ctx.moveTo(-halfW + 4, baseY - halfH + 7);
-    ctx.lineTo(halfW + 8, baseY - halfH + 7);
-    ctx.lineTo(halfW + 8, baseY + halfH + 8);
-    ctx.lineTo(-halfW + 4, baseY + halfH + 8);
-    ctx.closePath();
+    ctx.ellipse(2, baseY + depth * 0.6, hw * 1.14, hh * 1.16, 0, 0, Math.PI * 2);
     ctx.fill();
 
-    // 2. Viền đất đào móng / bãi cỏ phẳng viền ngoài (turf edge)
-    ctx.fillStyle = '#427829';
-    ctx.strokeStyle = '#2d581a';
-    ctx.lineWidth = Math.max(1.8, R * 0.05);
+    // 2. Chân bệ đá vát 3D (extruded stone curb)
+    // Mặt vát bên trái (trong bóng râm)
     ctx.beginPath();
-    ctx.rect(-halfW - 2, baseY - halfH - 2, halfW * 2 + 4, halfH * 2 + 4);
+    ctx.moveTo(-hw, baseY);
+    ctx.lineTo(0, baseY + hh);
+    ctx.lineTo(0, baseY + hh + depth);
+    ctx.lineTo(-hw, baseY + depth);
+    ctx.closePath();
+    ctx.fillStyle = '#4c3a28';
     ctx.fill();
+    ctx.strokeStyle = OUT;
+    ctx.lineWidth = Math.max(1.4, R * 0.04);
     ctx.stroke();
 
-    // 3. Từng ô vuông gạch đá lát nền tương ứng kích thước công trình (giống Clash of Clans)
+    // Mặt vát bên phải (hứng sáng mặt trời)
+    ctx.beginPath();
+    ctx.moveTo(0, baseY + hh);
+    ctx.lineTo(hw, baseY);
+    ctx.lineTo(hw, baseY + depth);
+    ctx.lineTo(0, baseY + hh + depth);
+    ctx.closePath();
+    ctx.fillStyle = '#7a6448';
+    ctx.fill();
+    ctx.strokeStyle = OUT;
+    ctx.lineWidth = Math.max(1.4, R * 0.04);
+    ctx.stroke();
+
+    // 3. Mặt trên bệ đá hình quả trám (isometric diamond surface)
+    ctx.beginPath();
+    ctx.moveTo(0, baseY - hh);
+    ctx.lineTo(hw, baseY);
+    ctx.lineTo(0, baseY + hh);
+    ctx.lineTo(-hw, baseY);
+    ctx.closePath();
+    ctx.fillStyle = '#9e8969';
+    ctx.fill();
+    ctx.strokeStyle = OUT;
+    ctx.lineWidth = Math.max(1.6, R * 0.048);
+    ctx.stroke();
+
+    // 4. Các ô gạch đá lát quả trám bên trong tương ứng kích thước n x n
     for (let iy = 0; iy < n; iy++) {
       for (let ix = 0; ix < n; ix++) {
-        const ox = -halfW + ix * tw;
-        const oy = baseY - halfH + iy * th;
-        const pad = Math.max(0.8, tw * 0.04);
-        const tileW = tw - pad * 2;
-        const tileH = th - pad * 2;
+        // Chuyển đổi tọa độ lưới ô vuông sang góc chiếu quả trám isometric 2.5D
+        const u = (ix + 0.5) / n - 0.5; // từ -0.5 đến 0.5
+        const v = (iy + 0.5) / n - 0.5; // từ -0.5 đến 0.5
+        const tx = (u - v) * hw * 1.82;
+        const ty = baseY + (u + v) * hh * 1.82;
+        const tHw = (hw / n) * 0.88;
+        const tHh = (hh / n) * 0.88;
         const isCenter = (n >= 3 && ix >= 1 && ix < n - 1 && iy >= 1 && iy < n - 1);
         const alt = (ix + iy) % 2 === 0;
 
-        // Bề mặt ô đá lát vuông
+        ctx.beginPath();
+        ctx.moveTo(tx, ty - tHh);
+        ctx.lineTo(tx + tHw, ty);
+        ctx.lineTo(tx, ty + tHh);
+        ctx.lineTo(tx - tHw, ty);
+        ctx.closePath();
+
+        // Màu gạch xen kẽ tạo chất liệu đá lát tự nhiên
         ctx.fillStyle = isCenter
-          ? (alt ? '#b8a688' : '#aa9678')
-          : (alt ? '#d5c4a4' : '#c6b492');
-        ctx.fillRect(ox + pad, oy + pad, tileW, tileH);
+          ? (alt ? '#b8a688' : '#a89476')
+          : (alt ? '#d8c7a6' : '#c8b594');
+        ctx.fill();
 
-        // Hiệu ứng khối vát 3D (3D bevel) cho từng viên gạch ô vuông
-        // Cạnh trên sáng phản chiếu ánh sáng mặt trời
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.28)';
-        ctx.fillRect(ox + pad, oy + pad, tileW, Math.max(1, tileH * 0.16));
-        // Cạnh dưới tối tạo bóng đổ chiều sâu 3D
-        ctx.fillStyle = 'rgba(50, 35, 20, 0.35)';
-        ctx.fillRect(ox + pad, oy + pad + tileH - Math.max(1.2, tileH * 0.18), tileW, Math.max(1.2, tileH * 0.18));
+        // Viền sáng phía trên (ánh sáng mặt trời chiếu từ phía trên-trái)
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.32)';
+        ctx.lineWidth = Math.max(1, R * 0.024);
+        ctx.beginPath();
+        ctx.moveTo(tx - tHw, ty);
+        ctx.lineTo(tx, ty - tHh);
+        ctx.lineTo(tx + tHw, ty);
+        ctx.stroke();
 
-        // Đường rãnh viền ô vuông (mortar lines)
-        ctx.strokeStyle = 'rgba(50, 36, 22, 0.45)';
-        ctx.lineWidth = Math.max(1, R * 0.035);
-        ctx.strokeRect(ox + pad, oy + pad, tileW, tileH);
+        // Rãnh vữa tối phía dưới tạo khối nổi 3D
+        ctx.strokeStyle = 'rgba(46, 30, 18, 0.42)';
+        ctx.beginPath();
+        ctx.moveTo(tx - tHw, ty);
+        ctx.lineTo(tx, ty + tHh);
+        ctx.lineTo(tx + tHw, ty);
+        ctx.stroke();
       }
     }
 
-    // 4. Viền đá nẹp bảo vệ xung quanh khối ô vuông
-    ctx.strokeStyle = teamCol || '#7d6950';
-    ctx.lineWidth = Math.max(2, R * (teamCol ? 0.08 : 0.05));
-    ctx.strokeRect(-halfW, baseY - halfH, halfW * 2, halfH * 2);
-
-    // 5. Nếu có đội, vẽ các ghim góc màu đội bóng bẩy
+    // 5. Nẹp góc kim loại và đinh tán màu đội ở 4 đỉnh quả trám
     if (teamCol) {
-      const pinR = Math.max(2, R * 0.1);
-      for (const [px, py] of [[-halfW, baseY - halfH], [halfW, baseY - halfH], [halfW, baseY + halfH], [-halfW, baseY + halfH]]) {
+      const pinR = Math.max(2.4, R * 0.09);
+      for (const [px, py] of [[0, baseY - hh], [hw, baseY], [0, baseY + hh], [-hw, baseY]]) {
         circle(px, py, pinR);
         FS(teamCol, 1.2);
-        circle(px, py, pinR * 0.4);
+        circle(px, py, pinR * 0.42);
         FS('#ffe27a', 0.8);
       }
     }
@@ -966,84 +1469,240 @@
   }
 
   function bTownHall(R, b, t, dmg) {
-    const s = R * 2.3, base = s * .45, pal = mode === 'team' ? TEAM_PAL[b.team] || palette() : palette(), lw = Math.max(1.6, s * .024);
-    const stone = (x0, x1) => lgr(x0, 0, x1, 0, [[0, '#dcd0b8'], [.55, '#b9aa8d'], [1, '#8a7a5f']]);
+    const s = R * 2.3, base = s * .44, pal = mode === 'team' ? TEAM_PAL[b.team] || palette() : palette(), lw = Math.max(1.6, s * .024);
     const bannerCol = mode === 'team' ? TC(b.team) : pal.flag;
-    for (const sx of [-1, 1]) { // tháp hai bên
-      const tx = sx * s * .45, tw = s * .18, top = -s * .3;
-      ctx.beginPath(); ctx.rect(tx - tw / 2, top, tw, base - top); FS(stone(tx - tw / 2, tx + tw / 2), lw);
-      for (let i = 0; i < 3; i++) { ctx.beginPath(); ctx.rect(tx - tw / 2 + i * tw * .37, top - s * .075, tw * .27, s * .085); FS('#a9997c', lw * .8); }
-      ctx.fillStyle = '#2a1a14'; ctx.fillRect(tx - tw * .08, top + s * .06, tw * .16, s * .11);
-      ctx.beginPath(); ctx.moveTo(tx - tw * .32, top + s * .22); ctx.lineTo(tx + tw * .32, top + s * .22); ctx.lineTo(tx + tw * .32, top + s * .4); ctx.lineTo(tx, top + s * .35); ctx.lineTo(tx - tw * .32, top + s * .4); ctx.closePath(); FS(bannerCol, lw * .8);
+
+    ctx.save();
+    // 1. Tháp góc phía sau
+    const backH = s * .28;
+    ctx.beginPath(); ctx.rect(-s * .12, -s * .42, s * .24, s * .3);
+    FS(lgr(-s * .12, 0, s * .12, 0, [[0, '#9e8d72'], [1, '#72634d']]), lw);
+    for (let i = 0; i < 3; i++) { ctx.beginPath(); ctx.rect(-s * .12 + i * s * .085, -s * .48, s * .07, s * .07); FS('#887860', lw * .7); }
+
+    // 2. Tháp góc 2 bên (trái & phải)
+    for (const sx of [-1, 1]) {
+      const tx = sx * s * .44, tw = s * .18, top = -s * .28;
+      ctx.beginPath(); ctx.rect(tx - tw / 2, top, tw, base - top - s * .08);
+      FS(lgr(tx - tw / 2, 0, tx + tw / 2, 0, sx === -1 ? [[0, '#9a8970'], [1, '#74644e']] : [[0, '#ded0b6'], [1, '#b6a68c']]), lw);
+      for (let i = 0; i < 3; i++) { ctx.beginPath(); ctx.rect(tx - tw / 2 + i * tw * .37, top - s * .075, tw * .27, s * .085); FS('#a8987a', lw * .8); }
+      ctx.fillStyle = '#261610'; ctx.fillRect(tx - tw * .08, top + s * .06, tw * .16, s * .11);
+      // Cờ huy hiệu thả dọc tháp
+      ctx.beginPath(); ctx.moveTo(tx - tw * .32, top + s * .2); ctx.lineTo(tx + tw * .32, top + s * .2); ctx.lineTo(tx + tw * .32, top + s * .42); ctx.lineTo(tx, top + s * .36); ctx.lineTo(tx - tw * .32, top + s * .42); ctx.closePath();
+      FS(bannerCol, lw * .8);
     }
-    ctx.beginPath(); ctx.rect(-s * .4, -s * .12, s * .8, base + s * .12); FS(stone(-s * .4, s * .4), lw * 1.3);
-    ctx.strokeStyle = 'rgba(70,52,34,.32)'; ctx.lineWidth = 1.2;
-    for (let r2 = 0, y = -s * .04; y < base; y += s * .085, r2++) { ctx.beginPath(); ctx.moveTo(-s * .4, y); ctx.lineTo(s * .4, y); for (let x = -s * .4 + (r2 % 2) * s * .1; x < s * .4; x += s * .2) { ctx.moveTo(x, y); ctx.lineTo(x, y + s * .085); } ctx.stroke(); }
-    ctx.fillStyle = lgr(0, -s * .03, 0, s * .03, [[0, '#ffe58a'], [1, '#c98a1c']]); ctx.fillRect(-s * .4, -s * .03, s * .8, s * .05); ctx.strokeStyle = OUT; ctx.lineWidth = lw * .6; ctx.strokeRect(-s * .4, -s * .03, s * .8, s * .05);
-    // mái
-    ctx.beginPath(); ctx.moveTo(-s * .48, -s * .1); ctx.lineTo(0, -s * .6); ctx.lineTo(s * .48, -s * .1); ctx.closePath(); FS(lgr(0, -s * .6, 0, -s * .1, [[0, pal.r1], [1, pal.r2]]), lw * 1.4);
-    ctx.strokeStyle = 'rgba(0,0,0,.26)'; ctx.lineWidth = 1.6;
-    for (let i = 1; i < 5; i++) { const yy = -s * .1 - i * s * .1, hw = s * .48 * (1 - (i * .1) / .5); ctx.beginPath(); ctx.moveTo(-hw, yy); ctx.lineTo(hw, yy); ctx.stroke(); }
-    ctx.fillStyle = 'rgba(255,255,255,.2)'; ctx.beginPath(); ctx.moveTo(-s * .44, -s * .11); ctx.lineTo(-s * .02, -s * .56); ctx.lineTo(-s * .02, -s * .11); ctx.closePath(); ctx.fill();
-    // cột cờ + cờ
-    ctx.strokeStyle = '#3a2a1e'; ctx.lineWidth = lw * 1.4; ctx.beginPath(); ctx.moveTo(0, -s * .6); ctx.lineTo(0, -s * .8); ctx.stroke();
-    ctx.fillStyle = '#ffd24a'; circle(0, -s * .81, s * .03); ctx.fill();
-    const wv = Math.sin(t * .006) * s * .025;
-    ctx.beginPath(); ctx.moveTo(0, -s * .8); ctx.quadraticCurveTo(s * .09, -s * .83 + wv, s * .19, -s * .77); ctx.quadraticCurveTo(s * .09, -s * .71 - wv, 0, -s * .68); ctx.closePath(); FS(bannerCol, lw * .8);
-    // cửa + cửa sổ
-    ctx.beginPath(); ctx.moveTo(-s * .11, base); ctx.lineTo(-s * .11, base - s * .21); ctx.arc(0, base - s * .21, s * .11, Math.PI, 0); ctx.lineTo(s * .11, base); ctx.closePath(); FS(lgr(0, base - s * .32, 0, base, [[0, '#86532a'], [1, '#4a2a12']]), lw);
-    ctx.strokeStyle = 'rgba(30,16,8,.55)'; ctx.lineWidth = 1.3; for (let i = -1; i <= 1; i++) { ctx.beginPath(); ctx.moveTo(i * s * .055, base - s * .3); ctx.lineTo(i * s * .055, base); ctx.stroke(); }
-    ctx.fillStyle = '#ffd24a'; circle(s * .06, base - s * .1, s * .012); ctx.fill();
-    for (const sx of [-1, 1]) { ctx.beginPath(); rr(sx * s * .24 - s * .05, s * .0, s * .1, s * .15, s * .05); FS(boss ? '#ff4a5a' : '#ffd88a', lw * .9); ctx.strokeStyle = OUT; ctx.lineWidth = lw * .6; ctx.beginPath(); ctx.moveTo(sx * s * .24, 0); ctx.lineTo(sx * s * .24, s * .15); ctx.moveTo(sx * s * .24 - s * .05, s * .075); ctx.lineTo(sx * s * .24 + s * .05, s * .075); ctx.stroke(); }
+
+    // 3. Khối tường chính nghiêng 2.5D isometric
+    // Mặt tường bên trái (trong bóng râm)
+    ctx.beginPath();
+    ctx.moveTo(-s * .42, -s * .08);
+    ctx.lineTo(0, s * .15);
+    ctx.lineTo(0, base);
+    ctx.lineTo(-s * .42, base - s * .18);
+    ctx.closePath();
+    FS(lgr(-s * .42, 0, 0, 0, [[0, '#8e7e68'], [1, '#6e5e4a']]), lw * 1.2);
+    // Gờ vữa đá mặt trái
+    ctx.strokeStyle = 'rgba(50,36,22,.36)'; ctx.lineWidth = 1.1;
+    for (let i = 1; i <= 4; i++) {
+      const p = i / 5;
+      ctx.beginPath();
+      ctx.moveTo(-s * .42, -s * .08 + p * (base - s * .1));
+      ctx.lineTo(0, s * .15 + p * (base - s * .15));
+      ctx.stroke();
+    }
+
+    // Mặt tường bên phải (hướng đón nắng)
+    ctx.beginPath();
+    ctx.moveTo(0, s * .15);
+    ctx.lineTo(s * .42, -s * .08);
+    ctx.lineTo(s * .42, base - s * .18);
+    ctx.lineTo(0, base);
+    ctx.closePath();
+    FS(lgr(0, 0, s * .42, 0, [[0, '#ded0b8'], [1, '#baa88c']]), lw * 1.2);
+    // Gờ vữa đá mặt phải
+    ctx.strokeStyle = 'rgba(80,62,44,.28)'; ctx.lineWidth = 1.1;
+    for (let i = 1; i <= 4; i++) {
+      const p = i / 5;
+      ctx.beginPath();
+      ctx.moveTo(0, s * .15 + p * (base - s * .15));
+      ctx.lineTo(s * .42, -s * .08 + p * (base - s * .1));
+      ctx.stroke();
+    }
+
+    // Đai vàng bo ngang tường
+    ctx.fillStyle = lgr(0, 0, s * .4, 0, [[0, '#ffe48a'], [1, '#c98a1c']]);
+    ctx.beginPath();
+    ctx.moveTo(-s * .42, s * .04); ctx.lineTo(0, s * .24); ctx.lineTo(0, s * .29); ctx.lineTo(-s * .42, s * .09);
+    ctx.closePath(); ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(0, s * .24); ctx.lineTo(s * .42, s * .04); ctx.lineTo(s * .42, s * .09); ctx.lineTo(0, s * .29);
+    ctx.closePath(); ctx.fill();
+
+    // 4. Mái dốc 2.5D isometric 4 cạnh đặc trưng Clash of Clans
+    // Nửa mái bên trái (đổ bóng tối)
+    ctx.beginPath();
+    ctx.moveTo(-s * .46, -s * .08);
+    ctx.lineTo(0, -s * .62);
+    ctx.lineTo(0, -s * .08);
+    ctx.closePath();
+    FS(lgr(-s * .46, 0, 0, 0, [[0, pal.r2], [1, '#4a1212']]), lw * 1.3);
+    // Nửa mái bên phải (hướng sáng rực rỡ)
+    ctx.beginPath();
+    ctx.moveTo(0, -s * .62);
+    ctx.lineTo(s * .46, -s * .08);
+    ctx.lineTo(0, -s * .08);
+    ctx.closePath();
+    FS(lgr(0, 0, s * .46, 0, [[0, pal.r1], [1, pal.r2]]), lw * 1.3);
+
+    // Đường gờ mái ngói isometric
+    ctx.strokeStyle = 'rgba(0,0,0,.3)'; ctx.lineWidth = 1.5;
+    for (let i = 1; i < 4; i++) {
+      const frac = i / 4;
+      const yL = -s * .62 + frac * (s * .54), yR = yL;
+      ctx.beginPath();
+      ctx.moveTo(-s * .46 * frac, -s * .08 - (1 - frac) * s * .54);
+      ctx.lineTo(0, -s * .62 + (1 - frac) * s * .54);
+      ctx.lineTo(s * .46 * frac, -s * .08 - (1 - frac) * s * .54);
+      ctx.stroke();
+    }
+    // Gờ đỉnh mái vàng rực rỡ
+    ctx.strokeStyle = '#ffd858'; ctx.lineWidth = lw * 1.2;
+    ctx.beginPath(); ctx.moveTo(0, -s * .62); ctx.lineTo(0, -s * .08); ctx.stroke();
+
+    // 5. Cột cờ và lá cờ tung bay trong gió
+    ctx.strokeStyle = '#3a2a1e'; ctx.lineWidth = lw * 1.4;
+    ctx.beginPath(); ctx.moveTo(0, -s * .62); ctx.lineTo(0, -s * .84); ctx.stroke();
+    ctx.fillStyle = '#ffd24a'; circle(0, -s * .85, s * .03); ctx.fill();
+    const wv = Math.sin(t * .006) * s * .026;
+    ctx.beginPath();
+    ctx.moveTo(0, -s * .84);
+    ctx.quadraticCurveTo(s * .1, -s * .87 + wv, s * .22, -s * .8);
+    ctx.quadraticCurveTo(s * .1, -s * .73 - wv, 0, -s * .7);
+    ctx.closePath();
+    FS(bannerCol, lw * .8);
+
+    // 6. Cửa chính mái vòm gỗ đinh tán (trên mặt diện phải)
+    ctx.beginPath();
+    ctx.moveTo(s * .06, base - s * .04);
+    ctx.lineTo(s * .06, base - s * .22);
+    ctx.quadraticCurveTo(s * .16, base - s * .3, s * .26, base - s * .26);
+    ctx.lineTo(s * .26, base - s * .12);
+    ctx.closePath();
+    FS(lgr(s * .06, 0, s * .26, 0, [[0, '#824e26'], [1, '#482610']]), lw);
+    ctx.fillStyle = '#ffd24a'; circle(s * .1, base - s * .16, s * .014); ctx.fill();
+
+    // Cửa sổ kính phát sáng ấm áp
+    ctx.beginPath(); rr(-s * .26, s * .06, s * .1, s * .14, s * .04);
+    FS(boss ? '#ff4a5a' : '#ffd88a', lw * .8);
+
+    // Vết nứt hư hại & lửa khi bị tấn công
     const nC = Math.min(CRACKS.length, Math.ceil(dmg * CRACKS.length * 1.3));
     ctx.strokeStyle = 'rgba(25,10,10,.85)'; ctx.lineWidth = Math.max(1.5, s * .014); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
     for (let i = 0; i < nC; i++) { ctx.beginPath(); CRACKS[i].forEach(([x, y], q) => (q ? ctx.lineTo(x * s * 1.6, y * s * 1.6) : ctx.moveTo(x * s * 1.6, y * s * 1.6))); ctx.stroke(); }
     if (dmg > .35) for (let i = 0; i < Math.min(4, Math.floor((dmg - .3) * 7)); i++) flame([-.25, .2, 0, -.1][i] * s * 1.6, [-.05, 0, -.3, .2][i] * s * 1.6, s * .07, t, i);
+    ctx.restore();
   }
+
   function bCannon(R, b) {
     const lw = Math.max(1.6, R * .07);
-    circle(0, 0, R * .98); FS(lgr(0, -R, 0, R, [[0, '#8a7562'], [1, '#5a4736']]), lw);
-    circle(0, 0, R * .68); FS(lgr(0, -R, 0, R, [[0, '#6e5b4a'], [1, '#43352a']]), lw * .8);
-    ctx.save(); ctx.rotate(b.aimA - (b._fa || 0)); const rec = b.recoil * R * .3;
-    ctx.beginPath(); rr(-R * .25 - rec, -R * .32, R * 1.6, R * .64, R * .16); FS(lgr(0, -R * .32, 0, R * .32, [[0, '#6b6b7a'], [.4, '#3e3e4a'], [1, '#22222b']]), lw);
-    ctx.beginPath(); rr(R * 1.02 - rec, -R * .4, R * .24, R * .8, R * .08); FS('#8a8a99', lw);
-    ctx.fillStyle = 'rgba(255,255,255,.35)'; ctx.fillRect(-R * .1 - rec, -R * .24, R * 1.0, R * .1); ctx.restore();
-    ctx.fillStyle = '#d6a532'; circle(0, 0, R * .16); ctx.fill();
+    // Bệ xoay dạng ellipse 2.5D
+    ctx.beginPath(); ctx.ellipse(0, R * .24, R * .98, R * .54, 0, 0, Math.PI * 2);
+    FS(lgr(0, -R * .3, 0, R * .6, [[0, '#8a7562'], [1, '#5a4736']]), lw);
+    ctx.beginPath(); ctx.ellipse(0, R * .12, R * .72, R * .38, 0, 0, Math.PI * 2);
+    FS(lgr(0, -R * .2, 0, R * .4, [[0, '#6e5b4a'], [1, '#43352a']]), lw * .8);
+    // Nòng pháo xoay 360 độ
+    ctx.save();
+    ctx.translate(0, R * .06);
+    ctx.rotate(b.aimA - (b._fa || 0));
+    const rec = b.recoil * R * .3;
+    ctx.beginPath(); rr(-R * .25 - rec, -R * .32, R * 1.6, R * .64, R * .16);
+    FS(lgr(0, -R * .32, 0, R * .32, [[0, '#6b6b7a'], [.4, '#3e3e4a'], [1, '#22222b']]), lw);
+    ctx.beginPath(); rr(R * 1.02 - rec, -R * .4, R * .24, R * .8, R * .08);
+    FS('#8a8a99', lw);
+    ctx.fillStyle = 'rgba(255,255,255,.35)'; ctx.fillRect(-R * .1 - rec, -R * .24, R * 1.0, R * .1);
+    ctx.restore();
+    ctx.fillStyle = '#d6a532'; circle(0, R * .06, R * .16); ctx.fill();
   }
+
   function bArcher(R) {
     const lw = Math.max(1.6, R * .07);
-    ctx.beginPath(); ctx.rect(-R * .62, -R * .95, R * 1.24, R * 1.55); FS(lgr(-R * .62, 0, R * .62, 0, [[0, '#cbb894'], [1, '#8c785c']]), lw);
-    ctx.strokeStyle = 'rgba(70,52,34,.3)'; ctx.lineWidth = 1.1; for (let y = -R * .7; y < R * .55; y += R * .3) { ctx.beginPath(); ctx.moveTo(-R * .62, y); ctx.lineTo(R * .62, y); ctx.stroke(); }
-    for (let i = 0; i < 3; i++) { ctx.beginPath(); ctx.rect(-R * .62 + i * R * .46, -R * 1.2, R * .32, R * .27); FS('#a8987c', lw * .8); }
-    ctx.beginPath(); ctx.moveTo(-R * .82, -R * 1.02); ctx.lineTo(0, -R * 1.8); ctx.lineTo(R * .82, -R * 1.02); ctx.closePath(); FS(lgr(0, -R * 1.8, 0, -R, [[0, '#b4623a'], [1, '#7c3c22']]), lw);
-    ctx.fillStyle = '#f3c9a0'; circle(0, -R * .98, R * .17); FS('#f3c9a0', lw * .7);
-    ctx.beginPath(); ctx.rect(-R * .12, R * .1, R * .24, R * .5); FS('#4a2e18', lw * .7);
+    // Tháp canh gỗ 4 chân choãi 2.5D
+    ctx.save();
+    ctx.strokeStyle = '#624224'; ctx.lineWidth = Math.max(2.2, R * .1); ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(-R * .6, R * .38); ctx.lineTo(-R * .4, -R * .76);
+    ctx.moveTo(R * .6, R * .38); ctx.lineTo(R * .4, -R * .76);
+    ctx.moveTo(-R * .18, R * .46); ctx.lineTo(-R * .08, -R * .72);
+    ctx.moveTo(R * .18, R * .46); ctx.lineTo(R * .08, -R * .72);
+    ctx.stroke();
+    // Giằng chéo gỗ
+    ctx.lineWidth = Math.max(1.2, R * .05);
+    ctx.beginPath();
+    ctx.moveTo(-R * .55, R * .1); ctx.lineTo(R * .55, -R * .4);
+    ctx.moveTo(R * .55, R * .1); ctx.lineTo(-R * .55, -R * .4);
+    ctx.stroke();
+    // Sàn gỗ trên cao (isometric ellipse)
+    ctx.beginPath(); ctx.ellipse(0, -R * .82, R * .74, R * .36, 0, 0, Math.PI * 2);
+    FS(lgr(0, -R * 1.2, 0, -R * .5, [[0, '#b87c42'], [1, '#784c22']]), lw);
+    // Thành bảo vệ tháp
+    ctx.beginPath(); ctx.ellipse(0, -R * 1.02, R * .74, R * .36, 0, 0, Math.PI);
+    ctx.lineTo(-R * .74, -R * .82);
+    ctx.ellipse(0, -R * .82, R * .74, R * .36, Math.PI, 0, true);
+    ctx.closePath();
+    FS(lgr(-R * .7, 0, R * .7, 0, [[0, '#8a5626'], [.5, '#ba7e44'], [1, '#72421a']]), lw * .8);
+    // Cung thủ tóc hồng đứng trên đỉnh bắn cung
+    ctx.fillStyle = '#ff7ab6'; circle(0, -R * 1.24, R * .19); ctx.fill();
+    ctx.fillStyle = '#f3c9a0'; circle(0, -R * 1.14, R * .15); ctx.fill();
+    ctx.fillStyle = '#4fa838'; ctx.fillRect(-R * .12, -R * 1.04, R * .24, R * .22);
+    ctx.restore();
   }
+
   function bMortar(R, b) {
     const lw = Math.max(1.6, R * .07);
-    circle(0, R * .08, R * .98); FS(lgr(0, -R, 0, R, [[0, '#6a6a7c'], [1, '#3a3a48']]), lw);
-    circle(0, 0, R * .62); FS('#20202a', lw * .8);
-    ctx.save(); ctx.rotate(b.aimA - (b._fa || 0)); ctx.beginPath(); rr(-R * .22, -R * .32, R * 1.15, R * .64, R * .14); FS(lgr(0, -R * .3, 0, R * .3, [[0, '#e0b64c'], [1, '#9a7420']]), lw); ctx.restore();
-    ctx.strokeStyle = 'rgba(255,255,255,.3)'; ctx.lineWidth = 1.4; circle(0, R * .08, R * .8); ctx.stroke();
+    ctx.beginPath(); ctx.ellipse(0, R * .2, R * .98, R * .54, 0, 0, Math.PI * 2);
+    FS(lgr(0, -R * .3, 0, R * .6, [[0, '#6a6a7c'], [1, '#3a3a48']]), lw);
+    ctx.beginPath(); ctx.ellipse(0, R * .12, R * .66, R * .36, 0, 0, Math.PI * 2);
+    FS('#20202a', lw * .8);
+    ctx.save(); ctx.translate(0, R * .06); ctx.rotate(b.aimA - (b._fa || 0));
+    ctx.beginPath(); rr(-R * .22, -R * .32, R * 1.15, R * .64, R * .14);
+    FS(lgr(0, -R * .3, 0, R * .3, [[0, '#e0b64c'], [1, '#9a7420']]), lw);
+    ctx.restore();
+    ctx.strokeStyle = 'rgba(255,255,255,.3)'; ctx.lineWidth = 1.4;
+    ctx.beginPath(); ctx.ellipse(0, R * .2, R * .8, R * .44, 0, 0, Math.PI * 2); ctx.stroke();
   }
+
   function bAir(R, b, t) {
     const lw = Math.max(1.6, R * .07);
-    circle(0, 0, R * .98); FS(lgr(0, -R, 0, R, [[0, '#8a93a6'], [1, '#4c5464']]), lw);
-    circle(0, 0, R * .5); FS('#2c323e', lw * .8);
+    ctx.beginPath(); ctx.ellipse(0, R * .18, R * .95, R * .52, 0, 0, Math.PI * 2);
+    FS(lgr(0, -R * .3, 0, R * .6, [[0, '#8a93a6'], [1, '#4c5464']]), lw);
+    ctx.beginPath(); rr(-R * .55, -R * .38, R * 1.1, R * .64, R * .12);
+    FS(lgr(0, -R * .38, 0, R * .25, [[0, '#9c6f42'], [1, '#654121']]), lw * .8);
     for (let i = 0; i < 4; i++) {
-      ctx.save(); ctx.rotate(i * Math.PI / 2 + Math.PI / 4 + (b.tid > 0 ? Math.sin(t * .01) * .05 : 0));
-      ctx.beginPath(); ctx.rect(R * .1, -R * .13, R * .4, R * .26); FS('#e6e6ea', lw * .7);
-      ctx.beginPath(); ctx.moveTo(R * 1.0, 0); ctx.lineTo(R * .5, -R * .21); ctx.lineTo(R * .5, R * .21); ctx.closePath(); FS('#e2483c', lw * .8); ctx.restore();
+      ctx.save();
+      const ox = (i % 2 - 0.5) * R * .45;
+      const oy = (Math.floor(i / 2) - 0.5) * R * .3 - R * .15;
+      ctx.translate(ox, oy);
+      ctx.rotate(-Math.PI / 4 + (b.tid > 0 ? Math.sin(t * .01 + i) * .08 : 0));
+      ctx.beginPath(); ctx.rect(-R * .1, -R * .3, R * .2, R * .55); FS('#e6e6ea', lw * .6);
+      ctx.beginPath(); ctx.moveTo(0, -R * .5); ctx.lineTo(-R * .14, -R * .28); ctx.lineTo(R * .14, -R * .28); ctx.closePath(); FS('#e2483c', lw * .7);
+      ctx.restore();
     }
   }
+
   function bWizard(R, b, t) {
     const lw = Math.max(1.6, R * .07);
-    ctx.beginPath(); ctx.rect(-R * .52, -R * .9, R * 1.04, R * 1.5); FS(lgr(-R * .52, 0, R * .52, 0, [[0, '#8f8bc8'], [1, '#4b4784']]), lw);
-    ctx.fillStyle = 'rgba(255,255,255,.18)'; ctx.fillRect(-R * .46, -R * .84, R * .18, R * 1.36);
-    ctx.beginPath(); ctx.moveTo(-R * .74, -R * .9); ctx.lineTo(0, -R * 2.0); ctx.lineTo(R * .74, -R * .9); ctx.closePath(); FS(lgr(0, -R * 2, 0, -R * .9, [[0, '#8a52c8'], [1, '#4c2a80']]), lw);
-    const o = R * .27 * (1 + .15 * Math.sin(t * .01));
-    ctx.fillStyle = rgr(0, -R * .95, 0, o * 2.2, [[0, '#eaffff'], [.4, '#7ffcff'], [1, 'rgba(127,252,255,0)']]); circle(0, -R * .95, o * 2.2); ctx.fill();
-    circle(0, -R * .95, o * .7); FS('#c9ffff', lw * .6);
+    ctx.beginPath();
+    ctx.moveTo(-R * .55, R * .3);
+    ctx.lineTo(-R * .42, -R * .8);
+    ctx.lineTo(R * .42, -R * .8);
+    ctx.lineTo(R * .55, R * .3);
+    ctx.closePath();
+    FS(lgr(-R * .5, 0, R * .5, 0, [[0, '#6d659e'], [.5, '#9288c8'], [1, '#4f4780']]), lw);
+    ctx.beginPath(); ctx.ellipse(0, -R * .82, R * .64, R * .32, 0, 0, Math.PI * 2);
+    FS('#3e366e', lw * .8);
+    const o = R * .26 * (1 + .15 * Math.sin(t * .012));
+    ctx.fillStyle = rgr(0, -R * 1.15, 0, o * 2.2, [[0, '#eaffff'], [.4, '#7ffcff'], [1, 'rgba(127,252,255,0)']]);
+    circle(0, -R * 1.15, o * 2.2); ctx.fill();
+    circle(0, -R * 1.15, o * .75); FS('#c9ffff', lw * .6);
   }
   function bInferno(R, b, t) {
     const lw = Math.max(1.6, R * .07);
@@ -1721,6 +2380,9 @@
     arr.forEach((p, i) => { const li = el('li', i < 3 ? 'top' + (i + 1) : ''); li.append(rankSpan(i, p.name, p.color), el('b', '', fmt(p.dmg) + (p.kills ? '  (' + p.kills + ' phá)' : ''))); ol.append(li); });
   }
   function finishResult(d, win) {
+    document.body.classList.add('result-open');
+    $('demoTag').hidden = true;
+    $('guide').classList.remove('show');
     $('rAllBox').hidden = !d.allTime || !d.allTime.length; if (d.allTime) fillList('rAll', d.allTime);
     resultUntil = Date.now() + d.breakMs; $('result').hidden = false; status = 'ended';
     if (win) { sfx.win(); for (let i = 0; i < 70; i++) particles.push({ x: W / 2, y: H * .4, vx: rand(-320, 320), vy: rand(-520, -120), life: rand(1, 2), color: Math.random() < .5 ? '#ffcf4a' : '#ff8a3d', size: rand(4, 9), g: 600 }); } else sfx.lose();
@@ -1806,11 +2468,13 @@
   socket.on('unlock', onUnlock); socket.on('morale', onMorale); socket.on('guardian', onGuardian); socket.on('guardianDown', onGuardianDown); socket.on('guardianLeft', onGuardianLeft);
   socket.on('golden', onGolden); socket.on('lateRush', onLateRush); socket.on('overtime', onOvertime); socket.on('leadChange', onLeadChange); socket.on('closeCall', onCloseCall);
   socket.on('catchUp', onCatchUp); socket.on('bounty', onBounty); socket.on('bountyClaimed', onBountyClaimed); socket.on('spellBlocked', onSpellBlocked);
-  socket.on('demo', (d) => { $('demoTag').hidden = !d.on; });
+  socket.on('demo', (d) => { if (status !== 'ended') $('demoTag').hidden = !d.on; });
   socket.on('roundEnd', showResult);
   socket.on('roundStart', (d) => {
     if (overlayVer !== null && d.ver !== undefined && d.ver !== overlayVer) { location.reload(); return; }
+    document.body.classList.remove('result-open');
     $('result').hidden = true; resultUntil = 0; owners.clear(); applyRound(d);
+    $('demoTag').hidden = !d.demo;
     if (d.mode === 'team') banner('GIAO TRANH!', '');
     else { banner(d.boss ? 'BOSS - CẤP ' + d.level : 'CẤP ' + d.level, d.boss); if (d.boss) sfx.boss(); }
   });
